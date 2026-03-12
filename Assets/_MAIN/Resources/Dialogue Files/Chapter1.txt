@@ -1,0 +1,7 @@
+
+CreateCharacter(Karin)
+Karin.Show(),Karin.SetPosition(-x 0.5 -y 0.5)
+
+wait(1)
+Karin.FaceRight()
+Karin "Oh fuck the rain is starting.{wa 0.5}We need to go somewhere"
