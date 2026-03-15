@@ -35,7 +35,12 @@ public static class WorldObjectCommands
         db.AddCommand("setactive", new Action<string[]>(args => SetActive(actorId, args)));
         db.AddCommand("playanim", new Action<string[]>(args => PlayAnim(actorId, args)));
         db.AddCommand("setanimatorbool", new Action<string[]>(args => SetAnimatorBool(actorId, args)));
+        db.AddCommand("setanimatortrigger", new Action<string[]>(args => SetAnimatorTrigger(actorId, args)));
+        db.AddCommand("setanimatorfloat", new Action<string[]>(args => SetAnimatorFloat(actorId, args)));
+        db.AddCommand("setanimatorint", new Action<string[]>(args => SetAnimatorInt(actorId, args)));
         db.AddCommand("setposition", new Action<string[]>(args => SetPosition(actorId, args)));
+        db.AddCommand("rotateto", new Func<string[], IEnumerator>(args => RotateTo(actorId, args)));
+        db.AddCommand("scaleto", new Func<string[], IEnumerator>(args => ScaleTo(actorId, args)));
         db.AddCommand("flip", new Action<string[]>(args => Flip(actorId, args)));
     }
 
@@ -97,6 +102,76 @@ public static class WorldObjectCommands
     private static void Flip(string id, string[] args)
     {
         WOM.Flip(id);
+    }
+
+    // SetAnimatorTrigger(param)
+    private static void SetAnimatorTrigger(string id, string[] args)
+    {
+        if (args.Length < 1) return;
+        WOM.SetAnimatorTrigger(id, args[0]);
+    }
+
+    // SetAnimatorFloat(param 1.5)
+    private static void SetAnimatorFloat(string id, string[] args)
+    {
+        if (args.Length < 2) return;
+        if (float.TryParse(args[1],
+            System.Globalization.NumberStyles.Float,
+            System.Globalization.CultureInfo.InvariantCulture,
+            out float value))
+            WOM.SetAnimatorFloat(id, args[0], value);
+    }
+
+    // SetAnimatorInt(param 2)
+    private static void SetAnimatorInt(string id, string[] args)
+    {
+        if (args.Length < 2) return;
+        if (int.TryParse(args[1], out int value))
+            WOM.SetAnimatorInt(id, args[0], value);
+    }
+
+    // RotateTo(0 90 0 -spd 60)
+    private static IEnumerator RotateTo(string id, string[] args)
+    {
+        if (!TryParseXY(args, out Vector3 target)) yield break;
+
+        float speed = 90f;
+        for (int i = 0; i < args.Length - 1; i++)
+        {
+            if (args[i] == "-spd" || args[i] == "-speed")
+            {
+                float.TryParse(args[i + 1],
+                    System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    out speed);
+                break;
+            }
+        }
+
+        Coroutine c = WOM.RotateTo(id, target, speed);
+        if (c != null) yield return c;
+    }
+
+    // ScaleTo(1.5 1.5 1 -spd 2)
+    private static IEnumerator ScaleTo(string id, string[] args)
+    {
+        if (!TryParseXY(args, out Vector3 target)) yield break;
+
+        float speed = 2f;
+        for (int i = 0; i < args.Length - 1; i++)
+        {
+            if (args[i] == "-spd" || args[i] == "-speed")
+            {
+                float.TryParse(args[i + 1],
+                    System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    out speed);
+                break;
+            }
+        }
+
+        Coroutine c = WOM.ScaleTo(id, target, speed);
+        if (c != null) yield return c;
     }
 
     // Парсим x y (z опционально) из начала args

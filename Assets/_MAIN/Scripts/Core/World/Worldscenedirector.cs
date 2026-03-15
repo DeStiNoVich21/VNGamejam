@@ -17,6 +17,10 @@ public class WorldSceneDirector : MonoBehaviour
     [SerializeField] private GameObject vnController;
     [SerializeField] private bool autoHideWhenDone = true;
 
+    [Title("Player")]
+    [Tooltip("Перетащи сюда игрока — Movement выключится при старте, включится после диалога")]
+    [SerializeField] private Movement playerMovement;
+
     [Title("Scene File")]
     [SerializeField] private TextAsset sceneFile;
 
@@ -56,6 +60,10 @@ public class WorldSceneDirector : MonoBehaviour
         if (vnController != null)
             vnController.SetActive(true);
 
+        // Отключаем управление игроком на время диалога
+        if (playerMovement != null)
+            playerMovement.enabled = false;
+
         RegisterActors();
 
         // ConversationManager читает файл — диалог, команды, фон, аудио
@@ -78,6 +86,10 @@ public class WorldSceneDirector : MonoBehaviour
             yield return null;
 
         vnController.SetActive(false);
+
+        // Возвращаем управление игроку
+        if (playerMovement != null)
+            playerMovement.enabled = true;
     }
 
     // --- Actor registration ---
