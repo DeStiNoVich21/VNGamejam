@@ -24,8 +24,6 @@ MonoBehaviour:
     dialogueFontScale: 1
     speakSpeed: 0.6
     characterVoice: {fileID: 8300000, guid: 73de2836dbd1af542bb258149658bf31, type: 3}
-    sprites:
-      _serializedList: []
   - name: Stella
     alias: Stella
     characterType: 1
@@ -37,8 +35,6 @@ MonoBehaviour:
     dialogueFontScale: 1
     speakSpeed: 0.6
     characterVoice: {fileID: 8300000, guid: 9dd8d46e52350004f990efd8acf01a81, type: 3}
-    sprites:
-      _serializedList: []
   - name: Eckless
     alias: Eckless
     characterType: 1
@@ -50,8 +46,6 @@ MonoBehaviour:
     dialogueFontScale: 1
     speakSpeed: 0.6
     characterVoice: {fileID: 8300000, guid: 2d8398253a8420542be9467ef46f427c, type: 3}
-    sprites:
-      _serializedList: []
   - name: Varg
     alias: Varg
     characterType: 1
@@ -63,8 +57,6 @@ MonoBehaviour:
     dialogueFontScale: 1
     speakSpeed: 0.6
     characterVoice: {fileID: 8300000, guid: 83ae74e262df7004082e8f5020aea786, type: 3}
-    sprites:
-      _serializedList: []
   - name: Clementine
     alias: Clementine
     characterType: 1
@@ -76,8 +68,6 @@ MonoBehaviour:
     dialogueFontScale: 1
     speakSpeed: 0.6
     characterVoice: {fileID: 8300000, guid: e844cc77ddf63234fae083a64fc5c05a, type: 3}
-    sprites:
-      _serializedList: []
   - name: Luven
     alias: Luven
     characterType: 1
@@ -89,8 +79,6 @@ MonoBehaviour:
     dialogueFontScale: 1
     speakSpeed: 0.6
     characterVoice: {fileID: 8300000, guid: 7f4fdd333ec669b49a812f3647c9ee30, type: 3}
-    sprites:
-      _serializedList: []
   - name: Captain
     alias: Captain
     characterType: 1
@@ -102,18 +90,69 @@ MonoBehaviour:
     dialogueFontScale: 1
     speakSpeed: 0.6
     characterVoice: {fileID: 8300000, guid: 83ae74e262df7004082e8f5020aea786, type: 3}
-    sprites:
-      _serializedList: []
   - name: Narrator
     alias: N
     characterType: 0
     nameColor: {r: 1, g: 1, b: 1, a: 1}
     dialogueColor: {r: 1, g: 1, b: 1, a: 1}
-    nameFont: {fileID: 0}
-    dialogueFont: {fileID: 0}
+    nameFont: {fileID: 11400000, guid: 72d68798eca17354db4eeb6d95d4a306, type: 2}
+    dialogueFont: {fileID: 11400000, guid: 72d68798eca17354db4eeb6d95d4a306, type: 2}
     nameFontScale: 1
     dialogueFontScale: 1
     speakSpeed: 0.6
     characterVoice: {fileID: 8300000, guid: 83ae74e262df7004082e8f5020aea786, type: 3}
-    sprites:
-      _serializedList: []
+  - name: Genesis
+    alias: Genesis
+    characterType: 0
+    nameColor: {r: 0, g: 0, b: 0, a: 0}
+    dialogueColor: {r: 0, g: 0, b: 0, a: 0}
+    nameFont: {fileID: 11400000, guid: 72d68798eca17354db4eeb6d95d4a306, type: 2}
+    dialogueFont: {fileID: 11400000, guid: 72d68798eca17354db4eeb6d95d4a306, type: 2}
+    nameFontScale: 1
+    dialogueFontScale: 1
+    speakSpeed: 0.6
+    characterVoice: {fileID: 0}
+  - name: Ego
+    alias: Ego
+    characterType: 0
+    nameColor: {r: 0, g: 0, b: 0, a: 0}
+    dialogueColor: {r: 0, g: 0, b: 0, a: 0}
+    nameFont: {fileID: 11400000, guid: 72d68798eca17354db4eeb6d95d4a306, type: 2}
+    dialogueFont: {fileID: 11400000, guid: 72d68798eca17354db4eeb6d95d4a306, type: 2}
+    nameFontScale: 1
+    dialogueFontScale: 1
+    speakSpeed: 0.6
+    characterVoice: {fileID: 0}
+  - name: Fury
+    alias: Fury
+    characterType: 0
+    nameColor: {r: 0, g: 0, b: 0, a: 0}
+    dialogueColor: {r: 0, g: 0, b: 0, a: 0}
+    nameFont: {fileID: 11400000, guid: 72d68798eca17354db4eeb6d95d4a306, type: 2}
+    dialogueFont: {fileID: 11400000, guid: 72d68798eca17354db4eeb6d95d4a306, type: 2}
+    nameFontScale: 1
+    dialogueFontScale: 1
+    speakSpeed: 0.6
+    characterVoice: {fileID: 0}
+  - name: Melancholy
+    alias: Melancholy
+    characterType: 0
+    nameColor: {r: 0, g: 0, b: 0, a: 0}
+    dialogueColor: {r: 0, g: 0, b: 0, a: 0}
+    nameFont: {fileID: 11400000, guid: 72d68798eca17354db4eeb6d95d4a306, type: 2}
+    dialogueFont: {fileID: 11400000, guid: 72d68798eca17354db4eeb6d95d4a306, type: 2}
+    nameFontScale: 1
+    dialogueFontScale: 1
+    speakSpeed: 0.6
+    characterVoice: {fileID: 0}
+  - name: Stigma
+    alias: Stigma
+    characterType: 0
+    nameColor: {r: 0, g: 0, b: 0, a: 0}
+    dialogueColor: {r: 0, g: 0, b: 0, a: 0}
+    nameFont: {fileID: 11400000, guid: 72d68798eca17354db4eeb6d95d4a306, type: 2}
+    dialogueFont: {fileID: 11400000, guid: 72d68798eca17354db4eeb6d95d4a306, type: 2}
+    nameFontScale: 1
+    dialogueFontScale: 1
+    speakSpeed: 0.6
+    characterVoice: {fileID: 0}

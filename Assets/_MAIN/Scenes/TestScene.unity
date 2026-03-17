@@ -661,6 +661,7 @@ GameObject:
   m_Component:
   - component: {fileID: 221498458}
   - component: {fileID: 221498459}
+  - component: {fileID: 221498460}
   m_Layer: 0
   m_Name: WorldObjectManager
   m_TagString: Untagged
@@ -695,6 +696,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1722e662174ac441b478ef8b79a76b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &221498460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 221498457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60e751af6f96bb542b9d42c88977df72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  phantoms:
+  - type: 0
+    characterName: Genesis
+    sync: 0
+    lastThreshold: -1
+  - type: 1
+    characterName: Melancholy
+    sync: 0
+    lastThreshold: -1
+  - type: 2
+    characterName: Fury
+    sync: 0
+    lastThreshold: -1
+  - type: 3
+    characterName: Stigma
+    sync: 0
+    lastThreshold: -1
+  - type: 4
+    characterName: Ego
+    sync: 0
+    lastThreshold: -1
+  debugLog: 1
 --- !u!1 &256193187
 GameObject:
   m_ObjectHideFlags: 0
