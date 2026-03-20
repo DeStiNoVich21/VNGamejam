@@ -16,7 +16,6 @@ namespace COMMANDS
             database.AddCommand("follow", new Action<string[]>(Follow));
             database.AddCommand("unfollow", new Action<string[]>(UnFollow));
             database.AddCommand("zoom", new Action<string[]>(Zoom));
-            database.AddCommand("unzoom", new Action<string[]>(UnZoom));
             database.AddCommand("shake", new Action<string[]>(Shake));
             database.AddCommand("reset", new Action<string[]>(Reset));
             database.AddCommand("offset", new Action<string[]>(Offset));
@@ -49,11 +48,6 @@ namespace COMMANDS
             parameters.TryGetValue(new string[] { "-spd", "-speed" }, out float speed, defaultValue: 1f);
 
             CameraManager.Instance.Zoom(size, speed);
-        }
-
-        private static void UnZoom(string[] data)
-        {
-
         }
 
         private static void Shake(string[] data)
