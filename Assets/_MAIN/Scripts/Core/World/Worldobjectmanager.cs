@@ -1,4 +1,4 @@
-using System.Collections;
+п»їusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,13 +16,13 @@ public class WorldObjectManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    // ??? Регистрация ????????????????????????????????????????????????
+    // ??? Р РµРіРёСЃС‚СЂР°С†РёСЏ ????????????????????????????????????????????????
 
     public void Register(string id, GameObject go)
     {
         if (go == null)
         {
-            Debug.LogWarning($"[WorldObjectManager] Попытка зарегистрировать null под именем '{id}'");
+            Debug.LogWarning($"[WorldObjectManager] РџРѕРїС‹С‚РєР° Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊ null РїРѕРґ РёРјРµРЅРµРј '{id}'");
             return;
         }
 
@@ -42,10 +42,10 @@ public class WorldObjectManager : MonoBehaviour
             Unregister(id);
     }
 
-    private bool TryGet(string id, out GameObject go) =>
+    public bool TryGet(string id, out GameObject go) =>
         registry.TryGetValue(id.ToLower(), out go);
 
-    // ??? Команды ????????????????????????????????????????????????????
+    // ??? РљРѕРјР°РЅРґС‹ ????????????????????????????????????????????????????
 
     public void SetActive(string id, bool active)
     {
@@ -58,7 +58,7 @@ public class WorldObjectManager : MonoBehaviour
         if (!TryGet(id, out var go)) { LogNotFound(id); return; }
 
         Animator anim = go.GetComponentInChildren<Animator>();
-        if (anim == null) { Debug.LogWarning($"[WorldObjectManager] '{id}' не имеет Animator"); return; }
+        if (anim == null) { Debug.LogWarning($"[WorldObjectManager] '{id}' РЅРµ РёРјРµРµС‚ Animator"); return; }
 
         anim.Play(stateName);
     }
@@ -68,7 +68,7 @@ public class WorldObjectManager : MonoBehaviour
         if (!TryGet(id, out var go)) { LogNotFound(id); return; }
 
         Animator anim = go.GetComponentInChildren<Animator>();
-        if (anim == null) { Debug.LogWarning($"[WorldObjectManager] '{id}' не имеет Animator"); return; }
+        if (anim == null) { Debug.LogWarning($"[WorldObjectManager] '{id}' РЅРµ РёРјРµРµС‚ Animator"); return; }
 
         anim.SetBool(param, value);
     }
@@ -90,7 +90,7 @@ public class WorldObjectManager : MonoBehaviour
         return StartCoroutine(MovingTo(go, target, speed));
     }
 
-    // Для объектов с Rigidbody2D — двигаем через velocity
+    // Р”Р»СЏ РѕР±СЉРµРєС‚РѕРІ СЃ Rigidbody2D вЂ” РґРІРёРіР°РµРј С‡РµСЂРµР· velocity
     private IEnumerator MovingToRb(Rigidbody2D rb, GameObject go, Vector3 target, float speed)
     {
         Vector2 target2D = new Vector2(target.x, target.y);
@@ -106,7 +106,7 @@ public class WorldObjectManager : MonoBehaviour
         rb.position = target2D;
     }
 
-    // Для обычных объектов без физики
+    // Р”Р»СЏ РѕР±С‹С‡РЅС‹С… РѕР±СЉРµРєС‚РѕРІ Р±РµР· С„РёР·РёРєРё
     private IEnumerator MovingTo(GameObject go, Vector3 target, float speed)
     {
         while (Vector3.Distance(go.transform.position, target) > 0.01f)
@@ -192,8 +192,8 @@ public class WorldObjectManager : MonoBehaviour
         go.transform.localScale = targetScale;
     }
 
-    // ??? Утилита ????????????????????????????????????????????????????
+    // ??? РЈС‚РёР»РёС‚Р° ????????????????????????????????????????????????????
 
     private void LogNotFound(string id) =>
-        Debug.LogWarning($"[WorldObjectManager] Объект '{id}' не найден в реестре");
+        Debug.LogWarning($"[WorldObjectManager] РћР±СЉРµРєС‚ '{id}' РЅРµ РЅР°Р№РґРµРЅ РІ СЂРµРµСЃС‚СЂРµ");
 }
