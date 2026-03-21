@@ -1,9 +1,11 @@
 using CHARACTERS;
 using COMMANDS;
+using DIALOGUE.LogicalLines;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
-using DIALOGUE.LogicalLines;
+using TMPro;
 
 namespace DIALOGUE
 {
@@ -17,6 +19,8 @@ namespace DIALOGUE
         public TextArchitect architect = null;
         private bool userPromt = false;
 
+        private TextMeshProUGUI nameText;
+
         private LogicalLineManager logicalLineManager;
 
         public Conversation conversation => (conversationQueue.IsEmpty() ? null : conversationQueue.top);
@@ -24,50 +28,115 @@ namespace DIALOGUE
 
         private ConversationQueue conversationQueue;
 
-        public ConversationManager(TextArchitect architect)
+        public struct DialogueSegment
+        {
+            public string text;
+            public float pause;
+            public float speed;
+        }
+
+        public ConversationManager(TextArchitect architect, TextMeshProUGUI nameText)
         {
             this.architect = architect;
+            this.nameText = nameText;
+
             dialogueSystem.onUserPromt_Next += OnUserPromt_Next;
             logicalLineManager = new LogicalLineManager();
-
             conversationQueue = new ConversationQueue();
+        }
+
+        private List<DialogueSegment> DeconstructDialogue(string dialogue)
+        {
+            List<DialogueSegment> segments = new List<DialogueSegment>();
+
+            string pattern = @"\{\s*(pause|spd)\s*=\s*([^}]+)\s*\}|\{\s*/(spd)\s*\}";
+            var matches = Regex.Matches(dialogue, pattern);
+
+            int lastIndex = 0;
+            float currentSpeed = 1f;
+            const float defaultSpeed = 1f;
+
+            foreach (Match match in matches)
+            {
+                string subText = dialogue.Substring(lastIndex, match.Index - lastIndex);
+                if (!string.IsNullOrEmpty(subText))
+                {
+                    segments.Add(new DialogueSegment { text = subText, speed = currentSpeed });
+                }
+
+                if (match.Groups[3].Success)
+                {
+                    currentSpeed = defaultSpeed;
+                }
+                else 
+                {
+                    string tagType = match.Groups[1].Value;
+                    float val = float.Parse(match.Groups[2].Value, System.Globalization.CultureInfo.InvariantCulture);
+
+                    if (tagType == "pause")
+                    {
+                        segments.Add(new DialogueSegment { pause = val });
+                    }
+                    else if (tagType == "spd")
+                    {
+                        currentSpeed = val;
+                    }
+                }
+
+                lastIndex = match.Index + match.Length;
+            }
+
+            string remaining = dialogue.Substring(lastIndex);
+            if (!string.IsNullOrEmpty(remaining))
+            {
+                segments.Add(new DialogueSegment { text = remaining, speed = currentSpeed });
+            }
+
+            return segments;
+        }
+
+        public void SetCharacterName(string rawName)
+        {
+            if (nameText == null) return;
+
+            string cleanName = TextEffectParser.ParseCustomTags(rawName, out var nameEffects);
+
+            nameText.text = cleanName;
+
+            var animator = nameText.GetComponent<TextVertexAnimator>();
+            if (animator != null)
+            {
+                animator.SetEffects(nameEffects);
+            }
         }
 
         public void Enqueue(Conversation conversation) => conversationQueue.Enqueue(conversation);
         public void EnqueuePriority(Conversation conversation) => conversationQueue.EnqueuePriotity(conversation);
-        
 
         private void OnUserPromt_Next()
         {
             userPromt = true;
         }
 
-       public Coroutine StartConversation(Conversation conversation)
-       {
+        public Coroutine StartConversation(Conversation conversation)
+        {
             StopConversation();
             conversationQueue.Clear();
-
             Enqueue(conversation);
-
             process = dialogueSystem.StartCoroutine(RunningConversation());
-
             return process;
-       }
+        }
 
         public void StopConversation()
         {
-            if (!isRunning)
-            {
-                return;
-            }
-
+            if (!isRunning) return;
             dialogueSystem.StopCoroutine(process);
             process = null;
         }
 
         IEnumerator RunningConversation()
         {
-            while(!conversationQueue.IsEmpty())
+            while (!conversationQueue.IsEmpty())
             {
                 Conversation currentConversation = conversation;
 
@@ -97,9 +166,7 @@ namespace DIALOGUE
                         yield return Line_RunDialogue(line);
 
                     if (line.hasCommands)
-                    {
                         yield return Line_RunCommands(line);
-                    }
 
                     yield return PauseConversation();
 
@@ -111,9 +178,9 @@ namespace DIALOGUE
                 }
                 TryAdvanceConversation(currentConversation);
             }
-
             process = null;
         }
+
         public bool isPausedConversation;
 
         public IEnumerator PauseConversation()
@@ -127,36 +194,32 @@ namespace DIALOGUE
         private void TryAdvanceConversation(Conversation conversation)
         {
             conversation.IncrementProgress();
-
-            if (conversation != conversationQueue.top)
-                return;
-
-            if (conversation.HasReachedEnd())
-                conversationQueue.Dequeue();
+            if (conversation != conversationQueue.top) return;
+            if (conversation.HasReachedEnd()) conversationQueue.Dequeue();
         }
 
         IEnumerator Line_RunDialogue(DIALOGUE_LINE line)
         {
             if (line.hasSpeaker)
                 HandleSpeakerLogic(line.speakerData);
+            else
+                SetCharacterName(""); 
 
             if (!dialogueSystem.dialogueContainer.isVisible)
                 dialogueSystem.dialogueContainer.Show();
 
             yield return BuildLineSegments(line.dialogueData);
-
         }
 
         private void HandleSpeakerLogic(DL_SPEAKER_DATA speakerData)
         {
             bool characterMustBeCreated = (speakerData.makeCharacterEnter || speakerData.isCastingPosition || speakerData.isCastingExpressions);
-
             Character character = CharacterManager.instance.GetCharacter(speakerData.name, createIfDoesNotExist: characterMustBeCreated);
 
             if (speakerData.makeCharacterEnter && (!character.isVisible && !character.isRevealing))
                 character.Show();
 
-            dialogueSystem.ShowSpeakerName(TagManager.Inject(speakerData.displayname));
+            SetCharacterName(TagManager.Inject(speakerData.displayname));
 
             DialogueSystem.instance.ApplySpeakerDataToDialogueContainer(speakerData.name);
 
@@ -169,10 +232,10 @@ namespace DIALOGUE
                     character.OnReceiveCastingExpression(ce.layer, ce.expression);
             }
         }
+
         IEnumerator Line_RunCommands(DIALOGUE_LINE line)
         {
             List<DL_COMMAND_DATA.Command> commands = line.commandsData.commands;
-
             foreach (DL_COMMAND_DATA.Command command in commands)
             {
                 if (command.waitForCompletion || command.name == "wait")
@@ -189,7 +252,7 @@ namespace DIALOGUE
                     }
                 }
                 else
-                    CommandManager.instance.Execute(command.name, command.arguments);//a
+                    CommandManager.instance.Execute(command.name, command.arguments);
             }
             yield return null;
         }
@@ -199,9 +262,7 @@ namespace DIALOGUE
             for (int i = 0; i < line.segments.Count; i++)
             {
                 DL_DIALOGUE_DATA.DIALOGUE_SEGMENT segment = line.segments[i];
-
                 yield return WaitForDialogueSegmentSignalToBeTriggered(segment);
-
                 yield return BuildDialogue(segment.dialogue, segment.appendText);
             }
         }
@@ -222,49 +283,67 @@ namespace DIALOGUE
                     yield return new WaitForSeconds(segment.signalDelay);
                     isWaitingOnAutoTimer = false;
                     break;
-                default:
-                    break;
             }
         }
 
-        IEnumerator BuildDialogue(string dialogue,bool append = false)
+        IEnumerator BuildDialogue(string dialogue, bool append = false)
         {
             dialogue = TagManager.Inject(dialogue);
 
+            List<DialogueSegment> segments = DeconstructDialogue(dialogue);
+
+            var animator = architect.tmpro.GetComponent<TextVertexAnimator>();
+
             if (!append)
-                architect.Build(dialogue);
-            else
-                architect.Append(dialogue);
-
-
-            while (architect.isBuilding)
             {
-                if (userPromt)
-                {
-                    if (!architect.hurryUp)
-                    {
-                        architect.hurryUp = true;
-                    }
-                    else
-                    {
-                        architect.ForceComplete();
-                    }
-
-                    userPromt = false;
-                }
-                yield return null;
+                architect.Build("");
+                yield return new WaitForEndOfFrame();
             }
+
+            float originalSpeed = architect.speedMultiplier;
+
+            foreach (var segment in segments)
+            {
+                if (segment.pause > 0)
+                {
+                    float timer = segment.pause;
+                    while (timer > 0)
+                    {
+                        if (userPromt) { userPromt = false; break; }
+                        timer -= Time.deltaTime;
+                        yield return null;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(segment.text))
+                {
+                    string textWithEffects = TextEffectParser.ParseCustomTags(segment.text, out var effects);
+                    if (animator != null) animator.SetEffects(effects);
+
+                    architect.speedMultiplier = originalSpeed * segment.speed;
+                    yield return architect.Append(textWithEffects);
+
+                    while (architect.isBuilding)
+                    {
+                        if (userPromt)
+                        {
+                            if (!architect.hurryUp) architect.hurryUp = true;
+                            else architect.ForceComplete();
+                            userPromt = false;
+                        }
+                        yield return null;
+                    }
+                }
+            }
+
+            architect.speedMultiplier = originalSpeed;
         }
 
         IEnumerator WaitForUserInput()
         {
             dialogueSystem.prompt.Show();
-
-            while (!userPromt)        
-                yield return null;
-
+            while (!userPromt) yield return null;
             dialogueSystem.prompt.Hide();
-
             userPromt = false;
         }
     }

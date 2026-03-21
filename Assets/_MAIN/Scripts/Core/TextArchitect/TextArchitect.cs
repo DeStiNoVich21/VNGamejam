@@ -270,6 +270,4 @@ public class TextArchitect
             yield return new WaitForEndOfFrame();
         }
     }
-
-
 }
