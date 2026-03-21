@@ -48,30 +48,49 @@ namespace DIALOGUE
         private List<DialogueSegment> DeconstructDialogue(string dialogue)
         {
             List<DialogueSegment> segments = new List<DialogueSegment>();
-            string pattern = @"\{(pause|spd)=([^}]+)\}";
+
+            string pattern = @"\{\s*(pause|spd)\s*=\s*([^}]+)\s*\}|\{\s*/(spd)\s*\}";
             var matches = Regex.Matches(dialogue, pattern);
 
             int lastIndex = 0;
             float currentSpeed = 1f;
+            const float defaultSpeed = 1f;
 
             foreach (Match match in matches)
             {
                 string subText = dialogue.Substring(lastIndex, match.Index - lastIndex);
                 if (!string.IsNullOrEmpty(subText))
+                {
                     segments.Add(new DialogueSegment { text = subText, speed = currentSpeed });
+                }
 
-                float val = float.Parse(match.Groups[2].Value, System.Globalization.CultureInfo.InvariantCulture);
-                if (match.Groups[1].Value == "pause")
-                    segments.Add(new DialogueSegment { pause = val });
-                else
-                    currentSpeed = val;
+                if (match.Groups[3].Success)
+                {
+                    currentSpeed = defaultSpeed;
+                }
+                else 
+                {
+                    string tagType = match.Groups[1].Value;
+                    float val = float.Parse(match.Groups[2].Value, System.Globalization.CultureInfo.InvariantCulture);
+
+                    if (tagType == "pause")
+                    {
+                        segments.Add(new DialogueSegment { pause = val });
+                    }
+                    else if (tagType == "spd")
+                    {
+                        currentSpeed = val;
+                    }
+                }
 
                 lastIndex = match.Index + match.Length;
             }
 
             string remaining = dialogue.Substring(lastIndex);
             if (!string.IsNullOrEmpty(remaining))
+            {
                 segments.Add(new DialogueSegment { text = remaining, speed = currentSpeed });
+            }
 
             return segments;
         }
@@ -184,7 +203,7 @@ namespace DIALOGUE
             if (line.hasSpeaker)
                 HandleSpeakerLogic(line.speakerData);
             else
-                SetCharacterName(""); // Очищаем имя, если спикера нет
+                SetCharacterName(""); 
 
             if (!dialogueSystem.dialogueContainer.isVisible)
                 dialogueSystem.dialogueContainer.Show();
@@ -200,7 +219,6 @@ namespace DIALOGUE
             if (speakerData.makeCharacterEnter && (!character.isVisible && !character.isRevealing))
                 character.Show();
 
-            // ИСПОЛЬЗУЕМ НАШ НОВЫЙ МЕТОД (теперь имя будет цветным)
             SetCharacterName(TagManager.Inject(speakerData.displayname));
 
             DialogueSystem.instance.ApplySpeakerDataToDialogueContainer(speakerData.name);
@@ -272,16 +290,15 @@ namespace DIALOGUE
         {
             dialogue = TagManager.Inject(dialogue);
 
-            // Обработка эффектов для текста диалога
-            string cleanForVertex = TextEffectParser.ParseCustomTags(dialogue, out var effects);
+            List<DialogueSegment> segments = DeconstructDialogue(dialogue);
 
             var animator = architect.tmpro.GetComponent<TextVertexAnimator>();
-            if (animator != null) animator.SetEffects(effects);
 
-            List<DialogueSegment> segments = DeconstructDialogue(cleanForVertex);
-
-            if (!append && architect.tmpro.text != "")
+            if (!append)
+            {
                 architect.Build("");
+                yield return new WaitForEndOfFrame();
+            }
 
             float originalSpeed = architect.speedMultiplier;
 
@@ -300,8 +317,11 @@ namespace DIALOGUE
 
                 if (!string.IsNullOrEmpty(segment.text))
                 {
+                    string textWithEffects = TextEffectParser.ParseCustomTags(segment.text, out var effects);
+                    if (animator != null) animator.SetEffects(effects);
+
                     architect.speedMultiplier = originalSpeed * segment.speed;
-                    architect.Append(segment.text);
+                    yield return architect.Append(textWithEffects);
 
                     while (architect.isBuilding)
                     {
@@ -315,6 +335,7 @@ namespace DIALOGUE
                     }
                 }
             }
+
             architect.speedMultiplier = originalSpeed;
         }
 
