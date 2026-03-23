@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 286a33f875e44324db80e6d0a2add6cd, type: 3}
+  m_Name: Sticker1 6
+  m_EditorClassIdentifier: 
+  stickerId: Family_Photo
+  title: Family_Photo
+  tag: 4
+  bodyText: 
+  icon: {fileID: 1080889024, guid: 6c007007286b401479daf6bba1200421, type: 3}
+  isPhantomFact: 0
+  phantomSource: 0
+  requiredSync: 25
+  phantomComments: []
