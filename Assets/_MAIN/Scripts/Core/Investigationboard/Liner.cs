@@ -46,8 +46,7 @@ public class UIMultilineConnector : MonoBehaviour
 
         GameObject obj = new GameObject("Connection", typeof(Image));
         obj.transform.SetParent(this.transform, false);
-        obj.transform.SetAsFirstSibling();
-
+        obj.transform.SetAsLastSibling();
         RectTransform rt = obj.GetComponent<RectTransform>();
         rt.pivot = new Vector2(0f, 0.5f);
         rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f);

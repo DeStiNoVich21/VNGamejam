@@ -33,9 +33,9 @@ public class SlotAnchorUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, I
     public Dictionary<string, GameObject> displayedStickers = new();
 
     // ÷вета слотов
-    private static readonly Color COLOR_EMPTY = new Color(0.15f, 0.15f, 0.15f, 0.7f);
-    private static readonly Color COLOR_FILLED = new Color(0.2f, 0.35f, 0.2f, 0.8f);
-    private static readonly Color COLOR_WHY = new Color(0.35f, 0.15f, 0.15f, 0.8f);
+    public Color COLOR_EMPTY = new Color(0.15f, 0.15f, 0.15f, 0.7f);
+    public Color COLOR_FILLED = new Color(0.2f, 0.35f, 0.2f, 0.8f);
+    public Color COLOR_WHY = new Color(0.35f, 0.15f, 0.15f, 0.8f);
 
     [Header("Ёффекты")]
     [SerializeField] private float hoverScaleMultiplier = 1.1f; // Ќа сколько увеличитс€ слот

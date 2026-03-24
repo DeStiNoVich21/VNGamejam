@@ -245,7 +245,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2.3852, y: -33}
+  m_AnchoredPosition: {x: -3.1, y: -5.6}
   m_SizeDelta: {x: 21.3715, y: 22.0461}
   m_Pivot: {x: 0.38839474, y: 0.00000010430813}
 --- !u!222 &6557678362120160668
@@ -346,7 +346,7 @@ MonoBehaviour:
   stickersContainer: {fileID: 0}
   stickerDisplayPrefab: {fileID: 0}
   lineConnector: {fileID: 7874379579615564897}
-  dropRadius: 200
+  dropRadius: 400
   showDropZoneDebug: 1
   dropZoneColor: {r: 0.3, g: 0.8, b: 0.3, a: 0.2}
   config:
@@ -355,6 +355,9 @@ MonoBehaviour:
     maxStickers: 3
     acceptsFacts: 0
     boardPosition: {x: 0, y: 0}
+  COLOR_EMPTY: {r: 0.49019608, g: 0.4705896, b: 0, a: 1}
+  COLOR_FILLED: {r: 0.99765027, g: 1, b: 0, a: 1}
+  COLOR_WHY: {r: 1, g: 0, b: 0, a: 1}
   hoverScaleMultiplier: 1.1
 --- !u!114 &7874379579615564897
 MonoBehaviour:
