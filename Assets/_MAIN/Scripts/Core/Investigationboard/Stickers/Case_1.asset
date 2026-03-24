@@ -85,6 +85,6 @@ MonoBehaviour:
     requiredStickerIds:
     - Dogtag
     - EvictionNotice
-    - EvictionNotice
+    - Drug
     syncBonuses: []
     setsFlag: 

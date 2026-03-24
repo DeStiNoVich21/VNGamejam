@@ -356,6 +356,17 @@ public class InvestigationBoardManager : MonoBehaviour
         Debug.Log($"[Board] Верёвок: {ropes.Count}");
         Debug.Log($"[Board] Синтез готов: {IsSynthesisReady()}");
     }
+
+    // Добавь этот метод в InvestigationBoardManager:
+    public StickerTag? GetStickerSlot(string stickerId)
+    {
+        foreach (StickerTag tag in System.Enum.GetValues(typeof(StickerTag)))
+        {
+            if (GetSlotContents(tag).Contains(stickerId))
+                return tag;
+        }
+        return null;
+    }
 }
 
 // ??? Вспомогательные типы ????????????????????????????????????????????

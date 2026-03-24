@@ -6,14 +6,15 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
-/// Один стикер на доске.
-/// ЛКМ = детали. ПКМ = начать верёвку. Drag = перетащить.
-/// Визуально: пожелтевшая бумажка с рукописным текстом.
-/// Факты фантомов — цвет по фантому.
+/// Стикер на доске И в инвентаре.
+/// ЛКМ = детали. ПКМ = убрать со слота и в инвентарь или верёвка.
+/// Drag ЛКМ = перемещение по доске. 
+/// Drag ПКМ = верёвка между стикерами.
 /// </summary>
 public class StickerUI : MonoBehaviour,
     IPointerClickHandler, IBeginDragHandler,
-    IDragHandler, IEndDragHandler, IPointerUpHandler
+    IDragHandler, IEndDragHandler, IPointerUpHandler,
+    IPointerEnterHandler, IPointerExitHandler
 {
     [Header("UI")]
     [SerializeField] private Image background;
@@ -21,11 +22,17 @@ public class StickerUI : MonoBehaviour,
     [SerializeField] private TextMeshProUGUI bodyText;
     [SerializeField] private Image tagBadge;
     [SerializeField] private TextMeshProUGUI tagText;
-    [SerializeField] private Image phantomStripe; // цветная полоска для фактов
+    [SerializeField] private Image phantomStripe;
+    [SerializeField] private Image icon;
+    [SerializeField] private Image tagColor;
+    [SerializeField] private GameObject hoverHighlight;
+
+    [Header("Настройки")]
+    [SerializeField] private float slotDetachDistance = 150f;
 
     // Цвета стикеров
-    private static readonly Color COLOR_NORMAL = new Color(0.98f, 0.95f, 0.78f); // пожелтевшая бумага
-    private static readonly Color COLOR_FACT = new Color(0.85f, 0.85f, 0.85f); // чуть серее
+    private static readonly Color COLOR_NORMAL = new Color(0.98f, 0.95f, 0.78f);
+    private static readonly Color COLOR_FACT = new Color(0.85f, 0.85f, 0.85f);
     private static readonly Dictionary<PhantomManager.PhantomType, Color> PHANTOM_COLORS = new()
     {
         { PhantomManager.PhantomType.Genesis,    new Color(0.4f,  0.65f, 1.0f)  },
@@ -35,93 +42,214 @@ public class StickerUI : MonoBehaviour,
         { PhantomManager.PhantomType.Ego,        new Color(0.9f,  0.9f,  0.9f)  },
     };
 
+    // Цвета тегов
+    private static readonly Dictionary<StickerTag, Color> TAG_COLORS = new()
+    {
+        { StickerTag.Who,   new Color(0.9f, 0.5f, 0.3f) },
+        { StickerTag.What,  new Color(0.3f, 0.6f, 0.9f) },
+        { StickerTag.Where, new Color(0.4f, 0.8f, 0.4f) },
+        { StickerTag.When,  new Color(0.8f, 0.8f, 0.3f) },
+        { StickerTag.Why,   new Color(0.9f, 0.3f, 0.3f) },
+        { StickerTag.How,   new Color(0.7f, 0.4f, 0.9f) },
+        { StickerTag.Fact,  new Color(0.6f, 0.9f, 0.9f) },
+    };
+
     private string stickerId;
+    private StickerData data;
     private InvestigationBoardUI boardUI;
     private RectTransform rt;
     private Canvas rootCanvas;
     private bool isDragging = false;
+    private Vector2 dragStartPos;
+
+    private CanvasGroup canvasGroup;
 
     private void Awake()
     {
         rt = GetComponent<RectTransform>();
         rootCanvas = GetComponentInParent<Canvas>();
+        canvasGroup = GetComponent<CanvasGroup>(); // Добавьте это
+        if (canvasGroup == null) canvasGroup = gameObject.AddComponent<CanvasGroup>();
+        if (hoverHighlight) hoverHighlight.SetActive(false);
     }
 
-    public void Initialize(StickerData data, InvestigationBoardUI ui)
+    public void Initialize(StickerData d, InvestigationBoardUI ui = null)
     {
-        stickerId = data.stickerId;
+        data = d;
+        stickerId = d.stickerId;
         boardUI = ui;
 
-        if (titleText) titleText.text = data.title;
-        if (bodyText) bodyText.text = data.bodyText;
-        if (tagText) tagText.text = data.tag.ToString().ToUpper();
+        if (titleText) titleText.text = d.title;
+        if (bodyText) bodyText.text = d.bodyText;
+        if (tagText) tagText.text = d.tag.ToString().ToUpper();
 
-        // Цвет фона
+        if (icon && d.icon)
+            icon.sprite = d.icon;
+
         if (background)
-            background.color = data.isPhantomFact ? COLOR_FACT : COLOR_NORMAL;
+            background.color = d.isPhantomFact ? COLOR_FACT : COLOR_NORMAL;
 
-        // Полоска цвета фантома
+        if (tagColor && TAG_COLORS.TryGetValue(d.tag, out Color tagCol))
+            tagColor.color = tagCol;
+
         if (phantomStripe)
         {
-            phantomStripe.gameObject.SetActive(data.isPhantomFact);
-            if (data.isPhantomFact &&
-                PHANTOM_COLORS.TryGetValue(data.phantomSource, out Color c))
+            phantomStripe.gameObject.SetActive(d.isPhantomFact);
+            if (d.isPhantomFact &&
+                PHANTOM_COLORS.TryGetValue(d.phantomSource, out Color c))
                 phantomStripe.color = c;
         }
     }
 
-    // ??? Клик ????????????????????????????????????????????????????????
+    // ??? Hover ??????????????????????????????????????????????????????????
+
+    public void OnPointerEnter(PointerEventData e)
+    {
+        if (hoverHighlight) hoverHighlight.SetActive(true);
+    }
+
+    public void OnPointerExit(PointerEventData e)
+    {
+        if (hoverHighlight) hoverHighlight.SetActive(false);
+    }
+
+    // ??? Клик ??????????????????????????????????????????????????????????
 
     public void OnPointerClick(PointerEventData e)
     {
         if (isDragging) return;
-        if (e.button == PointerEventData.InputButton.Left)
+        
+        // ЛКМ — показать детали
+        if (e.button == PointerEventData.InputButton.Left && boardUI != null)
             boardUI.ShowDetail(stickerId);
+        
+        // ПКМ — убрать с доски и полностью удалить из системы
+        if (e.button == PointerEventData.InputButton.Right)
+        {
+            var mgr = InvestigationBoardManager.instance;
+            if (mgr == null) return;
+
+            // Вариант 1: Если просто вернуть в инвентарь (стикер остаётся в системе)
+            var currentSlot = mgr.GetStickerSlot(stickerId);
+            if (currentSlot.HasValue)
+            {// Перед тем как удалиться, стикер чистит линию в слоте
+                if (boardUI.TryGetSlotAnchor(currentSlot.Value.ToString(), out var targetAnchor))
+                {
+                    if (targetAnchor.lineConnector != null)
+                        targetAnchor.lineConnector.RemoveTarget(this.rt);
+                }
+                mgr.UnplaceFromSlots(stickerId);
+                Debug.Log($"[Board] Стикер '{stickerId}' удалён из слота {currentSlot.Value}");
+            }
+            else
+            {
+                // Если стикер просто на доске без слота — удаляем его из инвентаря тоже
+                mgr.RemoveSticker(stickerId);
+                Debug.Log($"[Board] Стикер '{stickerId}' полностью удалён из инвентаря");
+            }
+
+            // Удаляем визуал со слоя стикеров
+            if (boardUI != null)
+                boardUI.RemoveStickerFromBoard(stickerId);
+
+            Debug.Log($"[Board] Стикер '{stickerId}' возвращён в инвентарь и удалён с доски");
+        }
     }
 
-    // ??? Перетаскивание стикера ??????????????????????????????????????
+    // ??? Перетаскивание ??????????????????????????????????????????????
 
     public void OnBeginDrag(PointerEventData e)
     {
+        // ПКМ + драг = верёвка
         if (e.button == PointerEventData.InputButton.Right)
         {
-            boardUI.BeginRopeDrag(stickerId);
+            if (boardUI != null)
+                boardUI.BeginRopeDrag(stickerId);
             return;
         }
+
+        // ЛКМ + драг = движение по доске
+        if (e.button != PointerEventData.InputButton.Left) return;
+
         isDragging = true;
+        canvasGroup.blocksRaycasts = false; // СТИКЕР ТЕПЕРЬ "ПРОЗРАЧЕН" ДЛЯ ЛУЧЕЙ
+        dragStartPos = rt.anchoredPosition;
         transform.SetAsLastSibling();
     }
 
     public void OnDrag(PointerEventData e)
     {
-        if (boardUI.IsDraggingRope)
-        {
-            // Передаём позицию курсора в UI
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                boardUI.BoardCanvas, e.position, null, out Vector2 lp);
-            // BoardRopeUI обновляется в Update сам
-            return;
-        }
-
+        if (boardUI != null && boardUI.IsDraggingRope) return;
         if (!isDragging) return;
+
+        // 1. Перемещение
         rt.anchoredPosition += e.delta / rootCanvas.scaleFactor;
         InvestigationBoardManager.instance.SetPosition(stickerId, rt.anchoredPosition);
+
+        // 2. Логика открепления
+        var mgr = InvestigationBoardManager.instance;
+        var currentSlot = mgr.GetStickerSlot(stickerId);
+
+        // Если стикер СЕЙЧАС привязан к слоту (currentSlot не null)
+        if (currentSlot.HasValue)
+        {
+            string slotKey = currentSlot.Value.ToString();
+
+            if (boardUI.TryGetSlotAnchor(slotKey, out var targetAnchor))
+            {
+                float distance = Vector2.Distance(rt.anchoredPosition, targetAnchor.GetComponent<RectTransform>().anchoredPosition);
+
+                // Если отошли слишком далеко
+                if (distance > slotDetachDistance)
+                {
+                    // УДАЛЯЕМ линию из коннектора
+                    if (targetAnchor.lineConnector != null)
+                    {
+                        targetAnchor.lineConnector.RemoveTarget(this.rt);
+                    }
+
+                    // УДАЛЯЕМ логическую привязку в менеджере
+                    mgr.UnplaceFromSlots(stickerId);
+
+                    Debug.Log($"[Board] Стикер '{stickerId}' оторван от слота {slotKey} (дистанция {distance})");
+                }
+            }
+        }
     }
 
     public void OnEndDrag(PointerEventData e)
     {
-        if (boardUI.IsDraggingRope) { boardUI.EndRopeDrag(null); return; }
-        isDragging = false;
-    }
+        if (isDragging)
+        {
+            canvasGroup.blocksRaycasts = true;
+            var raycastResult = e.pointerCurrentRaycast.gameObject;
+            var foundSlot = raycastResult != null ? raycastResult.GetComponentInParent<SlotAnchorUI>() : null;
 
+            // Проверяем радиус через метод слота
+            if (foundSlot != null && foundSlot.IsPositionInDropZone(e.position))
+            {
+                // Логика привязки в менеджере
+                boardUI.TryDropStickerInSlot(stickerId, data.tag);
+
+                // ВИЗУАЛ: StickerUI сам добавляет себя в коннектор слота
+                if (foundSlot.lineConnector != null)
+                {
+                    foundSlot.lineConnector.AddTarget(this.rt);
+                    Debug.Log($"[Sticker] Я сам добавился в линию слота {foundSlot.config.tag}");
+                }
+            }
+
+            isDragging = false;
+        }
+    }
     public void OnPointerUp(PointerEventData e)
     {
         // Если тянули верёвку и отпустили над этим стикером
-        if (boardUI.IsDraggingRope && boardUI.RopeSourceId != stickerId)
+        if (boardUI != null && boardUI.IsDraggingRope && boardUI.RopeSourceId != stickerId)
             boardUI.EndRopeDrag(stickerId);
     }
 
-    // ??? Эффект отказа (нельзя положить в слот) ??????????????????????
+    // ??? Эффект отказа ??????????????????????????????????????????????
 
     public void PlayRejectEffect() => StartCoroutine(RejectShake());
 

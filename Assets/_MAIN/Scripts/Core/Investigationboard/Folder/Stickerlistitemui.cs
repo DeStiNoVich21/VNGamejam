@@ -111,29 +111,26 @@ public class StickerListItemUI : MonoBehaviour,
     {
         if (dragGhost != null) { Destroy(dragGhost); dragGhost = null; }
 
-        // Проверяем куда отпустили
-        // Если над SlotAnchorUI — TryPlaceInSlot
-        // Если над BoardCanvas — просто добавляем на доску в эту позицию
         var raycast = e.pointerCurrentRaycast.gameObject;
         if (raycast == null) return;
+
+        var boardUI = InvestigationBoardUI.instance;
+        if (boardUI == null) return;
 
         // Попали в слот
         var slot = raycast.GetComponentInParent<SlotAnchorUI>();
         if (slot != null)
         {
-            InvestigationBoardUI.instance?.TryDropStickerInSlot(stickerId, data.tag);
+            boardUI.TryDropStickerInSlot(stickerId, data.tag);
             return;
         }
 
-        // Попали на доску — добавляем в позицию курсора
-        var boardUI = InvestigationBoardUI.instance;
-        if (boardUI == null) return;
-
+        // Попали на доску — спавним оригинальный стикер, не жёлтую панель
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             boardUI.BoardCanvas, e.position, e.pressEventCamera, out Vector2 localPos);
 
         InvestigationBoardManager.instance.SetPosition(stickerId, localPos);
-        // Стикер уже в инвентаре менеджера — UI подхватит через событие
+        boardUI.SpawnStickerOnBoard(data); // Спавним оригинал, не ghost
     }
 
     private void UpdateGhostPos(Vector2 screenPos)

@@ -17,11 +17,17 @@ public class InvestigationTestHelper : MonoBehaviour
             return;
         }
 
-        // Мы не можем напрямую залезть в приватный список allStickers, 
-        // но мы можем схитрить и попросить менеджер добавить их по ID.
-        // Для этого нам нужно знать, какие ID там лежат.
+        var ui = InvestigationBoardUI.instance;
+        if (ui == null)
+        {
+            Debug.LogError("InvestigationBoardUI не найдена на сцене!");
+            return;
+        }
 
-        // В твоем случае проще всего добавить конкретные ID вручную для теста:
+        // Закрываем и снова открываем доску, чтобы избежать дубликатов
+        if (ui.isOpen) ui.Close();
+        
+        // Добавляем улики
         mgr.AddSticker("Kyle");
         mgr.AddSticker("Homicide");
         mgr.AddSticker("404 apartment");
@@ -38,6 +44,9 @@ public class InvestigationTestHelper : MonoBehaviour
 
 
         // ... и так далее по списку из твоего скриншота
+
+        // Открываем заново (UI пересоздаст все визуалы корректно)
+        ui.Open();
 
         Debug.Log("Тестовые улики добавлены. Проверь панель инвентаря!");
     }

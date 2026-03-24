@@ -47,8 +47,8 @@ public class StickerInventoryUI : MonoBehaviour
         if (mgr == null) return;
         mgr.onStickerAdded += _ => Refresh();
         mgr.onStickerRemoved += _ => Refresh();
-        mgr.onStickerPlaced += (_, __) => Refresh();
-        mgr.onStickerUnplaced += (_, __) => Refresh();
+        mgr.onStickerPlaced += (_, __) => Refresh();  // Когда размещен - убираем из списка
+        mgr.onStickerUnplaced += (_, __) => Refresh(); // Когда снят - добавляем обратно в список
     }
 
     private void OnDisable()
@@ -113,14 +113,13 @@ public class StickerInventoryUI : MonoBehaviour
 
     public void Refresh()
     {
-        // Очищаем
         foreach (var item in spawnedItems) Destroy(item.gameObject);
         spawnedItems.Clear();
 
         var mgr = InvestigationBoardManager.instance;
         if (mgr == null) return;
 
-        // Инвентарь = стикеры добавленные но не в слоте
+        // ТОЛЬКО инвентарь, НЕ слоты!
         List<string> ids = mgr.GetInventory();
 
         foreach (var id in ids)
@@ -128,7 +127,6 @@ public class StickerInventoryUI : MonoBehaviour
             StickerData data = mgr.GetStickerById(id);
             if (data == null) continue;
 
-            // Применяем фильтр
             if (activeFilter.HasValue && data.tag != activeFilter.Value) continue;
 
             StickerListItemUI item = Instantiate(itemPrefab, contentRoot);
