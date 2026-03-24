@@ -15,11 +15,10 @@ public class PhantomCommentEntryUI : MonoBehaviour
     private static readonly System.Collections.Generic.Dictionary
         <PhantomManager.PhantomType, Color> PHANTOM_COLORS = new()
     {
-        { PhantomManager.PhantomType.Genesis,    new Color(0.4f, 0.7f, 1.0f) },
-        { PhantomManager.PhantomType.Melancholy, new Color(0.7f, 0.4f, 0.9f) },
-        { PhantomManager.PhantomType.Fury,       new Color(1.0f, 0.3f, 0.3f) },
-        { PhantomManager.PhantomType.Stigma,     new Color(0.3f, 0.9f, 0.5f) },
-        { PhantomManager.PhantomType.Ego,        new Color(0.9f, 0.9f, 0.9f) },
+        { PhantomManager.PhantomType.Dominion,    new Color(0.4f, 0.7f, 1.0f) },
+        { PhantomManager.PhantomType.Zenith, new Color(0.7f, 0.4f, 0.9f) },
+        { PhantomManager.PhantomType.Stigma,     new Color(0.3f, 0.9f, 0.5f) }
+   
     };
 
     public void Initialize(PhantomComment comment)

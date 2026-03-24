@@ -15,7 +15,8 @@ MonoBehaviour:
   stickerId: 404 apartment
   title: 404 apartment
   tag: 2
-  bodyText: 
+  bodyText: "\u041F\u043E\u043C\u0435\u0449\u0435\u043D\u0438\u0435 \u0432 \u0436\u0438\u043B\u043E\u043C
+    \u0431\u043B\u043E\u043A\u0435"
   icon: {fileID: -5224450111193561246, guid: f1db7ff53a2ba684dbd8e2969153c4a2, type: 3}
   isPhantomFact: 0
   phantomSource: 0

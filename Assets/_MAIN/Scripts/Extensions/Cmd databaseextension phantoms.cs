@@ -101,14 +101,12 @@ public class CMD_DatabaseExtension_Phantoms : CMD_DatabaseExtension
     {
         switch (name.ToLower().Trim())
         {
-            case "genesis": type = PhantomManager.PhantomType.Genesis; return true;
-            case "melancholy": type = PhantomManager.PhantomType.Melancholy; return true;
-            case "fury": type = PhantomManager.PhantomType.Fury; return true;
+            case "dominion": type = PhantomManager.PhantomType.Dominion; return true;
+            case "zenith": type = PhantomManager.PhantomType.Zenith; return true;
             case "stigma": type = PhantomManager.PhantomType.Stigma; return true;
-            case "ego": type = PhantomManager.PhantomType.Ego; return true;
             default:
                 Debug.LogWarning($"[Phantoms] Неизвестный фантом: '{name}'. Допустимые: genesis, melancholy, fury, stigma, ego");
-                type = PhantomManager.PhantomType.Ego;
+                type = PhantomManager.PhantomType.Zenith;
                 return false;
         }
     }

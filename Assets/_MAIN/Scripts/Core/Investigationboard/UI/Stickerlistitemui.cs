@@ -1,17 +1,14 @@
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using TMPro;
+using Sirenix.OdinInspector;
 using System.Collections;
+using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-/// <summary>
-/// Один элемент в списке инвентаря.
-/// Показывает иконку, название, тег улики.
-/// Drag из списка = стикер появляется на доске и начинает перетаскиваться.
-/// </summary>
 public class StickerListItemUI : MonoBehaviour,
     IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    [Header("UI элементы списка")]
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI titleText;
     [SerializeField] private TextMeshProUGUI tagText;
@@ -19,7 +16,12 @@ public class StickerListItemUI : MonoBehaviour,
     [SerializeField] private Image background;
     [SerializeField] private GameObject hoverHighlight;
 
-    // Цвета тегов
+    [Header("Префаб призрака")]
+    [InfoBox("Сюда нужно перетащить префаб StickerUI или его упрощенную версию")]
+    [SerializeField] private GameObject ghostPrefab;
+
+    // Цвета тегов (оставляем как есть)
+    [SerializeField, ShowInInspector]
     private static readonly System.Collections.Generic.Dictionary<StickerTag, Color> TAG_COLORS = new()
     {
         { StickerTag.Who,   new Color(0.9f, 0.5f, 0.3f) },
@@ -33,8 +35,6 @@ public class StickerListItemUI : MonoBehaviour,
 
     private string stickerId;
     private StickerData data;
-
-    // Призрак который тащится за курсором при drag
     private GameObject dragGhost;
     private Canvas rootCanvas;
 
@@ -57,47 +57,35 @@ public class StickerListItemUI : MonoBehaviour,
             tagColor.color = c;
     }
 
-    // ??? Hover ???????????????????????????????????????????????????????
+    // --- Hover ---
+    public void OnPointerEnter(PointerEventData e) => hoverHighlight?.SetActive(true);
+    public void OnPointerExit(PointerEventData e) => hoverHighlight?.SetActive(false);
 
-    public void OnPointerEnter(PointerEventData e)
-    {
-        if (hoverHighlight) hoverHighlight.SetActive(true);
-    }
-
-    public void OnPointerExit(PointerEventData e)
-    {
-        if (hoverHighlight) hoverHighlight.SetActive(false);
-    }
-
-    // ??? Drag из инвентаря на доску ??????????????????????????????????
-
+    // --- Drag ---
     public void OnBeginDrag(PointerEventData e)
     {
-        // Создаём призрак стикера который тянется за курсором
-        dragGhost = new GameObject("DragGhost");
-        dragGhost.transform.SetParent(rootCanvas.transform, false);
+        if (ghostPrefab == null)
+        {
+            Debug.LogError("Не назначен Ghost Prefab в StickerListItemUI!");
+            return;
+        }
+
+        // 1. Спавним префаб вместо создания "пустышки"
+        dragGhost = Instantiate(ghostPrefab, rootCanvas.transform);
         dragGhost.transform.SetAsLastSibling();
 
-        var rt = dragGhost.AddComponent<RectTransform>();
-        rt.sizeDelta = new Vector2(180, 120);
+        // 2. Инициализируем его данными (если на нем есть скрипт StickerUI)
+        var ghostStickerScript = dragGhost.GetComponent<StickerUI>();
+        if (ghostStickerScript != null)
+        {
+            ghostStickerScript.Initialize(data);
+        }
 
-        var img = dragGhost.AddComponent<Image>();
-        img.color = new Color(0.98f, 0.95f, 0.78f, 0.85f);
-
-        // Текст на призраке
-        var go = new GameObject("T");
-        go.transform.SetParent(dragGhost.transform, false);
-        var tmp = go.AddComponent<TextMeshProUGUI>();
-        tmp.text = data?.title ?? "";
-        tmp.fontSize = 14;
-        tmp.alignment = TextAlignmentOptions.Center;
-        var trt = go.GetComponent<RectTransform>();
-        trt.anchorMin = Vector2.zero;
-        trt.anchorMax = Vector2.one;
-        trt.offsetMin = trt.offsetMax = Vector2.zero;
-
-        // Блокируем raycast чтобы ghost не перехватывал события
-        dragGhost.AddComponent<CanvasGroup>().blocksRaycasts = false;
+        // 3. Отключаем Raycast, чтобы мышь видела доску сквозь призрака
+        var cg = dragGhost.GetComponent<CanvasGroup>();
+        if (cg == null) cg = dragGhost.AddComponent<CanvasGroup>();
+        cg.blocksRaycasts = false;
+        cg.alpha = 0.7f; // Делаем его слегка прозрачным для эффекта
 
         UpdateGhostPos(e.position);
     }
@@ -125,12 +113,12 @@ public class StickerListItemUI : MonoBehaviour,
             return;
         }
 
-        // Попали на доску — спавним оригинальный стикер, не жёлтую панель
+        // Попали на доску
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             boardUI.BoardCanvas, e.position, e.pressEventCamera, out Vector2 localPos);
 
         InvestigationBoardManager.instance.SetPosition(stickerId, localPos);
-        boardUI.SpawnStickerOnBoard(data); // Спавним оригинал, не ghost
+        boardUI.SpawnStickerOnBoard(data);
     }
 
     private void UpdateGhostPos(Vector2 screenPos)

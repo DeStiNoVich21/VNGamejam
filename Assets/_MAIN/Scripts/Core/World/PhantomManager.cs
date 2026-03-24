@@ -26,11 +26,9 @@ public class PhantomManager : MonoBehaviour
 
     public enum PhantomType
     {
-        Genesis,     // Интеллектуал
-        Melancholy,  // Эмпат
-        Fury,        // Ветеран
+        Zenith,     // Эмпат
+        Dominion,        // Ветеран
         Stigma,      // Безумец
-        Ego          // Чистый лист
     }
 
     // ─── Данные одного фантома ───────────────────────────────────────
@@ -58,11 +56,9 @@ public class PhantomManager : MonoBehaviour
     [SerializeField]
     private List<PhantomData> phantoms = new List<PhantomData>
     {
-        new PhantomData { type = PhantomType.Genesis,    characterName = "Genesis",    sync = 0f },
-        new PhantomData { type = PhantomType.Melancholy, characterName = "Melancholy", sync = 0f },
-        new PhantomData { type = PhantomType.Fury,       characterName = "Fury",       sync = 0f },
+        new PhantomData { type = PhantomType.Dominion,    characterName = "Dominion",    sync = 0f },
+        new PhantomData { type = PhantomType.Zenith, characterName = "Zenith", sync = 0f },
         new PhantomData { type = PhantomType.Stigma,     characterName = "Stigma",     sync = 0f },
-        new PhantomData { type = PhantomType.Ego,        characterName = "Ego",        sync = 0f },
     };
 
     [Title("Настройки")]
@@ -72,11 +68,9 @@ public class PhantomManager : MonoBehaviour
 
     private static readonly Dictionary<PhantomType, string> VAR_NAMES = new()
     {
-        { PhantomType.Genesis,    "sync_genesis"    },
-        { PhantomType.Melancholy, "sync_melancholy" },
-        { PhantomType.Fury,       "sync_fury"       },
-        { PhantomType.Stigma,     "sync_stigma"     },
-        { PhantomType.Ego,        "sync_ego"        },
+        { PhantomType.Dominion,    "sync_dominion"    },
+        { PhantomType.Zenith, "sync_zenith" },
+        { PhantomType.Stigma,     "sync_stigma"     }
     };
 
     private static readonly int[] THRESHOLDS = { 0, 25, 50, 75, 100 };
@@ -189,14 +183,14 @@ public class PhantomManager : MonoBehaviour
     public bool HasReached(PhantomType type, float threshold) =>
         GetSync(type) >= threshold;
 
-    public PhantomType GetDominant()
-    {
-        PhantomType dominant = PhantomType.Ego;
-        float max = -1f;
-        foreach (var p in phantoms)
-            if (p.sync > max) { max = p.sync; dominant = p.type; }
-        return dominant;
-    }
+    //public PhantomType GetDominant()
+    //{
+    //    PhantomType dominant = PhantomType.Ego;
+    //    float max = -1f;
+    //    foreach (var p in phantoms)
+    //        if (p.sync > max) { max = p.sync; dominant = p.type; }
+    //    return dominant;
+    //}
 
     public void PrintAll()
     {

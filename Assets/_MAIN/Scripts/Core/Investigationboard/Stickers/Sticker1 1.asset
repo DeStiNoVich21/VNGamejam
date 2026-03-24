@@ -15,7 +15,8 @@ MonoBehaviour:
   stickerId: Homicide
   title: Homicide
   tag: 1
-  bodyText: 
+  bodyText: "\u0420\u0435\u0437\u043D\u044F \u0431\u044B\u043B\u0430 \u0443\u0447\u0438\u043D\u0435\u043D\u0430
+    \u043F\u043E\u0434\u043E\u0437\u0440\u0435\u0432\u0430\u0435\u043C\u044B\u043C"
   icon: {fileID: 5324961970011148163, guid: 251a8a1875a991d479c50dc43d3dd761, type: 3}
   isPhantomFact: 0
   phantomSource: 0

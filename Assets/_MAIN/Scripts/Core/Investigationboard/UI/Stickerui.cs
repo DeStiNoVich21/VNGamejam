@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -30,20 +31,21 @@ public class StickerUI : MonoBehaviour,
     [Header("Настройки")]
     [SerializeField] private float slotDetachDistance = 150f;
 
-    // Цвета стикеров
-    private static readonly Color COLOR_NORMAL = new Color(0.98f, 0.95f, 0.78f);
-    private static readonly Color COLOR_FACT = new Color(0.85f, 0.85f, 0.85f);
-    private static readonly Dictionary<PhantomManager.PhantomType, Color> PHANTOM_COLORS = new()
+    [Header("Настройки цветов (Odin)")]
+    [SerializeField] private Color colorNormal = new Color(0.98f, 0.95f, 0.78f);
+    [SerializeField] private Color colorFact = new Color(0.85f, 0.85f, 0.85f);
+
+    [InfoBox("Здесь можно настроить цвета для типов Фантомов и Тегов")]
+    [SerializeField, ShowInInspector]
+    private Dictionary<PhantomManager.PhantomType, Color> phantomColors = new()
     {
-        { PhantomManager.PhantomType.Genesis,    new Color(0.4f,  0.65f, 1.0f)  },
-        { PhantomManager.PhantomType.Melancholy, new Color(0.7f,  0.4f,  0.9f)  },
-        { PhantomManager.PhantomType.Fury,       new Color(1.0f,  0.35f, 0.35f) },
-        { PhantomManager.PhantomType.Stigma,     new Color(0.35f, 0.85f, 0.5f)  },
-        { PhantomManager.PhantomType.Ego,        new Color(0.9f,  0.9f,  0.9f)  },
+        { PhantomManager.PhantomType.Dominion,    new Color(0.4f,  0.65f, 1.0f)  },
+        { PhantomManager.PhantomType.Zenith, new Color(0.7f,  0.4f,  0.9f)  },
+        { PhantomManager.PhantomType.Stigma,     new Color(0.35f, 0.85f, 0.5f)  }
     };
 
-    // Цвета тегов
-    private static readonly Dictionary<StickerTag, Color> TAG_COLORS = new()
+    [SerializeField, ShowInInspector]
+    private Dictionary<StickerTag, Color> tagColors = new()
     {
         { StickerTag.Who,   new Color(0.9f, 0.5f, 0.3f) },
         { StickerTag.What,  new Color(0.3f, 0.6f, 0.9f) },
@@ -86,17 +88,18 @@ public class StickerUI : MonoBehaviour,
         if (icon && d.icon)
             icon.sprite = d.icon;
 
+        // ИСПОЛЬЗУЕМ НОВЫЕ ПЕРЕМЕННЫЕ
         if (background)
-            background.color = d.isPhantomFact ? COLOR_FACT : COLOR_NORMAL;
+            background.color = d.isPhantomFact ? colorFact : colorNormal;
 
-        if (tagColor && TAG_COLORS.TryGetValue(d.tag, out Color tagCol))
+        if (tagColor && tagColors.TryGetValue(d.tag, out Color tagCol))
             tagColor.color = tagCol;
 
         if (phantomStripe)
         {
             phantomStripe.gameObject.SetActive(d.isPhantomFact);
             if (d.isPhantomFact &&
-                PHANTOM_COLORS.TryGetValue(d.phantomSource, out Color c))
+                phantomColors.TryGetValue(d.phantomSource, out Color c))
                 phantomStripe.color = c;
         }
     }
