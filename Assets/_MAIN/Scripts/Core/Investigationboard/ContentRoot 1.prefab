@@ -346,6 +346,7 @@ MonoBehaviour:
   icon: {fileID: 3080651653448250985}
   tagColor: {fileID: 8416798986738718903}
   hoverHighlight: {fileID: 418555381718080275}
+  slotDetachDistance: 150
 --- !u!1 &5517090082095808953
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,10 +454,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2419239830468015333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -3.9}
-  m_SizeDelta: {x: 92, y: 86}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -3.8999996}
+  m_SizeDelta: {x: -8, y: -14}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7177347663191539418
 CanvasRenderer:

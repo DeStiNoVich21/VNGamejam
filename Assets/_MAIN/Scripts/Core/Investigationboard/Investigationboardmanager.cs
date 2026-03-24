@@ -356,7 +356,20 @@ public class InvestigationBoardManager : MonoBehaviour
         Debug.Log($"[Board] Верёвок: {ropes.Count}");
         Debug.Log($"[Board] Синтез готов: {IsSynthesisReady()}");
     }
+    // Добавьте это в InvestigationBoardManager.cs
+    public void UnplaceSticker(string stickerId)
+    {
+        // 1. Убираем из всех слотов, если он там был
+        UnplaceFromSlots(stickerId);
 
+        // 2. Убеждаемся, что он есть в списке инвентаря
+        if (!inventoryIds.Contains(stickerId))
+        {
+            inventoryIds.Add(stickerId);
+        }
+
+        Debug.Log($"[Board] Логика: Стикер {stickerId} возвращен в общий список инвентаря.");
+    }
     // Добавь этот метод в InvestigationBoardManager:
     public StickerTag? GetStickerSlot(string stickerId)
     {

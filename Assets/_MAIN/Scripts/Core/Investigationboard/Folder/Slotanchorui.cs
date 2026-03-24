@@ -31,7 +31,7 @@ public class SlotAnchorUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, I
     private InvestigationBoardUI boardUI;
     private RectTransform rectTransform;
     public Dictionary<string, GameObject> displayedStickers = new();
-
+    public StickerTag GetTag() => config.tag;
     // Цвета слотов
     public Color COLOR_EMPTY = new Color(0.15f, 0.15f, 0.15f, 0.7f);
     public Color COLOR_FILLED = new Color(0.2f, 0.35f, 0.2f, 0.8f);
