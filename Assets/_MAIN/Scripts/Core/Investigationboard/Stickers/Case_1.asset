@@ -16,37 +16,37 @@ MonoBehaviour:
   caseTitle: Homicide
   caseDescription: 
   slotWho:
-    question: "\u041A\u0422\u041E?"
+    question: Who?
     tag: 0
     maxStickers: 1
     acceptsFacts: 0
     boardPosition: {x: -600, y: 200}
   slotWhat:
-    question: "\u0427\u0422\u041E?"
+    question: What?
     tag: 1
     maxStickers: 1
     acceptsFacts: 0
     boardPosition: {x: -600, y: -50}
   slotWhere:
-    question: "\u0413\u0414\u0415?"
+    question: Where?
     tag: 2
     maxStickers: 1
     acceptsFacts: 0
     boardPosition: {x: -600, y: -300}
   slotWhen:
-    question: "\u041A\u041E\u0413\u0414\u0410?"
+    question: When?
     tag: 3
     maxStickers: 1
     acceptsFacts: 0
     boardPosition: {x: 0, y: 200}
   slotWhy:
-    question: "\u041F\u041E\u0427\u0415\u041C\u0423?"
+    question: Why?
     tag: 4
     maxStickers: 3
     acceptsFacts: 1
     boardPosition: {x: 0, y: -50}
   slotHow:
-    question: "\u041A\u0410\u041A?"
+    question: How?
     tag: 5
     maxStickers: 1
     acceptsFacts: 0

@@ -88,7 +88,7 @@ MonoBehaviour:
     dialogueFont: {fileID: 11400000, guid: 72d68798eca17354db4eeb6d95d4a306, type: 2}
     nameFontScale: 1
     dialogueFontScale: 1
-    speakSpeed: 0.6
+    speakSpeed: 0.2
     characterVoice: {fileID: 8300000, guid: 83ae74e262df7004082e8f5020aea786, type: 3}
   - name: Narrator
     alias: N
@@ -99,7 +99,7 @@ MonoBehaviour:
     dialogueFont: {fileID: 11400000, guid: 72d68798eca17354db4eeb6d95d4a306, type: 2}
     nameFontScale: 1
     dialogueFontScale: 1
-    speakSpeed: 0.6
+    speakSpeed: 0.2
     characterVoice: {fileID: 8300000, guid: 83ae74e262df7004082e8f5020aea786, type: 3}
   - name: Dominion
     alias: Dominion
