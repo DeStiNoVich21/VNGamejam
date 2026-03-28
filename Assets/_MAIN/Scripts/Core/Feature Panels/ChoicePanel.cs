@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using TMPro;
 
 public class ChoicePanel : MonoBehaviour
@@ -20,9 +21,14 @@ public class ChoicePanel : MonoBehaviour
     [SerializeField] private GameObject choiceButtonPrefab;
     [SerializeField] private VerticalLayoutGroup buttonLayoutGroup;
 
+    [Header("Animation Colors")]
+    [SerializeField] private Color hoverColor = new Color(1, 1, 1, 0.2f);
+    [SerializeField] private Color clickColor = Color.white;
+    private Color normalColor = new Color(1, 1, 1, 0.05f);
+
     private CanvasGroupController cg = null;
     private List<ChoiceButton> buttons = new List<ChoiceButton>();
-    public ChoicePanelDecision lastDecision { get; private set; } = null; 
+    public ChoicePanelDecision lastDecision { get; private set; } = null;
 
     public bool isWaitingOnUserChoice { get; private set; } = false;
 
@@ -33,9 +39,6 @@ public class ChoicePanel : MonoBehaviour
 
         cg.alpha = 0f;
         cg.SetInteractableState(false);
-    }
-    void Start()
-    {
     }
 
     public void Show(string question, string[] choices)
@@ -67,10 +70,24 @@ public class ChoicePanel : MonoBehaviour
                 newButtonObject.SetActive(true);
 
                 Button newButton = newButtonObject.GetComponent<Button>();
-                TextMeshProUGUI newTitle = newButton.GetComponentInChildren<TextMeshProUGUI>();
-                LayoutElement newLayout = newButton.GetComponent<LayoutElement>();
+                newButton.transition = Button.Transition.None;
 
-                choiceButton = new ChoiceButton { button = newButton, layout = newLayout, title = newTitle };
+                choiceButton = new ChoiceButton
+                {
+                    button = newButton,
+                    layout = newButton.GetComponent<LayoutElement>(),
+                    title = newButton.GetComponentInChildren<TextMeshProUGUI>(),
+                    image = newButton.GetComponent<Image>(),
+                    trigger = newButton.gameObject.AddComponent<EventTrigger>()
+                };
+
+                var entryEnter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
+                entryEnter.callback.AddListener((data) => { OnHover(newButton.GetComponent<Image>(), true); });
+                choiceButton.trigger.triggers.Add(entryEnter);
+
+                var entryExit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
+                entryExit.callback.AddListener((data) => { OnHover(newButton.GetComponent<Image>(), false); });
+                choiceButton.trigger.triggers.Add(entryExit);
 
                 buttons.Add(choiceButton);
             }
@@ -79,8 +96,9 @@ public class ChoicePanel : MonoBehaviour
             int buttonIndex = i;
             choiceButton.button.onClick.AddListener(() => AcceptAnswer(buttonIndex));
             choiceButton.title.text = choices[i];
+            choiceButton.image.color = normalColor;
 
-            float buttonWidth = Mathf.Clamp(BUTTON_WIDTH_PADDING + choiceButton.title.preferredWidth,BUTTON_MIN_WIDTH,BUTTON_MAX_WIDTH);
+            float buttonWidth = Mathf.Clamp(BUTTON_WIDTH_PADDING + choiceButton.title.preferredWidth, BUTTON_MIN_WIDTH, BUTTON_MAX_WIDTH);
             maxWidth = Mathf.Max(maxWidth, buttonWidth);
         }
 
@@ -91,8 +109,7 @@ public class ChoicePanel : MonoBehaviour
 
         for (int i = 0; i < buttons.Count; i++)
         {
-            bool show = i < choices.Length;
-            buttons[i].button.gameObject.SetActive(show);
+            buttons[i].button.gameObject.SetActive(i < choices.Length);
         }
 
         yield return new WaitForEndOfFrame();
@@ -104,20 +121,41 @@ public class ChoicePanel : MonoBehaviour
         }
     }
 
-    public void Hide()
+    private void OnHover(Image targetImage, bool isHovering)
     {
-        cg.Hide();
-        cg.SetInteractableState(false);
+        if (!isWaitingOnUserChoice) return;
+        targetImage.color = isHovering ? hoverColor : normalColor;
     }
 
     private void AcceptAnswer(int index)
     {
-        if (index < 0 || index > lastDecision.choices.Length - 1)
-            return;
+        if (index < 0 || index > lastDecision.choices.Length - 1) return;
+
+        isWaitingOnUserChoice = false; 
+        cg.SetInteractableState(false);
+
+        StartCoroutine(FlashAndHide(index));
+    }
+
+    private IEnumerator FlashAndHide(int index)
+    {
+        Image img = buttons[index].image;
+        for (int i = 0; i < 3; i++)
+        {
+            img.color = clickColor;
+            yield return new WaitForSecondsRealtime(0.08f);
+            img.color = normalColor;
+            yield return new WaitForSecondsRealtime(0.08f);
+        }
 
         lastDecision.answerIndex = index;
-        isWaitingOnUserChoice = false;
         Hide();
+    }
+
+    public void Hide()
+    {
+        cg.Hide();
+        cg.SetInteractableState(false);
     }
 
     public class ChoicePanelDecision
@@ -131,7 +169,6 @@ public class ChoicePanel : MonoBehaviour
             this.question = question;
             this.choices = choices;
             answerIndex = -1;
-
         }
     }
 
@@ -140,5 +177,7 @@ public class ChoicePanel : MonoBehaviour
         public Button button;
         public TextMeshProUGUI title;
         public LayoutElement layout;
+        public Image image;
+        public EventTrigger trigger;
     }
 }
