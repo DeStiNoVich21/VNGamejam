@@ -1,0 +1,11 @@
+$boolTrue = true
+$boolFalse = false
+$numberOne = 1
+$numberTwo = 2
+$numberThree = 3
+$numberFive = 5
+$stringOne = "Hello"
+$stringTwo = "World"
+$stringHello = "Hello"
+
+narrator "Variable one is $numberOne"
