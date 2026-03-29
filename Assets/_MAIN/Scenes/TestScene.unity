@@ -1549,6 +1549,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoHideWhenDone: 1
   sceneFile: {fileID: 4900000, guid: e4de9e76e9bd14740ae1f8ca6b41be1c, type: 3}
+  sticker_id: Kyle
 --- !u!1 &383354990
 GameObject:
   m_ObjectHideFlags: 0
@@ -5992,6 +5993,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoHideWhenDone: 1
   sceneFile: {fileID: 4900000, guid: e4de9e76e9bd14740ae1f8ca6b41be1c, type: 3}
+  sticker_id: 404 apartment
 --- !u!1 &1407122477
 GameObject:
   m_ObjectHideFlags: 0
