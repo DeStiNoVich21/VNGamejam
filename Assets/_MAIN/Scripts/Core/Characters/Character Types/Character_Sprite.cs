@@ -96,7 +96,17 @@ namespace CHARACTERS
             }
             else
             {
-                return Resources.Load<Sprite>($"{artAssetDirectory}/{spriteName}");
+                Sprite direct = Resources.Load<Sprite>($"{artAssetDirectory}/{spriteName}");
+                if (direct != null) return direct;
+
+                Sprite[] allSprites = Resources.LoadAll<Sprite>(artAssetDirectory);
+
+                // днаюбэ щрн:
+                Debug.Log($"[GetSprite] Found {allSprites.Length} sprites in '{artAssetDirectory}'");
+                foreach (var s in allSprites)
+                    Debug.Log($"  - '{s.name}'");
+
+                return System.Array.Find(allSprites, s => s.name == spriteName);
             }
         }
 

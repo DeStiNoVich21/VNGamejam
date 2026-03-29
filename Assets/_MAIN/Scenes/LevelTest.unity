@@ -2327,7 +2327,7 @@ MonoBehaviour:
   vnController: {fileID: 106856845}
   autoHideWhenDone: 1
   playerMovement: {fileID: 904058788}
-  sceneFile: {fileID: 4900000, guid: 179667bdbfb2e504aad022c44a039349, type: 3}
+  sceneFile: {fileID: 4900000, guid: 3a9eb505ad53d0d47a978dc0a985ade6, type: 3}
   actors:
   - id: 1
     go: {fileID: 904058782}
