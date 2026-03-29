@@ -8,9 +8,11 @@ Narrator "(Запуск протокола тестирования экипаж
 // 1. ТЕСТ СПАВНА И ПОЗИЦИИ
 // Создаем Джонатана (из твоего списка) и ставим его по центру
 CreateCharacter(Jonathan)
-Jonathan.SetPosition(0.5 0.2)
+Jonathan.SetPosition(-0.02 2.5)
 Jonathan.Show()
-
+CreateCharacter(Cecilia)
+Cecilia.SetPosition(1.02 2.5)
+Cecilia.Show()
 Jonathan "Капитан, проверка связи. Я в центре экрана. {spd=0.5}Слышите меня?{/spd}"
 Jonathan [0:gg1] "Привет!"
 Jonathan [0:gg2] "Я удивлён."
