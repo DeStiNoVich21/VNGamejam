@@ -71,6 +71,6 @@ public class Evidence : MonoBehaviour
             InvestigationBoardManager.instance.AddSticker(sticker_id);
         }
 
-        WorldSceneManager.instance.Activate(sceneFile, autoHideWhenDone);
+        if (sceneFile != null) WorldSceneManager.instance.Activate(sceneFile, autoHideWhenDone);
     }
 }
