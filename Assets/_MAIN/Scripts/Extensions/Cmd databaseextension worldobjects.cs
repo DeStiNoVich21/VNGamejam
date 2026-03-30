@@ -42,10 +42,34 @@ public static class WorldObjectCommands
         db.AddCommand("rotateto", new Func<string[], IEnumerator>(args => RotateTo(actorId, args)));
         db.AddCommand("scaleto", new Func<string[], IEnumerator>(args => ScaleTo(actorId, args)));
         db.AddCommand("flip", new Action<string[]>(args => Flip(actorId, args)));
+        db.AddCommand("setanimspeed", new Action<string[]>(args => SetAnimSpeed(actorId, args)));
+        db.AddCommand("pauseanim", new Action<string[]>(args => PauseAnim(actorId, args)));
+        db.AddCommand("resumeanim", new Action<string[]>(args => ResumeAnim(actorId, args)));
     }
 
     private static WorldObjectManager WOM => WorldObjectManager.instance;
+    // SetAnimSpeed(0.5) - замедление в два раза
+    private static void SetAnimSpeed(string id, string[] args)
+    {
+        if (args.Length < 1) return;
+        if (float.TryParse(args[0],
+            System.Globalization.NumberStyles.Float,
+            System.Globalization.CultureInfo.InvariantCulture,
+            out float speed))
+            WOM.SetAnimatorSpeed(id, speed);
+    }
 
+    // PauseAnim() - полная остановка
+    private static void PauseAnim(string id, string[] args)
+    {
+        WOM.PauseAnimator(id);
+    }
+
+    // ResumeAnim() - продолжение
+    private static void ResumeAnim(string id, string[] args)
+    {
+        WOM.ResumeAnimator(id);
+    }
     // MoveTo(x y z -spd 1.5)
     private static IEnumerator MoveTo(string id, string[] args)
     {

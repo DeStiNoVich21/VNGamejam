@@ -192,6 +192,19 @@ public class WorldObjectManager : MonoBehaviour
         go.transform.localScale = targetScale;
     }
 
+    // --- Управление скоростью/паузой аниматора ---
+
+    public void SetAnimatorSpeed(string id, float speed)
+    {
+        if (!TryGet(id, out var go)) { LogNotFound(id); return; }
+        Animator anim = go.GetComponentInChildren<Animator>();
+        if (anim == null) { Debug.LogWarning($"[WorldObjectManager] '{id}' не имеет Animator"); return; }
+
+        anim.speed = speed;
+    }
+
+    public void PauseAnimator(string id) => SetAnimatorSpeed(id, 0f);
+    public void ResumeAnimator(string id) => SetAnimatorSpeed(id, 1f);
     // ??? Утилита ????????????????????????????????????????????????????
 
     private void LogNotFound(string id) =>
