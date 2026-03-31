@@ -28,23 +28,45 @@ public class WorldSceneManager : MonoBehaviour
 
     private void Awake()
     {
+        // --- ИСПРАВЛЕНИЕ: Правильная логика singleton ---
         if (instance == null)
+        {
             instance = this;
+            // НЕ добавляем DontDestroyOnLoad здесь! SceneTransitionManager уже это контролирует
+            Debug.Log($"[WorldSceneManager] Инициализирован: {gameObject.name}");
+        }
         else
-            Destroy(gameObject);
+        {
+            // Если уже есть экземпляр
+            if (instance.gameObject != gameObject)
+            {
+                Debug.LogWarning($"[WorldSceneManager] Обнаружен дубликат '{gameObject.name}', удаляю...");
+                Destroy(gameObject);
+            }
+        }
     }
 
     private void Start()
     {
-        if (instance != null && WorldObjectManager.instance != null && CommandManager.instance != null)
+        // --- ИСПРАВЛЕНИЕ: Проверяем что instance это именно мы ---
+        if (instance != this) return;
+
+        if (WorldObjectManager.instance != null && CommandManager.instance != null)
+        {
             RegisterActors();
+            Debug.Log($"[WorldSceneManager] Актёры зарегистрированы ({actors.Count} шт.)");
+        }
+        else
+        {
+            Debug.LogWarning($"[WorldSceneManager] WorldObjectManager или CommandManager ещё не инициализированы!");
+        }
     }
 
     public void Activate(TextAsset sceneFile, bool autoHideWhenDone = true)
     {
         if (sceneFile == null)
         {
-            Debug.LogWarning($"[WorldSceneDirector] '{name}': sceneFile is not assigned");
+            Debug.LogWarning($"[WorldSceneManager] '{name}': sceneFile is not assigned");
             return;
         }
 
@@ -75,24 +97,43 @@ public class WorldSceneManager : MonoBehaviour
             playerMovement.enabled = true;
     }
 
-
     private void RegisterActors()
     {
         foreach (var actor in actors)
         {
-            if (actor.go == null) continue;
+            if (actor.go == null)
+            {
+                Debug.LogWarning($"[WorldSceneManager] Actor '{actor.id}' имеет null GameObject!");
+                continue;
+            }
 
             WorldObjectManager.instance.Register(actor.id, actor.go);
 
             CommandDatabase db = CommandManager.instance.CreateSubDatabase(actor.id);
             WorldObjectCommands.RegisterTo(db, actor.id);
+
+            Debug.Log($"[WorldSceneManager] Зарегистрирован актёр: {actor.id}");
         }
     }
 
     public void UnregisterActors()
     {
         foreach (var actor in actors)
+        {
+            if (string.IsNullOrEmpty(actor.id)) continue;
             WorldObjectManager.instance.Unregister(actor.id);
+        }
+    }
+
+    // --- НОВОЕ: Очистка при выгрузке сцены ---
+    private void OnDestroy()
+    {
+        if (instance == this)
+        {
+            Debug.Log($"[WorldSceneManager] Уничтожен, очищаю регистрацию актёров");
+            UnregisterActors();
+            instance = null;
+        }
     }
 }
 
