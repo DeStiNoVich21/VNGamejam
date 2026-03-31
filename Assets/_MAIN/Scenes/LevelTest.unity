@@ -11181,10 +11181,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9729547ad723a6b40a8417455eb50195, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasGroup: {fileID: 0}
-  titleText: {fileID: 0}
-  choiceButtonPrefab: {fileID: 0}
-  buttonLayoutGroup: {fileID: 0}
+  canvasGroup: {fileID: 400131107}
+  titleText: {fileID: 58512894}
+  choiceButtonPrefab: {fileID: 1050373869}
+  buttonLayoutGroup: {fileID: 1068267153}
 --- !u!1 &870893019
 GameObject:
   m_ObjectHideFlags: 0
@@ -14264,10 +14264,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50bfc60fa954a5f4ab764fa2e1b72dca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasGroup: {fileID: 0}
-  titleText: {fileID: 0}
-  acceptButton: {fileID: 0}
-  inputField: {fileID: 0}
+  canvasGroup: {fileID: 1921819403}
+  titleText: {fileID: 1422746145}
+  acceptButton: {fileID: 1805977734}
+  inputField: {fileID: 1864699380}
 --- !u!1 &1174900801
 GameObject:
   m_ObjectHideFlags: 0
@@ -14792,7 +14792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 321d8fa9db5365240af04af9d112d402, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterpanel: {fileID: 0}
+  _characterpanel: {fileID: 1305571525}
   _characterpanel_live2D: {fileID: 0}
   _characterpanel_model3D: {fileID: 0}
 --- !u!1 &1246344296
@@ -15439,7 +15439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40d8205c8cfd2c4bbe2353f6cba2fe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statusText: {fileID: 0}
+  statusText: {fileID: 187508122}
 --- !u!114 &1278922891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15454,13 +15454,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: 34621def883605b4ea53904a8ae3a136, type: 2}
   dialogueContainer:
-    root: {fileID: 0}
+    root: {fileID: 1174900801}
     nameContainer:
-      root: {fileID: 0}
-      <nameText>k__BackingField: {fileID: 0}
-    dialogueText: {fileID: 0}
-  mainCanvas: {fileID: 0}
-  prompt: {fileID: 0}
+      root: {fileID: 46787762}
+      <nameText>k__BackingField: {fileID: 962818863}
+    dialogueText: {fileID: 658837681}
+  mainCanvas: {fileID: 106856850}
+  prompt: {fileID: 383354992}
 --- !u!1 &1283354488
 GameObject:
   m_ObjectHideFlags: 0
