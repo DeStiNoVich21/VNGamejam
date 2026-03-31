@@ -5577,6 +5577,8 @@ MonoBehaviour:
   titleText: {fileID: 58512894}
   choiceButtonPrefab: {fileID: 1050373869}
   buttonLayoutGroup: {fileID: 1068267153}
+  hoverColor: {r: 1, g: 1, b: 1, a: 0.2}
+  clickColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1050373869
 GameObject:
   m_ObjectHideFlags: 0
@@ -5681,8 +5683,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0294f9ed514fff14ea3a08fc4fee155c, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: e413ccd9ff9477c438103065e29094fe, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -9933,7 +9935,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -4.590027, y: -6.080017}
+  m_AnchoredPosition: {x: -4.590088, y: -6.080017}
   m_SizeDelta: {x: -169.16998, y: -219.84003}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1871251815
