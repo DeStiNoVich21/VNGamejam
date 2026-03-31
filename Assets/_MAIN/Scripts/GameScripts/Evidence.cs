@@ -3,6 +3,7 @@ using DIALOGUE;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using SpriteGlow; // Добавляем пространство имен твоего глоу-эффекта
 
 public class Evidence : MonoBehaviour
 {
@@ -16,54 +17,57 @@ public class Evidence : MonoBehaviour
     [SerializeField] private string sticker_id;
 
     [Title("Visual Settings")]
-    [Tooltip("Использовать ли эффект белого цвета вместо изменения edge_threshold?")]
-    [SerializeField] private bool useFlashEffect = true;
+    [EnumToggleButtons]
+    public enum HighlightType { SpriteGlow, FlashColor, ManualShader }
+    public HighlightType highlightMode = HighlightType.SpriteGlow;
 
-    [ShowIf("useFlashEffect")]
+    [ShowIf("highlightMode", HighlightType.FlashColor)]
     [SerializeField] private Color hoverColor = Color.white;
 
-    [HideIf("useFlashEffect")]
+    [ShowIf("highlightMode", HighlightType.ManualShader)]
     [SerializeField] private string edgeThresholdProperty = "_edge_threshold";
-    [HideIf("useFlashEffect")]
-    [SerializeField] private float glowValue = 0.5f;
-    [HideIf("useFlashEffect")]
-    [SerializeField] private float noGlowValue = 5f;
 
     private bool hasBeenClicked = false;
+    private SpriteGlowEffect glowEffect;
+    private SpriteRenderer sRenderer;
     private Material myMaterial;
     private Color originalColor;
-    private static readonly int ColorProperty = Shader.PropertyToID("_Color"); // Оптимизация обращения к шейдеру
+    private static readonly int ColorProperty = Shader.PropertyToID("_Color");
+
+    private void Awake()
+    {
+        sRenderer = GetComponent<SpriteRenderer>();
+        glowEffect = GetComponent<SpriteGlowEffect>();
+
+        // Если выбран режим глоу, но компонента нет — выключаем его по умолчанию
+        if (glowEffect != null && highlightMode == HighlightType.SpriteGlow)
+            glowEffect.enabled = false;
+    }
 
     private void Start()
     {
-        Renderer renderer = GetComponent<Renderer>();
-        if (renderer != null)
+        if (sRenderer != null)
         {
-            myMaterial = renderer.material;
-
-            if (useFlashEffect)
-                originalColor = myMaterial.HasProperty(ColorProperty) ? myMaterial.GetColor(ColorProperty) : Color.white;
-            else
-                myMaterial.SetFloat(edgeThresholdProperty, noGlowValue);
+            myMaterial = sRenderer.material;
+            if (myMaterial.HasProperty(ColorProperty))
+                originalColor = myMaterial.GetColor(ColorProperty);
         }
     }
 
     private void OnMouseEnter()
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
-        if (!hasBeenClicked && myMaterial != null)
-        {
-            if (useFlashEffect)
-                myMaterial.SetColor(ColorProperty, hoverColor);
-            else
-                myMaterial.SetFloat(edgeThresholdProperty, glowValue);
-        }
+        if (hasBeenClicked) return;
+
+        SetHighlight(true);
     }
 
     private void OnMouseExit()
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
-        ResetVisuals();
+        if (hasBeenClicked) return;
+
+        SetHighlight(false);
     }
 
     private void OnMouseDown()
@@ -72,23 +76,31 @@ public class Evidence : MonoBehaviour
         if (hasBeenClicked) return;
 
         hasBeenClicked = true;
-        ResetVisuals();
+        SetHighlight(false); // Выключаем подсветку при клике
 
         if (!string.IsNullOrEmpty(sticker_id) && InvestigationBoardManager.instance != null)
-        {
             InvestigationBoardManager.instance.AddSticker(sticker_id);
-        }
 
         if (sceneFile != null) WorldSceneManager.instance.Activate(sceneFile, autoHideWhenDone);
     }
 
-    private void ResetVisuals()
+    private void SetHighlight(bool state)
     {
-        if (myMaterial == null) return;
+        switch (highlightMode)
+        {
+            case HighlightType.SpriteGlow:
+                if (glowEffect != null) glowEffect.enabled = state;
+                break;
 
-        if (useFlashEffect)
-            myMaterial.SetColor(ColorProperty, originalColor);
-        else
-            myMaterial.SetFloat(edgeThresholdProperty, noGlowValue);
+            case HighlightType.FlashColor:
+                if (myMaterial != null)
+                    myMaterial.SetColor(ColorProperty, state ? hoverColor : originalColor);
+                break;
+
+            case HighlightType.ManualShader:
+                if (myMaterial != null)
+                    myMaterial.SetFloat(edgeThresholdProperty, state ? 0.5f : 5f);
+                break;
+        }
     }
 }
