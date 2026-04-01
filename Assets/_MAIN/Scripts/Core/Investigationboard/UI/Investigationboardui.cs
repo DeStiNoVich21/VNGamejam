@@ -922,7 +922,32 @@ public class InvestigationBoardUI : MonoBehaviour,
     }
 
 
+    [Title("Управление всеми уликами")]
+    [Button("Вернуть всё в инвентарь", ButtonSizes.Medium)]
+    public void RecallAllStickersToInventory()
+    {
+        // Создаем копию списка ключей, так как RemoveStickerFromBoard меняет словарь spawnedStickers
+        List<string> activeStickerIds = new List<string>(spawnedStickers.Keys);
 
+        if (activeStickerIds.Count == 0)
+        {
+            Debug.Log("[Board] На доске нет улик для возврата.");
+            return;
+        }
+
+        foreach (string id in activeStickerIds)
+        {
+            RemoveStickerFromBoard(id);
+        }
+
+        // Дополнительно очищаем визуальные слоты, если там что-то осталось
+        foreach (var anchor in spawnedSlots.Values)
+        {
+            anchor.RefreshCount();
+        }
+
+        Debug.Log($"[Board] Реколл завершен. Вернулось объектов: {activeStickerIds.Count}");
+    }
     private void OnConclusionUnlocked(CaseConclusion c) { }
 
 
