@@ -83,7 +83,26 @@ public class WorldSceneManager : MonoBehaviour
         if (autoHideWhenDone && vnController != null)
             StartCoroutine(HideWhenDone());
     }
+    public void RegisterDynamicActor(string id, GameObject go)
+    {
+        // Проверяем, нет ли уже такого ID в списке
+        if (actors.Exists(a => a.id == id)) return;
 
+        WorldActor newActor = new WorldActor { id = id, go = go };
+        actors.Add(newActor);
+
+        // Сразу регистрируем в менеджере объектов и командах
+        if (WorldObjectManager.instance != null)
+            WorldObjectManager.instance.Register(id, go);
+
+        if (CommandManager.instance != null)
+        {
+            CommandDatabase db = CommandManager.instance.CreateSubDatabase(id);
+            WorldObjectCommands.RegisterTo(db, id);
+        }
+
+        Debug.Log($"[WorldSceneManager] Игрок зарегистрирован как актер: {id}");
+    }
     private IEnumerator HideWhenDone()
     {
         yield return null;

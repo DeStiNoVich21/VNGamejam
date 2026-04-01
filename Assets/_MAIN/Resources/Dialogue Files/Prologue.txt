@@ -1,0 +1,13 @@
+SetLayerMedia(background dark)
+CreateCharacter(Jonathan)
+Jonathan.SetPosition(-0.02 2.5)
+layer.SetActive(characters false)
+
+
+Jonathan "У меня слегка смутные воспоминания о том, что было вчера. Это был самый обычный день, да и дело было не примечательным."
+Jonathan "Ближе к ночи произошла заварушка в одном из старых районов, и меня позвали чтобы разобраться."
+Jonathan "Я заранее связался со своим напарником чтобы вместе выследить этого ублюдка."
+
+Jonathan "Я завел машину..."
+playsfx(car_ignition) 
+Jonathan "...и поехал по заданному адресу."
