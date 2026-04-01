@@ -3,7 +3,27 @@ guid: 16654bf38b6f4d545a4281c5f54072b1
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CarLights
+    second: {fileID: 2100000, guid: e7d601b5c0bfd074cbfd61f7227c77c4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CarNeonLight
+    second: {fileID: 2100000, guid: e9301422cdced1942b9351f8a06f1e43, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hall
+    second: {fileID: 2100000, guid: 50f3569921c45194c85cd83fc4ebf3fa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light
+    second: {fileID: 2100000, guid: dac32732bf6bef94eb2bc15b5798d9a2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
