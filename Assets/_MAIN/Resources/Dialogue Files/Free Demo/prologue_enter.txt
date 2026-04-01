@@ -1,0 +1,35 @@
+SetLayerMedia(background dark)
+CreateCharacter(Jonathan)
+CreateCharacter(Lance)
+Jonathan.SetPosition(-0.02 2.5)
+Lance.SetPosition(1.02 2.5)
+moveto(-y 8 -spd 15)
+layer.SetActive(characters false)
+
+Jonathan "У меня слегка смутные воспоминания о том, что было вчера. Это был самый обычный день, да и дело было не примечательным."
+Jonathan "Ближе к ночи произошла заварушка в одном из старых районов, и меня позвали чтобы разобраться."
+Jonathan "Я заранее связался со своим напарником чтобы вместе выследить этого ублюдка."
+
+Jonathan "Я завел машину..."
+playsfx(car_ignition) 
+Jonathan "...и поехал по заданному адресу."
+
+playsfx(carexit)
+moveto(-y 0 -spd 4)
+resetpos(-spd 0.4)
+ClearLayerMedia(background)
+layer.SetActive(characters true)
+Lance.Show()
+Jonathan.Show()
+Lance "Привет Джонни! Давненько не виделись."
+Jonathan "Привет Ленс. Извини что поднял при таких обстоятельствах."
+shake(-intensity 2 -duration 0.5)
+playsfx(swear)
+Lance "Расслабься ты {wa 1.5}, не могу же я тебя одного пустить {c=#87CEEB}на такое дело{/c}."
+Lance "К тому же протокол требует наличия двух сотрудников для таких случаев."
+Jonathan "Ага, выявлено на опыте."
+Lance "Ладно , ситуация произошла в зданий на пересечений улиц впреди."
+Lance "Не будем терять времени."
+
+
+

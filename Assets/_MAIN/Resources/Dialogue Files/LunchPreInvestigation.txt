@@ -1,6 +1,8 @@
 CreateCharacter(Jonathan)
+
 Jonathan.SetPosition(-0.02 2.5)
-Jonathan.show()
+
+Jonathan.Show()
 
 Jonathan "(Я проснулся в больнице. Белые стены, запах антисептика, тусклый свет над головой.)"
 
