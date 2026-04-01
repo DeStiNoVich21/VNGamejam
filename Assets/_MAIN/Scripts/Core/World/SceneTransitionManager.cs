@@ -43,6 +43,9 @@ public class SceneTransitionManager : MonoBehaviour
     private bool isTransitioning = false;
     private Canvas canvas;
 
+    // Кешируем ссылки, чтобы они не терялись
+    private Transform originalParent;
+
     public enum TransitionDirection
     {
         LeftToRight,
@@ -56,7 +59,12 @@ public class SceneTransitionManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+
+            // КРИТИЧЕСКИ ВАЖНО: сначала делаем DontDestroyOnLoad самого менеджера
+            transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
+
+            // Потом настраиваем остальные объекты
             SetupPersistentObjects();
         }
         else
@@ -69,9 +77,12 @@ public class SceneTransitionManager : MonoBehaviour
         if (canvas == null)
             canvas = GetComponent<Canvas>();
 
-        // Панель изначально невидима
+        // Сохраняем оригинального родителя панели
         if (transitionPanel != null)
+        {
+            originalParent = transitionPanel.parent;
             transitionPanel.gameObject.SetActive(false);
+        }
     }
 
     private void SetupPersistentObjects()
@@ -79,25 +90,37 @@ public class SceneTransitionManager : MonoBehaviour
         // Player
         if (player != null)
         {
-            if (player.transform.parent != null)
-                player.transform.SetParent(null);
+            player.transform.SetParent(null);
             DontDestroyOnLoad(player);
+            Debug.Log($"[SceneTransition] Player '{player.name}' marked as DontDestroyOnLoad");
         }
 
         // Persistent UI
         if (persistentUI != null)
         {
-            if (persistentUI.transform.parent != null)
-                persistentUI.transform.SetParent(null);
+            persistentUI.transform.SetParent(null);
             DontDestroyOnLoad(persistentUI);
+            Debug.Log($"[SceneTransition] PersistentUI '{persistentUI.name}' marked as DontDestroyOnLoad");
         }
 
         // VN Controller
         if (vnController != null)
         {
-            if (vnController.transform.parent != null)
-                vnController.transform.SetParent(null);
+            vnController.transform.SetParent(null);
             DontDestroyOnLoad(vnController);
+            Debug.Log($"[SceneTransition] VN Controller '{vnController.name}' marked as DontDestroyOnLoad");
+        }
+
+        // Canvas самого менеджера тоже должен быть persistent
+        if (canvas != null && canvas.gameObject != gameObject)
+        {
+            Canvas rootCanvas = canvas.rootCanvas;
+            if (rootCanvas != null && rootCanvas.gameObject != gameObject)
+            {
+                rootCanvas.transform.SetParent(null);
+                DontDestroyOnLoad(rootCanvas.gameObject);
+                Debug.Log($"[SceneTransition] Canvas '{rootCanvas.name}' marked as DontDestroyOnLoad");
+            }
         }
     }
 
@@ -141,13 +164,41 @@ public class SceneTransitionManager : MonoBehaviour
 
         // Загружаем новую сцену
         if (sceneIdentifier is string sceneName)
+        {
+            Debug.Log($"[SceneTransition] Loading scene: {sceneName}");
             yield return SceneManager.LoadSceneAsync(sceneName);
+        }
         else if (sceneIdentifier is int sceneIndex)
+        {
+            Debug.Log($"[SceneTransition] Loading scene index: {sceneIndex}");
             yield return SceneManager.LoadSceneAsync(sceneIndex);
+        }
 
-        // Небольшая пауза
-        yield return new WaitForSeconds(0.1f);
+        // Даем время Unity обработать загрузку
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(0.15f);
 
+        // Проверяем что панель все еще существует после загрузки
+        if (transitionPanel == null || transitionImage == null)
+        {
+            Debug.LogError("[SceneTransition] Transition panel was destroyed! Scene transition cancelled.");
+            isTransitioning = false;
+            yield break;
+        }
+        // --- НОВЫЙ БЛОК: ОЧИСТКА ---
+        // Ждем один кадр, чтобы объекты в новой сцене успели проснуться (Awake)
+        yield return new WaitForEndOfFrame();
+
+        RemoveDuplicatesInNewScene();
+        // ---------------------------
+
+        yield return new WaitForSeconds(0.15f);
+
+        if (transitionPanel != null)
+        {
+
+        }
+            yield return StartCoroutine(WipeOut(direction));
         // Wipe OUT (панель открывает экран)
         yield return StartCoroutine(WipeOut(direction));
 
@@ -155,10 +206,19 @@ public class SceneTransitionManager : MonoBehaviour
         EnablePlayerMovement();
 
         isTransitioning = false;
+
+        Debug.Log($"[SceneTransition] Transition completed successfully");
     }
 
     private IEnumerator WipeIn(TransitionDirection direction)
     {
+        // Проверяем что объекты существуют
+        if (transitionPanel == null)
+        {
+            Debug.LogError("[SceneTransition] TransitionPanel is null!");
+            yield break;
+        }
+
         transitionPanel.gameObject.SetActive(true);
 
         Vector2 startPos = GetStartPosition(direction, isWipeIn: true);
@@ -169,17 +229,32 @@ public class SceneTransitionManager : MonoBehaviour
         float elapsed = 0f;
         while (elapsed < wipeDuration)
         {
+            // Проверка на случай если объект был уничтожен во время анимации
+            if (transitionPanel == null)
+            {
+                Debug.LogError("[SceneTransition] TransitionPanel destroyed during WipeIn!");
+                yield break;
+            }
+
             elapsed += Time.deltaTime;
             float t = wipeCurve.Evaluate(elapsed / wipeDuration);
             transitionPanel.anchoredPosition = Vector2.Lerp(startPos, endPos, t);
             yield return null;
         }
 
-        transitionPanel.anchoredPosition = endPos;
+        if (transitionPanel != null)
+            transitionPanel.anchoredPosition = endPos;
     }
 
     private IEnumerator WipeOut(TransitionDirection direction)
     {
+        // Проверяем что объекты существуют
+        if (transitionPanel == null)
+        {
+            Debug.LogError("[SceneTransition] TransitionPanel is null!");
+            yield break;
+        }
+
         Vector2 startPos = Vector2.zero;
         Vector2 endPos = GetStartPosition(direction, isWipeIn: false);
 
@@ -188,22 +263,41 @@ public class SceneTransitionManager : MonoBehaviour
         float elapsed = 0f;
         while (elapsed < wipeDuration)
         {
+            // Проверка на случай если объект был уничтожен во время анимации
+            if (transitionPanel == null)
+            {
+                Debug.LogError("[SceneTransition] TransitionPanel destroyed during WipeOut!");
+                yield break;
+            }
+
             elapsed += Time.deltaTime;
             float t = wipeCurve.Evaluate(elapsed / wipeDuration);
             transitionPanel.anchoredPosition = Vector2.Lerp(startPos, endPos, t);
             yield return null;
         }
 
-        transitionPanel.anchoredPosition = endPos;
-        transitionPanel.gameObject.SetActive(false);
+        if (transitionPanel != null)
+        {
+            transitionPanel.anchoredPosition = endPos;
+            transitionPanel.gameObject.SetActive(false);
+        }
     }
 
     private Vector2 GetStartPosition(TransitionDirection direction, bool isWipeIn)
     {
         if (canvas == null)
-            return Vector2.zero;
+        {
+            Debug.LogWarning("[SceneTransition] Canvas is null, using default screen size");
+            return GetStartPositionFallback(direction, isWipeIn);
+        }
 
         RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+        if (canvasRect == null)
+        {
+            Debug.LogWarning("[SceneTransition] Canvas RectTransform is null");
+            return GetStartPositionFallback(direction, isWipeIn);
+        }
+
         float width = canvasRect.rect.width;
         float height = canvasRect.rect.height;
 
@@ -226,6 +320,26 @@ public class SceneTransitionManager : MonoBehaviour
         }
     }
 
+    private Vector2 GetStartPositionFallback(TransitionDirection direction, bool isWipeIn)
+    {
+        float width = Screen.width;
+        float height = Screen.height;
+
+        switch (direction)
+        {
+            case TransitionDirection.RightToLeft:
+                return isWipeIn ? new Vector2(width, 0) : new Vector2(-width, 0);
+            case TransitionDirection.LeftToRight:
+                return isWipeIn ? new Vector2(-width, 0) : new Vector2(width, 0);
+            case TransitionDirection.TopToBottom:
+                return isWipeIn ? new Vector2(0, height) : new Vector2(0, -height);
+            case TransitionDirection.BottomToTop:
+                return isWipeIn ? new Vector2(0, -height) : new Vector2(0, height);
+            default:
+                return Vector2.zero;
+        }
+    }
+
     private void DisablePlayerMovement()
     {
         if (player == null) return;
@@ -239,6 +353,54 @@ public class SceneTransitionManager : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
     }
 
+    private void RemoveDuplicatesInNewScene()
+    {
+        // 1. Очистка Игрока
+        if (player != null)
+        {
+            // Ищем всех, у кого есть скрипт Movement
+            Movement[] allPlayers = GameObject.FindObjectsByType<Movement>(FindObjectsSortMode.None);
+            foreach (var p in allPlayers)
+            {
+                // Если этот объект НЕ в сцене DontDestroyOnLoad — значит он новый и его надо убить
+                if (p.gameObject.scene.name != "DontDestroyOnLoad")
+                {
+                    Debug.Log($"[SceneTransition] Удален дубликат Игрока из новой сцены: {p.gameObject.name}");
+                    Destroy(p.gameObject);
+                }
+            }
+        }
+
+        // 2. Очистка VN Controller
+        if (vnController != null)
+        {
+            // Ищем по тегу или по имени (лучше заранее назначить тег "VNController")
+            GameObject[] controllers = GameObject.FindGameObjectsWithTag("VNController");
+            foreach (var c in controllers)
+            {
+                if (c.scene.name != "DontDestroyOnLoad")
+                {
+                    Debug.Log($"[SceneTransition] Удален дубликат VN Controller: {c.name}");
+                    Destroy(c);
+                }
+            }
+        }
+
+        // 3. Очистка Persistent UI
+        if (persistentUI != null)
+        {
+            // Аналогично ищем по тегу "PersistentUI"
+            GameObject[] uiRoots = GameObject.FindGameObjectsWithTag("PersistentUI");
+            foreach (var ui in uiRoots)
+            {
+                if (ui.scene.name != "DontDestroyOnLoad")
+                {
+                    Debug.Log($"[SceneTransition] Удален дубликат Persistent UI: {ui.name}");
+                    Destroy(ui);
+                }
+            }
+        }
+    }
     private void EnablePlayerMovement()
     {
         if (player == null) return;
@@ -261,12 +423,5 @@ public class SceneTransitionManager : MonoBehaviour
     {
         if (!Application.isPlaying) return;
         StartCoroutine(TransitionCoroutine(SceneManager.GetActiveScene().buildIndex, TransitionDirection.LeftToRight));
-    }
-
-    [Button("Test Transition Top?Bottom"), ButtonGroup("Test")]
-    private void TestTopToBottom()
-    {
-        if (!Application.isPlaying) return;
-        StartCoroutine(TransitionCoroutine(SceneManager.GetActiveScene().buildIndex, TransitionDirection.TopToBottom));
     }
 }
