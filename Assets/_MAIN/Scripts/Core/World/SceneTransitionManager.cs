@@ -45,7 +45,7 @@ public class SceneTransitionManager : MonoBehaviour
 
     // Кешируем ссылки, чтобы они не терялись
     private Transform originalParent;
-
+    private string targetSpawnPointID;
     public enum TransitionDirection
     {
         LeftToRight,
@@ -53,7 +53,15 @@ public class SceneTransitionManager : MonoBehaviour
         TopToBottom,
         BottomToTop
     }
-
+    /// <summary>
+    /// Загружает сцену и перемещает игрока в указанную точку
+    /// </summary>
+    public void LoadScene(string sceneName, string spawnPointID, TransitionDirection? direction = null)
+    {
+        if (isTransitioning) return;
+        targetSpawnPointID = spawnPointID; // Запоминаем, куда идем
+        StartCoroutine(TransitionCoroutine(sceneName, direction ?? defaultDirection));
+    }
     private void Awake()
     {
         if (instance == null)
@@ -151,18 +159,61 @@ public class SceneTransitionManager : MonoBehaviour
 
         StartCoroutine(TransitionCoroutine(sceneIndex, direction ?? defaultDirection));
     }
+    private void TeleportPlayerToSpawnPoint()
+    {
+        if (player == null) return;
 
+        // Ищем все точки спавна в новой сцене
+        SceneSpawnPoint[] spawnPoints = GameObject.FindObjectsByType<SceneSpawnPoint>(FindObjectsSortMode.None);
+
+        SceneSpawnPoint targetPoint = null;
+
+        if (!string.IsNullOrEmpty(targetSpawnPointID))
+        {
+            // Ищем точку с нужным ID
+            foreach (var sp in spawnPoints)
+            {
+                if (sp.spawnPointID == targetSpawnPointID)
+                {
+                    targetPoint = sp;
+                    break;
+                }
+            }
+        }
+
+        if (targetPoint != null)
+        {
+            // 1. Сбрасываем родителя, если он есть (игрок должен быть в корне сцены)
+            player.transform.SetParent(null);
+
+            // 2. Телепортация в МИРОВЫЕ координаты
+            player.transform.position = targetPoint.transform.position;
+
+            // 3. ОБЯЗАТЕЛЬНО для физики:
+            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero; // Гасим скорость, чтобы его не унесло по инерции
+                rb.position = targetPoint.transform.position; // Телепортируем само тело физики
+            }
+
+            Physics2D.SyncTransforms(); // Принудительно обновляем позиции в движке
+            Debug.Log($"[SceneTransition] Игрок телепортирован в: {targetPoint.transform.position}");
+        }
+        // Очищаем ID для следующего раза
+        targetSpawnPointID = null;
+    }
     private IEnumerator TransitionCoroutine(object sceneIdentifier, TransitionDirection direction)
     {
         isTransitioning = true;
 
-        // Отключаем движение игрока
+        // 1. Подготовка: отключаем управление
         DisablePlayerMovement();
 
-        // Wipe IN (панель закрывает экран)
+        // 2. Wipe IN: закрываем экран черной панелью
         yield return StartCoroutine(WipeIn(direction));
 
-        // Загружаем новую сцену
+        // 3. Загрузка сцены (асинхронно)
         if (sceneIdentifier is string sceneName)
         {
             Debug.Log($"[SceneTransition] Loading scene: {sceneName}");
@@ -174,40 +225,43 @@ public class SceneTransitionManager : MonoBehaviour
             yield return SceneManager.LoadSceneAsync(sceneIndex);
         }
 
-        // Даем время Unity обработать загрузку
+        // 4. Ожидание инициализации новой сцены
+        // Ждем конца кадра и немного времени, чтобы всё успело прогрузиться
         yield return new WaitForEndOfFrame();
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.1f);
 
-        // Проверяем что панель все еще существует после загрузки
-        if (transitionPanel == null || transitionImage == null)
+        // Проверка целостности UI после загрузки
+        if (transitionPanel == null)
         {
-            Debug.LogError("[SceneTransition] Transition panel was destroyed! Scene transition cancelled.");
+            Debug.LogError("[SceneTransition] Transition panel was lost during scene load!");
             isTransitioning = false;
             yield break;
         }
-        // --- НОВЫЙ БЛОК: ОЧИСТКА ---
-        // Ждем один кадр, чтобы объекты в новой сцене успели проснуться (Awake)
-        yield return new WaitForEndOfFrame();
 
+        // 5. Очистка и Позиционирование
+        // Удаляем из новой сцены объекты, которые у нас уже есть в DontDestroyOnLoad
         RemoveDuplicatesInNewScene();
-        // ---------------------------
 
+        // Телепортируем игрока в точку спавна (метод описан в предыдущем ответе)
+        TeleportPlayerToSpawnPoint();
+
+        // Принудительно обновляем физику, чтобы не было "прыжков" через стены в первом кадре
+        Physics2D.SyncTransforms();
+
+        // Небольшая пауза для стабилизации камеры или эффектов в новой сцене
         yield return new WaitForSeconds(0.15f);
 
+        // 6. Wipe OUT: открываем экран
         if (transitionPanel != null)
         {
-
-        }
             yield return StartCoroutine(WipeOut(direction));
-        // Wipe OUT (панель открывает экран)
-        yield return StartCoroutine(WipeOut(direction));
+        }
 
-        // Включаем движение игрока
+        // 7. Завершение: возвращаем управление
         EnablePlayerMovement();
-
         isTransitioning = false;
 
-        Debug.Log($"[SceneTransition] Transition completed successfully");
+        Debug.Log($"[SceneTransition] Transition to {sceneIdentifier} completed successfully.");
     }
 
     private IEnumerator WipeIn(TransitionDirection direction)

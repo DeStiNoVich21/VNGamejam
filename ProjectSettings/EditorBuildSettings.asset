@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_MAIN/Scenes/LevelClub.unity
     guid: 4511c0c2b9ec2ea4297cd325f44359ac
+  - enabled: 1
+    path: Assets/_MAIN/Scenes/KilledApartment.unity
+    guid: d50b057d36db5fc46993124f3f4b4839
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
