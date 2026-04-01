@@ -2,20 +2,40 @@ CreateCharacter(Jonathan)
 CreateCharacter(Lance)
 Jonathan.SetPosition(-0.02 2.5)
 Lance.SetPosition(1.02 2.5)
-
-load_scene(KilledApartment -spawn KILL -dir RightToLeft)
-
-CreateCharacter(Jonathan)
-Jonathan.SetPosition(-0.02 2.5)
+Player.SetBool(isIdle true)
+Lance.Show()
 Jonathan.Show()
 
-CreateCharacter(Lance)
-Lance.SetPosition(1.02 2.5)
-Lance.Show()
-layer.SetActive(characters false)
-ClearLayerMedia(background)
+playsfx(swear)                  
+shake(-intensity 2 -duration 0.5) 
 
-Jonathan "(Я видел кровавую баню, все было залито кровью аж до самого потолка, странные желтые символы были погребены под слоем крови. Естественно были трупы и на них был окровавленный желтый символ.)"
-Jonathan "(Ленс позвал меня, говоря что он нашел преступника и мы направились к лифту. На нём мы поднялись на несколько этажей и подошли к нужной квартире.)"
+Lance [0:angry] "{c=#FF0000}{shake=1}БЛЯ!{/shake}{/c}"
+                
+
+shake(-intensity 2 -duration 0.5)
+playsfx(swear)
+Lance [0:angry] "{c=#FF0000}{shake=1}КАК ЖЕ ТУТ ВОНЯЕТ!{/shake}{/c}"
+
+Jonathan [0:serious-silent] "Не самое худшее что чуял, но все еще отвратно."
+
+shake(-intensity 2 -duration 0.5)
+playsfx(swear)
+Lance [0:angry] "{c=#FF0000}{shake=1}ТУТ ЕЩЕ И ТРУПЫ!{/shake}{/c}"
+
+Jonathan [0:serious-silent] "Не похоже на маленькую ссору соседей. Тут целая бойня."
+
+Lance [0:annoyed] "Ну и с лютым психом нам сейчас возиться."
+
+Jonathan [0:serious-silent] "Остынь Лэнс, смотри видишь символы?"
+
+Lance [0:serious-silent] "Не похоже на что-то из религиозного, скорее всего бред безумца."
+
+
+Jonathan [0:serious-silent] "Еще и след."
+
+Lance [0:serious-silent] "Вижу {wa 1} ведут в квартиру в конце."
+
+Jonathan [0:serious-silent] "Пойдем, может там что-то найдем."
+
 
 

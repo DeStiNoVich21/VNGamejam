@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Movement : MonoBehaviour
 {
@@ -14,7 +15,22 @@ public class Movement : MonoBehaviour
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
     }
+    private void OnEnable()
+    {
+        // Подписываемся на событие загрузки сцены
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
+    private void OnDisable()
+    {
+        // Обязательно отписываемся при уничтожении, чтобы избежать утечек памяти
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+       this.enabled = true; // Включаем скрипт при загрузке новой сцены
+    }
     void Update()
     {
         // Получаем ввод (A/D или стрелки)

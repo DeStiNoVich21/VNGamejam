@@ -92,7 +92,23 @@ public class SceneTransitionManager : MonoBehaviour
             transitionPanel.gameObject.SetActive(false);
         }
     }
+    private void OnEnable()
+    {
+        // Подписываемся на событие загрузки сцены
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
+    private void OnDisable()
+    {
+        // Обязательно отписываемся при уничтожении, чтобы избежать утечек памяти
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log($"[SceneTransition] Scene loaded playermovement enabled");
+        player.GetComponent<Movement>().enabled = true; // Включаем управление после загрузки
+    }
     private void SetupPersistentObjects()
     {
         // Player
@@ -302,27 +318,17 @@ public class SceneTransitionManager : MonoBehaviour
 
     private IEnumerator WipeOut(TransitionDirection direction)
     {
-        // Проверяем что объекты существуют
-        if (transitionPanel == null)
-        {
-            Debug.LogError("[SceneTransition] TransitionPanel is null!");
-            yield break;
-        }
+        if (transitionPanel == null) yield break;
 
-        Vector2 startPos = Vector2.zero;
-        Vector2 endPos = GetStartPosition(direction, isWipeIn: false);
+        Vector2 startPos = Vector2.zero; // Центр экрана
+        Vector2 endPos = GetStartPosition(direction, isWipeIn: false); // Точка за экраном
 
         transitionPanel.anchoredPosition = startPos;
 
         float elapsed = 0f;
         while (elapsed < wipeDuration)
         {
-            // Проверка на случай если объект был уничтожен во время анимации
-            if (transitionPanel == null)
-            {
-                Debug.LogError("[SceneTransition] TransitionPanel destroyed during WipeOut!");
-                yield break;
-            }
+            if (transitionPanel == null) yield break;
 
             elapsed += Time.deltaTime;
             float t = wipeCurve.Evaluate(elapsed / wipeDuration);
@@ -330,34 +336,23 @@ public class SceneTransitionManager : MonoBehaviour
             yield return null;
         }
 
-        if (transitionPanel != null)
-        {
-            transitionPanel.anchoredPosition = endPos;
-            transitionPanel.gameObject.SetActive(false);
-        }
+        transitionPanel.anchoredPosition = endPos;
+        transitionPanel.gameObject.SetActive(false); // Теперь она точно не мешает
     }
 
     private Vector2 GetStartPosition(TransitionDirection direction, bool isWipeIn)
     {
-        if (canvas == null)
-        {
-            Debug.LogWarning("[SceneTransition] Canvas is null, using default screen size");
-            return GetStartPositionFallback(direction, isWipeIn);
-        }
+        if (canvas == null) return GetStartPositionFallback(direction, isWipeIn);
 
         RectTransform canvasRect = canvas.GetComponent<RectTransform>();
-        if (canvasRect == null)
-        {
-            Debug.LogWarning("[SceneTransition] Canvas RectTransform is null");
-            return GetStartPositionFallback(direction, isWipeIn);
-        }
-
         float width = canvasRect.rect.width;
         float height = canvasRect.rect.height;
 
         switch (direction)
         {
             case TransitionDirection.RightToLeft:
+                // Вход: справа налево (приходит из +width в 0)
+                // Выход: продолжаем влево (уходит из 0 в -width)
                 return isWipeIn ? new Vector2(width, 0) : new Vector2(-width, 0);
 
             case TransitionDirection.LeftToRight:
