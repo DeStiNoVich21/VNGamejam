@@ -28,7 +28,7 @@ namespace COMMANDS
             database.AddCommand("highlight", new Func<string[], IEnumerator>(HighlightAll));
             database.AddCommand("unhighlight", new Func<string[], IEnumerator>(UnHighlightAll));
 
-            //Добавляем команды персонажам
+            //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             CommandDatabase baseCommands = CommandManager.instance.CreateSubDatabase(CommandManager.DATABASE_CHARACTERS_BASE);
             baseCommands.AddCommand("move", new Func<string[], IEnumerator>(MoveCharacter));
             baseCommands.AddCommand("show", new Func<string[], IEnumerator>(Show));
@@ -43,7 +43,7 @@ namespace COMMANDS
             baseCommands.AddCommand("flip", new Action<string[]>(Flip));
             baseCommands.AddCommand("animate", new Action<string[]>(Animate));
 
-            //Добавляем персонажам специфичные базыданных
+            //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             CommandDatabase spriteCommands = CommandManager.instance.CreateSubDatabase(CommandManager.DATABASE_CHARACTERS_SPRITE);
             spriteCommands.AddCommand("setsprite", new Func<string[], IEnumerator>(SetSprite));
         }
@@ -64,7 +64,7 @@ namespace COMMANDS
                 return;
 
             if (immediate)
-                character.isVisible = true; 
+                character.isVisible = true;
             else
                 character.Show();
         }
@@ -102,20 +102,20 @@ namespace COMMANDS
 
             parameters.TryGetValue(PARAM_XPOS, out x);
 
-            parameters.TryGetValue(PARAM_YPOS,out y);
+            parameters.TryGetValue(PARAM_YPOS, out y);
 
-            parameters.TryGetValue(PARAM_SPEED,out speed, defaultValue: 1);
+            parameters.TryGetValue(PARAM_SPEED, out speed, defaultValue: 1);
 
-            parameters.TryGetValue(PARAM_SMOOTH,out smooth, defaultValue: false);
+            parameters.TryGetValue(PARAM_SMOOTH, out smooth, defaultValue: false);
 
-            parameters.TryGetValue(PARAM_IMMEDIATE,out immediate, defaultValue: false);
+            parameters.TryGetValue(PARAM_IMMEDIATE, out immediate, defaultValue: false);
 
-            Vector2 position = new Vector2(x,y);
+            Vector2 position = new Vector2(x, y);
 
             if (immediate)
                 character.SetPosition(position);
             else
-            {  
+            {
                 CommandManager.instance.AddTerminationActionToCurrentProcess(() => { character?.SetPosition(position); });
                 yield return character.MoveToPosition(position, speed, smooth);
             }
@@ -123,6 +123,7 @@ namespace COMMANDS
 
         private static IEnumerator ShowAll(string[] data)
         {
+            Debug.Log("ShowCharacter");
             List<Character> characters = new List<Character>();
             bool immediate = false;
 
@@ -140,7 +141,7 @@ namespace COMMANDS
 
             parameters.TryGetValue(PARAM_IMMEDIATE, out immediate, defaultValue: false);
 
-            foreach(Character character in characters)
+            foreach (Character character in characters)
             {
                 if (immediate)
                     character.isVisible = true;
@@ -202,6 +203,7 @@ namespace COMMANDS
 
         private static IEnumerator Show(string[] data)
         {
+            Debug.Log("ShowCharacter");
             Character character = CharacterManager.instance.GetCharacter(data[0]);
 
             if (character == null)
@@ -210,7 +212,7 @@ namespace COMMANDS
             bool immediate = false;
             var parameters = ConvertDataToParameters(data);
 
-            parameters.TryGetValue(new string[] {"-i","-immediate"}, out immediate, defaultValue: false);
+            parameters.TryGetValue(new string[] { "-i", "-immediate" }, out immediate, defaultValue: false);
 
             if (immediate)
                 character.isVisible = true;
@@ -251,12 +253,12 @@ namespace COMMANDS
 
             if (character == null || data.Length < 2)
                 return;
-          
+
             var parameters = ConvertDataToParameters(data, 1);
             Debug.Log(data.ToString());
             parameters.TryGetValue(PARAM_XPOS, out x, defaultValue: 0);
             parameters.TryGetValue(PARAM_YPOS, out y, defaultValue: 0);
-            Debug.Log(x +" "+y);
+            Debug.Log(x + " " + y);
             character.SetPosition(new Vector2(x, y));
         }
 
@@ -322,7 +324,7 @@ namespace COMMANDS
             if (character == null || data.Length < 2)
                 yield break;
 
-            var parameters = ConvertDataToParameters(data,startingIndex:1);
+            var parameters = ConvertDataToParameters(data, startingIndex: 1);
 
             parameters.TryGetValue(new string[] { "-c", "-color" }, out colorName);
 
@@ -349,13 +351,13 @@ namespace COMMANDS
 
         public static IEnumerator Highlight(string[] data)
         {
-            Character character = CharacterManager.instance.GetCharacter(data[0],createIfDoesNotExist:false) as Character;
+            Character character = CharacterManager.instance.GetCharacter(data[0], createIfDoesNotExist: false) as Character;
 
             if (character == null)
                 yield break;
 
             bool immediate = false;
-            var parameters = ConvertDataToParameters(data,startingIndex: 1);
+            var parameters = ConvertDataToParameters(data, startingIndex: 1);
 
             parameters.TryGetValue(new string[] { "-i", "-immediate" }, out immediate, defaultValue: false);
 
@@ -407,7 +409,7 @@ namespace COMMANDS
             if (characters.Count == 0)
                 yield break;
 
-            
+
             var parameters = ConvertDataToParameters(data, startingIndex: 1);
 
             parameters.TryGetValue(new string[] { "-i", "-immediate" }, out immediate, defaultValue: false);
@@ -430,7 +432,7 @@ namespace COMMANDS
 
             if (!immediate)
             {
-                CommandManager.instance.AddTerminationActionToCurrentProcess(() => 
+                CommandManager.instance.AddTerminationActionToCurrentProcess(() =>
                 {
                     foreach (var character in characters)
                         character.Highlight(immediate: true);
@@ -514,7 +516,7 @@ namespace COMMANDS
             var parameters = ConvertDataToParameters(data, startingIndex: 1);
 
             parameters.TryGetValue(new string[] { "-s", "-sprite" }, out spriteName);
-            parameters.TryGetValue(new string[] { "-l", "-layer" }, out layer,defaultValue: 0);
+            parameters.TryGetValue(new string[] { "-l", "-layer" }, out layer, defaultValue: 0);
 
             bool specifiedSpeed = parameters.TryGetValue(PARAM_SPEED, out speed, defaultValue: 0.1f);
 
