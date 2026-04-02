@@ -24,4 +24,12 @@ public class SceneChange : MonoBehaviour
     {
         SceneManager.LoadScene(index);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Player")) // Убедитесь, что у игрока есть тег "Player"
+        {
+            LoadTargetScene();
+        }
+    }
 }
