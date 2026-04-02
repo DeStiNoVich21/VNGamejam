@@ -1,0 +1,41 @@
+// --- СЦЕНА: УЛИЦА ---
+SetLayerMedia(background street_day)
+playambience(CityAmbience)
+
+// --- ПЕРСОНАЖИ ---
+CreateCharacter(John), John.SetPosition(-0.02 2.5)
+CreateCharacter(Emily), Emily.SetPosition(1.02 2.5)
+
+John.Show()
+
+// --- ВСТРЕЧА ---
+PlaySFX(FootstepsStop)
+
+Emily.Show(), Emily.FaceLeft(-i true)
+
+Emily "Здравствуйте, Джонатан."
+
+John "Здравствуйте, мисс Эмили."
+
+John "(Неожиданно меня поприветствовала соседка.{pause=0.5} Она стала {c=#90EE90}более живее{/c}, радостнее и слегка изменилась.)"
+
+Emily "Я бы хотела с вами поговорить...{pause=0.5} но, к сожалению, у меня есть дела.{c} До свидания…"
+
+John "До свидания."
+
+// --- УХОД ЭМИЛИ ---
+Emily.Hide()
+
+PlaySFX(FootstepsAway)
+
+John "(Попрощавшись, она ушла радостно в своё направление.)"
+
+// --- МЫСЛИ ДЖОНА ---
+John "{i}(Наверное нашла новую работу…){/i}"
+
+John "(Подумав, я пошел дальше.)"
+
+// --- ЗАВЕРШЕНИЕ ---
+stopambience()
+
+Load(Day1_NextLocation)

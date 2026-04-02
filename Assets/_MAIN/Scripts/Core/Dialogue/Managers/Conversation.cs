@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DIALOGUE
 {
@@ -9,6 +10,14 @@ namespace DIALOGUE
 
         public Conversation(List<string> lines,int progress = 0)
         {
+            for (int i = 0; i < lines.Count; i++)
+            {
+                if (lines[i].TrimStart().StartsWith("//"))
+                {
+                    lines.RemoveAt(i);
+                    i--;
+                }
+            }
             this.lines = lines;
             this.progress = progress;
         }

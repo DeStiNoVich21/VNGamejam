@@ -1,0 +1,28 @@
+SetLayerMedia(background cafe_night)
+playambience(CafeNight)
+
+CreateCharacter(Cecilia), Cecilia.SetPosition(0.7 0.2)
+Cecilia.Show(), Cecilia.FaceLeft(-i true)
+
+John "(Не вынесев стресс, я снова зашел в кафе.)"
+
+Cecilia "Вы сегодня выглядите мрачнее обычного."
+
+John "(Мне стоит ее успокоить.)"
+
+// --- ВЫБОР ---
+choice "Что сказать Сесилии?"
+{
+    - Он выйдет на связь
+        raise_sync(zenith 2)
+        John "Он обязательно свяжется с вами."
+
+    - Он справится сам
+        raise_sync(zenith 1)
+        John "Он умеет выживать."
+}
+
+// --- СКРЫТАЯ МЫСЛЬ ---
+John "{i}(Если дилер — её брат...){/i}"
+
+Load(Night_Sleep)

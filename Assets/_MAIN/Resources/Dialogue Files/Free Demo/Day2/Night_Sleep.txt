@@ -1,0 +1,39 @@
+SetLayerMedia(background black)
+stopambience()
+playsong(Dream)
+
+John "(Вернувшись домой, я сразу лег спать.)"
+John "(Сон снова пришел...){pause=1.0} (И снова этот шум.)"
+
+// --- СОН В ЗАВИСИМОСТИ ОТ МАРШРУТА ---
+if ($current_route == "Dominion")
+{
+    John "(Я стоял с оружием...){pause=0.5} (Мне приказали стрелять.)"
+    John "{shake=1}(\"Стаду нужен лидер\"){/shake}"
+}
+
+if ($current_route == "Stigma")
+{
+    John "(Я сидел один...){pause=0.5} (Нож в руках.)"
+    John "{glitch=1}(Шорохи... они везде.){/glitch}"
+}
+
+if ($current_route == "Zenith")
+{
+    John "(Я видел страдания людей...){pause=0.5} (И не мог отвернуться.)"
+    John "{wave=0.5}(Я должен помочь...){/wave}"
+}
+
+if ($current_route == "Neutral")
+{
+    John "(Я спал вполглаза.)"
+}
+
+// --- ОБЩИЙ ЭФФЕКТ ---
+PlaySFX(Ringing)
+
+John "{c=#FF0000}{shake=1}(Этот звук снова...){/shake}{/c}"
+
+stopsong()
+
+Load(Day2)
