@@ -2,13 +2,14 @@ SetLayerMedia(background dark)
 layer.SetActive(player_interaction true)
 playsfx(door_break)
 shake(-intensity 3 -duration 0.8)
+playambience(force -loop true)
 
 layer.SetActive(characters false)
 CreateCharacter(Jonathan)
 CreateCharacter(Lance)
 Jonathan.SetPosition(-0.02 2.5)
 Lance.SetPosition(1.02 2.5)
-Player.SetBool(isIdle false)
+Jonathan.SetBool(isIdle false)
 Player.SetBool(isAiming true)
 
 Jonathan "(Он был в запертой комнате с заложником. Мы выбили дверь.)"
@@ -94,8 +95,9 @@ choice "ВЫБОР 2:"
         playsfx(pistol_shot)
         
 }
+stopambience()
 layer.SetActive(characters false)
-
+playambience(void -loop true)
 pause(3.0)
 
 Lance.Hide()
@@ -112,7 +114,7 @@ Jonathan "(Мне не привиделось. Они мне казались з
 Jonathan "(Первым в глаза бросился юнец в кадетской форме. Он был окружен различными книгами. От него исходила противная {c=#FFD700}желтая аура{/c}.)"
 Jonathan "(Вторым был тот же я, но уже {c=#FF0000}ярко красной ауры{/c}, восседающий на троне черепов. На его лице выражалась чувство отчаяния)."
 Jonathan "(Самым интересным из них оказался третий - чье лицо я толком не разглядел. Скованный в оковах, он тут же сбросил их с себя, устремляя взгляд вверх.)"
-
+DestroyCharacter(Lance)
 shake(-intensity 5 -duration 1.5)
 playsfx(magic_impact)
 Jonathan "(В тот же момент как я хотел подойти ближе, меня резко оттолкнуло)."
