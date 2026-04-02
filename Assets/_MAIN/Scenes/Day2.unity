@@ -13125,7 +13125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoHideWhenDone: 1
-  sceneFile: {fileID: 4900000, guid: 9f3a676cc09f184438ee2dd14f6edf4e, type: 3}
+  sceneFile: {fileID: 4900000, guid: f39d4e8891c9fe847a7bbd51c77e2ea2, type: 3}
   useTrigger: 1
   triggerTag: Player
   oneShot: 1

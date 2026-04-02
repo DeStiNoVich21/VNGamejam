@@ -3201,7 +3201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09144f53275d78644955ac24793b8bad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileToRead: {fileID: 4900000, guid: b12dcb29cc9208145b64b793fbb8e512, type: 3}
+  fileToRead: {fileID: 4900000, guid: ad6892101226de54bbf36ac0376addc8, type: 3}
 --- !u!114 &474298624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8533,6 +8533,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3464332147935669852, guid: d04ac9a194943fa4e9c75b53a88f1a2a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -4.0999756
+      objectReference: {fileID: 0}
     - target: {fileID: 3957565291122373935, guid: d04ac9a194943fa4e9c75b53a88f1a2a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -8568,6 +8572,10 @@ PrefabInstance:
     - target: {fileID: 5056983806605347785, guid: d04ac9a194943fa4e9c75b53a88f1a2a, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5594641114715236342, guid: d04ac9a194943fa4e9c75b53a88f1a2a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6203234524440915629, guid: d04ac9a194943fa4e9c75b53a88f1a2a, type: 3}
       propertyPath: m_AnchorMax.y

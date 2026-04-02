@@ -6,42 +6,22 @@ John.Show()
 John "(День подошел к концу. Пора сделать выводы.)"
 
 // --- АВТО ВЫБОР ФАНТОМА ---
-if ($sync_dominion >= $sync_zenith && $sync_dominion >= $sync_stigma)
-{
-    set(route_dominion = true)
-    set(current_route = "Dominion")
-    raise_sync(dominion 1)
-}
-else
-{
-    if ($sync_zenith >= $sync_stigma)
-    {
-        set(route_zenith = true)
-        set(current_route = "Zenith")
-        raise_sync(zenith 1)
-    }
-    else
-    {
-        set(route_stigma = true)
-        set(current_route = "Stigma")
-        raise_sync(stigma 1)
-    }
-}
+
 
 // --- ВЫБОР РОМАНСА ---
 choice "Как провести вечер?"
 {
     - Заглянуть к начальнице (Джин)
-        Load(Route_Dominion)
+        Load("Free Demo/Day2/Route_Dominion")
 
     - Зайти в кафе (Сесилия)
-        Load(Route_Zenith)
+        Load("Free Demo/Day2/Route_Zenith")
 
     - Прогуляться с Эмили
-        Load(Route_Stigma)
+        Load("Free Demo/Day2/Route_Stigma")
 
     - Побыть одному
         set(route_neutral = true)
         set(current_route = "Neutral")
-        Load(Route_Neutral)
+        Load("Free Demo/Day2/Route_Neutral")
 }
