@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_MAIN/Scenes/CoffeeShopInteriorDAY.unity
     guid: 53da29e12bd7d5d4d8d03eef7cdcac42
+  - enabled: 1
+    path: Assets/_MAIN/Scenes/OurApartment.unity
+    guid: ddb882875d5b04d4887ea522752c0697
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
