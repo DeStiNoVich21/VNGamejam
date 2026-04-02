@@ -61,7 +61,7 @@ public class TextArchitect
         targetText = text;
 
         Stop();
-
+        
         buildProcess = tmpro.StartCoroutine(Building());
         return buildProcess;
     }
@@ -211,6 +211,7 @@ public class TextArchitect
             tmpro.maxVisibleCharacters += hurryUp ? charactersPerCycle * 5 : charactersPerCycle;
             if (characterVoice)
                 AudioManager.instance.PlaySoundEffect(characterVoice);
+            Debug.Log($"Type {isBuilding}");
             yield return new WaitForSeconds(0.015f / speed);
         }
     }

@@ -207,7 +207,6 @@ namespace DIALOGUE
 
             if (!dialogueSystem.dialogueContainer.isVisible)
                 dialogueSystem.dialogueContainer.Show();
-
             yield return BuildLineSegments(line.dialogueData);
         }
 
@@ -301,7 +300,6 @@ namespace DIALOGUE
             }
 
             float originalSpeed = architect.speedMultiplier;
-
             foreach (var segment in segments)
             {
                 if (segment.pause > 0)
@@ -309,20 +307,22 @@ namespace DIALOGUE
                     float timer = segment.pause;
                     while (timer > 0)
                     {
-                        if (userPromt) { userPromt = false; break; }
+                        if (userPromt) 
+                        { userPromt = false; 
+                            break; 
+                        }
                         timer -= Time.deltaTime;
                         yield return null;
                     }
                 }
-
                 if (!string.IsNullOrEmpty(segment.text))
                 {
                     string textWithEffects = TextEffectParser.ParseCustomTags(segment.text, out var effects);
                     if (animator != null) animator.SetEffects(effects);
 
                     architect.speedMultiplier = originalSpeed * segment.speed;
-                    yield return architect.Append(textWithEffects);
-
+                    
+                    architect.Append(textWithEffects);
                     while (architect.isBuilding)
                     {
                         if (userPromt)
