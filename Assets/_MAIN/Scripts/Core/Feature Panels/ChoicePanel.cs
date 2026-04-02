@@ -131,9 +131,15 @@ public class ChoicePanel : MonoBehaviour
     {
         if (index < 0 || index > lastDecision.choices.Length - 1) return;
 
-        isWaitingOnUserChoice = false; 
+        // 1. —разу записываем индекс, чтобы LL_Choice его увидел
+        lastDecision.answerIndex = index;
+
+        // 2. “еперь говорим, что выбор сделан
+        isWaitingOnUserChoice = false;
+
         cg.SetInteractableState(false);
 
+        // 3. «апускаем анимацию (теперь она не мешает логике)
         StartCoroutine(FlashAndHide(index));
     }
 
@@ -148,7 +154,7 @@ public class ChoicePanel : MonoBehaviour
             yield return new WaitForSecondsRealtime(0.08f);
         }
 
-        lastDecision.answerIndex = index;
+        // ћы уже установили индекс в AcceptAnswer, так что здесь эту строку удал€ем
         Hide();
     }
 
