@@ -25,8 +25,10 @@ Lance [0:angry] "{c=#FF0000}{shake=1}ТУТ ЕЩЕ И ТРУПЫ!{/shake}{/c}"
 Jonathan [0:serious-silent] "Не похоже на маленькую ссору соседей. Тут целая бойня."
 
 Lance [0:annoyed] "Ну и с лютым психом нам сейчас возиться."
+Lance [0:annoyed] "Джонни?"
 
-Jonathan [0:serious-silent] "Остынь Лэнс, смотри видишь символы?"
+
+Jonathan [0:serious-silent] "... видишь символы?"
 
 Lance [0:serious-silent] "Не похоже на что-то из религиозного, скорее всего бред безумца."
 
