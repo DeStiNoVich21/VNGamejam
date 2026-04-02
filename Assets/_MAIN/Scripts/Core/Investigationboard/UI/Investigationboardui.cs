@@ -60,7 +60,9 @@ public class InvestigationBoardUI : MonoBehaviour,
 
     [SerializeField] private SynthesisPopupUI synthesisPrefab;
 
-
+    [Title("Интеграция с ВН")]
+    [Tooltip("Перетащи сюда главный объект интерфейса новеллы (например, DialogueCanvas или VN_Root)")]
+    [SerializeField] private GameObject vnRoot;
 
     [Title("Детали стикера")]
 
@@ -342,7 +344,7 @@ public class InvestigationBoardUI : MonoBehaviour,
         if (isOpen) return;
 
         isOpen = true;
-
+        if (vnRoot != null) vnRoot.SetActive(false);
         boardRoot.SetActive(true);
 
         // BuildSlotAnchors больше не вызываем
@@ -370,6 +372,7 @@ public class InvestigationBoardUI : MonoBehaviour,
         if (!isOpen) return;
 
         isOpen = false;
+        if (vnRoot != null) vnRoot.SetActive(true);
 
         detailPanel.SetActive(false);
 

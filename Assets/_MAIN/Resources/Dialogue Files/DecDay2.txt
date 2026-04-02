@@ -1,0 +1,315 @@
+// --- СЦЕНА 1: УЧАСТОК (ДЖИН) ---
+SetLayerMedia(background Police_Office_Day)
+playambience(Office_Ambience -loop true)
+
+CreateCharacter(Jonathan)
+CreateCharacter(Jean)
+Jonathan.SetPosition(-0.02 2.5)
+Jean.SetPosition(1.02 2.5)
+
+Jonathan.Show()
+Jonathan [0:default] "(По пути к делам решил проведать начальницу.)"
+
+Jean.Show()
+Jonathan [0:serious-talking] "Доброе утро, Джин."
+
+Jean [0:default] "Ох, Джонатан. Не часто тебя утром в участке увидишь. Что ты хотел? Как продвигается дело?"
+
+Jonathan [0:serious-talking] "Пока все нормально. Со вчерашнего дня прогресс идет неплохо."
+
+Jean [0:smile] "Вот как. Рада слышать."
+Jean [0:default] "Перед тем как уйти, можешь передать ту стопку бумаг рядом?"
+
+Jonathan [0:default] "(Я подошел к ближайшей тумбочке и подал ей нужную документацию.)"
+Jonathan [0:serious-talking] "Держи."
+
+Jean [0:default] "Спасибо. Не забудь оповещать меня о прогрессе своего дела."
+
+Jonathan [0:default] "(Я попрощался с ней и двинул дальше.)"
+Jean.Hide()
+stopambience()
+
+// --- СЦЕНА 2: КОФЕЙНЯ (СЕСИЛИЯ И ЛЭНС) ---
+SetLayerMedia(background CoffeeShop_Day)
+playambience(CoffeeShop_Ambience -loop true)
+
+CreateCharacter(Cecilia)
+Cecilia.SetPosition(1.02 2.5)
+
+Jonathan [0:default] "(Перед отправкой в клуб надо зайти позавтракать.)"
+Cecilia.Show()
+Cecilia [0:smile] "Мистер Джонатан, добро пожаловать!"
+
+Jonathan [0:serious-talking] "Доброе утро, Сесилия."
+
+Cecilia [0:smile] "Чего желаете? Вам как всегда?"
+
+Jonathan [0:smile] "Вы меня слишком хорошо знаете."
+
+Cecilia [0:default] "Поняла. Подождите пока здесь."
+
+Jonathan [0:default] "(Пока Сесилия готовила, я вдумчиво смотрел на часы. Он всегда приходит в одно и то же время.)"
+
+// Вход Лэнса
+playsfx(door_bell)
+CreateCharacter(Lance)
+Lance.SetPosition(1.02 2.5)
+Lance.Show()
+
+Jonathan [0:smile] "Я не перестаю удивляться твоей пунктуальности. Ты там случаем не залипаешь на время перед входом?"
+
+Lance [0:smile] "Ну что тут сказать, пунктуальность — залог успеха, Джонни. Я всегда прихожу в нужный момент."
+
+Jonathan [0:default] "Ну да, ну да. Как скажешь."
+
+Lance [0:default] "Как продвигается дело? Что-то выяснил?"
+
+Jonathan [0:serious-talking] "Расследование о вчерашней бойне привело меня к дилеру с низов. Пришлось его напрячь, чтобы он помог мне."
+
+Lance [0:serious-silent] "И что он ответил?"
+
+Jonathan [0:serious-talking] "Вчера ночью он связался со мной, чтобы что-то важное обсудить. После еды собираюсь сразу выдвигаться."
+
+Lance [0:smile] "Понятно. Детектив и синдикат работают вместе. Таки напишу в отчете."
+
+Jonathan [0:serious-talking] "Не бери в голову. Работа есть работа."
+
+// Подача заказа
+Cecilia.Show()
+Cecilia [0:smile] "Ваш заказ! Приятного аппетита."
+Jonathan [0:smile] "Спасибо вам."
+Cecilia.Hide()
+
+Jonathan [0:default] "(Позже и Лэнс заказал себе завтрак, и мы обсуждали свои будни.)"
+
+// Звонок
+playsfx(phone_ring)
+Jonathan [0:default] "(Внезапно мой телефон зазвенел. Номер подмечен как неизвестный.)"
+
+Lance [0:serious-silent] "Я так понял, это он?"
+Jonathan [0:serious-talking] "Видимо."
+
+Jonathan [0:serious-talking] "Слушаю вас."
+
+Dylan "Это детектив Джонатан?"
+Jonathan [0:serious-talking] "Да, в чем дело?"
+
+Dylan "Это друг дилера. Он попросил меня заранее позвонить вам на случай, если что-то произойдет."
+
+Jonathan [0:scared] "Что там у вас?"
+
+Dylan "Его убили… Мы нашли его мертвым в его комнате. Сюда уже приехали копы. Это не вы их случаем созвали?! У нас же был уговор!"
+
+Jonathan [0:scared] "Не может быть. Я только сейчас об этом узнаю. Никаких сведений мне еще не поступало."
+
+Dylan "Вот как значит. В любом случае поторопитесь и уладьте дело здесь быстро."
+
+Jonathan [0:serious-talking] "Уже еду."
+playsfx(phone_hangup)
+
+Lance [0:serious-silent] "Что там у тебя?"
+Jonathan [0:serious-talking] "ЧП. Расскажу позже."
+Lance [0:default] "Хорошо. Удачи с делом."
+
+Jonathan [0:default] "(Я оставил деньги на столе и сразу вышел из кофейни.)"
+Lance.Hide()
+stopambience()
+
+// --- СЦЕНА 3: КОРИДОР (ЭМИЛИ) ---
+SetLayerMedia(background Apartment_Corridor_Night) // Используем вечерний коридор как имеющийся
+playambience(apartment -loop true)
+
+CreateCharacter(Emily)
+Emily.SetPosition(1.02 2.5)
+
+Emily.Show()
+Emily [0:smile] "Здравствуйте, Джонатан!"
+
+Jonathan [0:default] "Здравствуйте, Мисс Эмили."
+Jonathan [0:default] "(Неожиданно меня поприветствовала соседка. Она стала более живой, радостнее и слегка изменилась.)"
+
+Emily [0:smile] "Я бы хотела с вами поговорить, но к сожалению у меня есть дела, до свидания!"
+
+Jonathan [0:default] "До свидания."
+
+Jonathan [0:default] "(Попрощавшись, она радостно ушла в своем направлении. Наверное, нашла новую работу...)"
+Emily.Hide()
+
+Jonathan [0:serious-silent] "(Подумав, я пошел дальше.)"
+
+stopambience()
+SetLayerMedia(background black -i true)
+
+
+
+show_board()
+
+
+
+// --- СИСТЕМА СИНХРОНИЗАЦИИ (АВТО-ВЫБОР ФАНТОМА) ---
+// Вывод о расследовании: +1 к самому высокому показателю
+if (sync_dominion >= sync_stigma && sync_dominion >= sync_zenition) {
+    set(sync_dominion += 1)
+}
+else if (sync_stigma >= sync_dominion && sync_stigma >= sync_zenition) {
+    set(sync_stigma += 1)
+}
+else {
+    set(sync_zenition += 1)
+}
+
+// --- ВЕЧЕРНИЙ ВЫБОР: РОМАНТИЧЕСКИЙ БЛОК ---
+
+if (current_route == "Dominion")
+{
+    SetLayerMedia(background Police_Office_Day)
+    playambience(Office_Ambience -loop true)
+    
+    CreateCharacter(Jonathan)
+    CreateCharacter(Jean)
+    Jonathan.SetPosition(-0.02 2.5)
+    Jean.SetPosition(1.02 2.5)
+    
+    Jonathan.Show()
+    Jonathan [0:default] "(Свет в ее кабинете все еще горел. Я решил зайти с докладом, но лицезрел неожиданную картину. Джин пьет прямо на рабочем месте.)"
+    
+    Jean.Show()
+    Jean [0:dislike] "(Она резко поднимает взгляд, но затем расслабляется, узнав меня.)"
+    
+    Jonathan [0:serious-talking] "Снова засиживаетесь?"
+    
+    Jean [0:default] "Ох, это ты, Джонатан. Проходи. День выдался паршивым, и я решила немного нарушить устав."
+    
+    Jonathan [0:serious-talking] "Лэнс вам уже доложил?"
+    
+    Jean [0:dislike] "Да. И судя по твоему состоянию, прогресс идет не очень."
+    
+    Jonathan [0:serious-silent] "Его убрали до того, как он должен был нам доложить свои зацепки. Я все еще работаю над этим."
+    
+    Jean [0:worried] "Эх, шикарно. Один из свидетелей мертв, дело никуда не идет… Работы становится лишь больше."
+    Jean [0:worried] "Я так устаю, Джон. Сколько бы гор документации я бы не покорила, они не заканчиваются. Начальство ожидает великолепных результатов, думая, что мне нужно еще больше нагрузки."
+    
+    shake(-intensity 1 -duration 0.5)
+    Jean [0:angry] "Еще и эти бестолковые звонки про НЛО! Город тонет в крови и наркотиках, а мне приходится принимать рапорты про зеленых гомункулов. Я просто не понимаю…"
+
+    choice "ПОДДЕРЖАТЬ:"
+    {
+        - "Это просто временная преграда, Джин. (+1)"
+            set(sync_dominion += 1)
+            Jonathan [0:smile] "Это просто временная преграда, Джин. Идиотов всегда будет хватать. Но я доведу это дело до конца."
+            Jean [0:default] "Ты прав. Не время раскисать. Я рада, что пуля в лоб не лишила тебя хладнокровия, детектив."
+            
+        - "Система держится на таких людях, как вы. (+2)"
+            set(sync_dominion += 2)
+            Jonathan [0:serious-talking] "Система держится на таких людях, как вы, Джин. Если бы не ваша жесткая натура, город давно бы рухнул."
+            Jean [0:smile] "(В ее глазах появляется теплота.) Знаешь, Джон... Ты, наверное, один из последних, кто понимает, чего мне это стоит."
+            Jean [0:smile] "Бармен из меня так себе, но… налить тебе?"
+            Jonathan [0:default] "(Мы какое-то время обсуждали житейские проблемы за стаканом виски.)"
+    }
+
+    Jean [0:default] "Спасибо, что заскочил. Ты можешь идти, я здесь еще останусь."
+    Jean.Hide()
+    Jonathan [0:default] "(Я кивнул и направился в свою пустую квартиру.)"
+}
+
+if (current_route == "Zenith")
+{
+    SetLayerMedia(background CoffeeShop_Day)
+    playambience(CoffeeShop_Ambience -loop true)
+    
+    CreateCharacter(Jonathan)
+    CreateCharacter(Cecilia)
+    Jonathan.SetPosition(-0.02 2.5)
+    Cecilia.SetPosition(1.02 2.5)
+    
+    Jonathan.Show()
+    Jonathan [0:default] "(Не вынеся стресса от расследования, я зашел в кафе проветрить мысли.)"
+    
+    Cecilia.Show()
+    Cecilia [0:smile] "Мистер Джонатан, добрый вечер! Проходите. Вы сегодня выглядите мрачнее обычного."
+    
+    Jonathan [0:serious-talking] "Добрый вечер, Сесилия. Сегодня я бы не отказался от чего-то горячего. Голова раскалывается."
+    
+    Jonathan [0:default] "(Через пару минут передо мной появилась тарелка с рагу.)"
+    Cecilia [0:smile] "Ешьте на здоровье. И не беспокойтесь, мясо настоящее."
+    
+    Jonathan [0:default] "Что?"
+    
+    Cecilia [0:default] "Сегодня все обсуждают глупую легенду про крыс в лапше. Бред, конечно, но люди верят всему, что пугает."
+    
+    Jonathan [0:serious-talking] "В этом городе реальность обычно страшнее любых легенд. Спасибо, рагу отличное."
+    
+    Cecilia [0:worried] "(Ее улыбка сменилась беспокойством.) Знаете... Я стараюсь не верить слухам. Но мой старший брат... Он работает на нижних уровнях."
+    Cecilia [0:worried] "Он всегда писал мне раз в день. А со вчерашнего вечера — тишина. Не отвечает на звонки."
+    
+    Jonathan [0:serious-silent] "(Внутри все сжимается. Крупный бизнес на нижнем уровне... Пропал вчера вечером... Не может быть...)"
+
+    choice "ОТВЕТИТЬ:"
+    {
+        - "Не волнуйтесь, он свяжется. (+1)"
+            set(sync_zenition += 1)
+            Jonathan [0:smile] "Там сейчас хаос со связью из-за зачисток. Ваш брат наверняка просто залег на дно."
+            Cecilia [0:smile] "Вы правы. Он всегда был осторожным. Спасибо, что выслушали."
+            
+        - "Он умеет выживать. Он справится. (+2)"
+            set(sync_zenition += 2)
+            Jonathan [0:serious-talking] "Люди с нижних этажей умеют выживать, Сесилия. Раз у него там бизнес — он знает, как за себя постоять."
+            Cecilia [0:smile] "Да... он умеет выживать. Буду ждать."
+    }
+
+    Cecilia.Hide()
+    Jonathan [0:serious-silent] "(Еда кажется безвкусной. Если мертвый дилер — ее брат, убийца ответит мне за это.)"
+}
+
+if (current_route == "Stigma")
+{
+    SetLayerMedia(background Apartment_Corridor_Night)
+    playambience(apartment -loop true)
+    
+    CreateCharacter(Jonathan)
+    CreateCharacter(Emily)
+    Jonathan.SetPosition(-0.02 2.5)
+    Emily.SetPosition(1.02 2.5)
+    
+    Jonathan.Show()
+    Jonathan [0:serious-silent] "(Мои мысли о причастности Сенатора прервал голос соседки.)"
+    
+    Emily.Show()
+    Emily [0:smile] "Здравствуйте, Джонатан!"
+    
+    Jonathan [0:serious-talking] "Здравствуйте, Эмили. Каким ветром тебя занесло?"
+    
+    Emily [0:smile] "Меня наняли в одну организацию! И за вашу вчерашнюю помощь я бы хотела пригласить вас в кафе."
+
+    choice "ПОЙТИ С НЕЙ?"
+    {
+        - "Давай, но делим чек. (+2)"
+            set(sync_stigma += 2)
+            SetLayerMedia(background CoffeeShop_Day)
+            Emily [0:smile] "Ура! Спасибо, что согласились!"
+            Jonathan [0:default] "(В кафе мы обсуждали городские легенды. Она слушала мои истории с восторгом.)"
+            Emily [0:default] "Я сейчас занимаюсь покраской вещей в организации... из красного в желтый."
+            
+        - "Пожалуй, откажусь. Просто погуляем. (+1)"
+            set(sync_stigma += 1)
+            Emily [0:default] "Давайте тогда просто вместе погуляем."
+            Jonathan [0:serious-talking] "Ладно, но недалеко. Не хватало еще преступников в мое личное время."
+            Jonathan [0:default] "(Пока мы гуляли, я рассказывал ей про реальные дела, стоящие за легендами о Крюк Мене.)"
+    }
+    
+    Emily [0:smile] "Ой, посмотрите на время! Мне пора на дело. Спасибо вам!"
+    Emily.Hide()
+    
+    Jonathan [0:default] "(Я проводил ее, выкурил пару сигарет и зашел в свою квартиру.)"
+}
+
+if (current_route == "Neutral")
+{
+    SetLayerMedia(background Player_Apartment_Night)
+    Jonathan [0:default] "Сегодня был долгий день. Единственное, чего я хочу — это закрыть глаза."
+}
+
+stopambience()
+SetLayerMedia(background black -i true)
+pause(2.0)
+NextDay()

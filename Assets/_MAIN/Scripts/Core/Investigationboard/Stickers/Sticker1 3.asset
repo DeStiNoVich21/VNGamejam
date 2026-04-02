@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 286a33f875e44324db80e6d0a2add6cd, type: 3}
   m_Name: Sticker1 3
   m_EditorClassIdentifier: 
-  stickerId: Evening
-  title: Evening
+  stickerId: AfterCall
+  title: "\u0421\u0440\u0430\u0437\u0443 \u043F\u043E\u0441\u043B\u0435 \u0437\u0430\u0432\u0442\u0440\u0430\u043A\u0430"
   tag: 3
-  bodyText: 
+  bodyText: "\u0425\u0440\u043E\u043D\u043E\u043B\u043E\u0433\u0438\u044F \u0434\u0438\u0430\u043B\u043E\u0433\u0430
+    \u0441 \u041B\u044D\u043D\u0441\u043E\u043C \u0438 \u043F\u043E\u0441\u043B\u0435\u0434\u0443\u044E\u0449\u0438\u0439
+    \u0437\u0432\u043E\u043D\u043E\u043A."
   icon: {fileID: -591482711180085422, guid: 7d07316a21ab75f48872e7a5f026ae9b, type: 3}
   isPhantomFact: 0
   phantomSource: 0

@@ -16,6 +16,9 @@ public class CMD_DatabaseExtension_Board : CMD_DatabaseExtension
         database.AddCommand("add_sticker", new Action<string[]>(AddSticker));
         database.AddCommand("add_fact", new Action<string[]>(AddFact));
         database.AddCommand("remove_sticker", new Action<string[]>(RemoveSticker));
+
+        database.AddCommand("show_board", new Action(ShowBoard));
+        database.AddCommand("hide_board", new Action(HideBoard));
     }
 
     private static InvestigationBoardManager Board => InvestigationBoardManager.instance;
@@ -48,4 +51,26 @@ public class CMD_DatabaseExtension_Board : CMD_DatabaseExtension
         if (args.Length < 1) return;
         Board.RemoveSticker(args[0].Trim());
     }
+    private static void ShowBoard()
+    {
+        if (InvestigationBoardUI.instance != null)
+        {
+            InvestigationBoardUI.instance.Open();
+        }
+        else
+        {
+            Debug.LogWarning("[Board] show_board: доска расследования не найдена в сцене");
+        }
+    }
+
+    private static void HideBoard()
+    {
+        if (InvestigationBoardUI.instance != null)
+            InvestigationBoardUI.instance.Close();
+        else
+        {
+            Debug.LogWarning("[Board] show_board: доска расследования не найдена в сцене");
+        }
+    }
+
 }
