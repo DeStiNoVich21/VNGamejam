@@ -23,6 +23,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_MAIN/Scenes/OurApartment.unity
     guid: ddb882875d5b04d4887ea522752c0697
+  - enabled: 1
+    path: Assets/_MAIN/Scenes/LevelPrologue.unity
+    guid: a81bf3dac17796c4882d3c786abae602
+  - enabled: 1
+    path: Assets/_MAIN/Scenes/VisualNovel.unity
+    guid: 3ca94cf858a0f804593a855191dd6226
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

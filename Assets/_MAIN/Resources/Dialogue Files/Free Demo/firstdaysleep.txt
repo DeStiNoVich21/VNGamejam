@@ -66,3 +66,79 @@ if (current_route == "Neutral")
 
 SetLayerMedia(background black -i true)
 stopambience()
+
+SetLayerMedia(background Player_Apartment_Night -i true)
+playambience(Night_City_Ambience -loop true)
+
+CreateCharacter(Jonathan)
+Jonathan.SetPosition(-0.02 2.5)
+Jonathan.Hide()
+layer.SetActive(characters false)
+
+playsfx(phone_ring)
+Jonathan [0:default] "(Звонок от Дилера? Интересно, почему он так поздно звонит мне.)"
+
+Jonathan [0:serious-talking] "Слушаю."
+
+Dealer "Детектив. Касательно по твоему делу, есть пару интересных моментов которые надо обсудить. Мне нужно чтобы ты пришел завтра в клуб."
+Dealer "Боюсь одной твоей помощи тут не обойтись."
+
+Jonathan [0:serious-talking] "Понял, как освобожусь сразу же поеду к тебе."
+
+playsfx(phone_hangup)
+Jonathan [0:default] "(Надо будет завтра пораньше проснуться. Мне стоит ложиться.)"
+
+stopambience()
+SetLayerMedia(background black -spd 0.5)
+pause(2.0)
+
+playambience(void -loop true)
+
+if (current_route == "Dominion")
+{
+    SetLayerMedia(background Military_Camp_Winter -i true)
+    playambience(Winter_Wind_Loop -loop true)
+    Jonathan [0:default] "(Пока я спал, мне приснился сон о моих старых воспоминаниях. Я был в роли наблюдателя.)"
+    Jonathan [0:serious-silent] "(Я вижу свое {c=#FF0000}военное прошлое{/c}. Ко мне в мысли хлынули старые деньки, когда я отвечал за свой отряд, будучи новым капитаном.)"
+    Jonathan [0:smile] "(Я чувствую уважение и доверие моих солдат, как мы вместе тогда переживали {c=#87CEEB}зимний холод{/c} в неизвестном лесу.)"
+    shake(-intensity 2 -duration 1.5)
+    playsfx(high_pitch_ring)
+    Jonathan [0:scared] "(Внезапно, какой то {c=#FF0000}{shake=1}неприятный шум{/shake}{/c} начал звенеть мне в ухо.)"
+}
+
+if (current_route == "Stigma")
+{
+    SetLayerMedia(background Academy_Library -i true)
+    playambience(Library_Silence -loop true)
+    Jonathan [0:default] "(Пока я спал, мне приснился сон о моих старых воспоминаниях. Я был в роли наблюдателя.)"
+    Jonathan [0:serious-silent] "(Я вижу свое {c=#FFD700}кадетское прошлое{/c}. Мой сон возвращает меня обратно, когда я был еще зеленым солдатом в поле.)"
+    Jonathan [0:default] "(Я почти чувствую запах родной {c=#FFD700}армейской библиотеки{/c}, где мне пришлось засиживаться допоздна.)"
+    Jonathan [0:smile] "(Тогда мне казалось, что вся жизнь еще впереди, и столькому надо еще научиться.)"
+    shake(-intensity 2 -duration 1.5)
+    playsfx(high_pitch_ring)
+    Jonathan [0:scared] "(Внезапно, какой то {c=#FF0000}{shake=1}неприятный шум{/shake}{/c} начал звенеть мне в ухо.)"
+}
+
+if (current_route == "Zenith")
+{
+    SetLayerMedia(background Veteran_Hospital -i true)
+    playambience(Hospital_Hum -loop true)
+    Jonathan [0:default] "(Пока я спал, мне приснился сон о моих старых воспоминаниях. Я был в роли наблюдателя.)"
+    Jonathan [0:serious-silent] "(Я вижу свое прошлое. Мне вспоминается момент, когда {c=#87CEEB}долгая война{/c} наконец то закончилась.)"
+    Jonathan [0:default] "(Будучи ветераном, мне достались разные привилегии, включая медицинскую помощь и предоставления оплачиваемого жилья.)"
+    Jonathan [0:serious-talking] "(Возвращение обратно в общество было дело непростым. Этот момент навсегда запечатлелся в моей памяти.)"
+    shake(-intensity 2 -duration 1.5)
+    playsfx(high_pitch_ring)
+    Jonathan [0:scared] "(Внезапно, какой то {c=#FF0000}{shake=1}неприятный шум{/shake}{/c} начал звенеть мне в ухо.)"
+}
+
+if (current_route == "Neutral")
+{
+    Jonathan [0:default] "Я поспал."
+}
+
+
+SetLayerMedia(background black -i true)
+stopambience()
+stopsfx(high_pitch_ring)
+NextDay()
