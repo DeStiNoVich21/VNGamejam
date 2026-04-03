@@ -93,4 +93,204 @@ Jonathan [0:serious-silent] "(Попрощавшись с Эмили, я пош�
 
 Emily.Hide()
 stopambience()
+// --- СЦЕНА: ОФИС СЕНАТОРА ---
+SetLayerMedia(background senator_office)
+playambience(YellowGavel -loop true)
+
+CreateCharacter(Jonathan)
+CreateCharacter(Senator)
+Jonathan.SetPosition(-0.02 2.5)
+Senator.SetPosition(1.02 2.5)
+
+Senator.Show()
+Senator [0:Smile] "{pop=1.2}Здравствуйте, Детектив Джонатан!{/pop} Мое почтение! Вы все-таки решили прийти на нашу встречу?"
+
+Jonathan [0:serious-talking] "Здравия желаю, Сенатор. Как можно отказать {c=yellow}{b}самому{/b}{/c} Сенатору."
+
+Jonathan [0:default] "{i}(Вот он какой... наш Сенатор.){/i}"
+
+Senator [0:Grin] "Меня уже проинформировали о вашем недавнем деле. Должен сказать...{pause=0.5} у вас {c=yellow}зоркий глаз{/c}, хе-хе."
+
+Jonathan [0:scared] "{spd=0.8}Спасибо?..{/spd}"
+Jonathan [0:default] "{i}(Я нервно ответил ему. Я смотрю в глаза главному {shake=1}{c=red}подозреваемому{/c}{/shake} в моем деле.){/i}"
+
+// --- РАЗВЕТВЛЕНИЕ ПО РУТАМ ---
+
+if ($current_route == "Dominion")
+{
+    Senator [0:Disgust] "{spd=0.7}Видимо, ты не понимаешь, с кем имеешь дело, детектив.{/spd}"
+    
+    playsfx(bass_drop)
+    shake(-intensity 2 -duration 1.0)
+    Jonathan [0:scared] "{i}(На мгновение воздух вздрогнул. Его глаза светились {rainbow=1}ярко-желтым{/rainbow}, пронзая саму душу.){/i}"
+    
+    Senator [0:Talk] "{shake=1}Ты ведь пришел меня допрашивать здесь, не так ли?{/shake}"
+    
+    Jonathan [0:serious-talking] "Я вижу, ты уже догадался. Я иду за тобой. Мне нужно лишь {b}доказать{/b} твою вину."
+    Jonathan [0:serious-talking] "В отличие от тебя, я шел по пути {c=blue}закона{/c}. Твои действия сеют хаос для гор—"
+    
+    playsfx(paralyze_spell)
+    Jonathan [0:scared] "{glitch=1.5}Внезапно мое тело утяжелело. Я не могу...{pause=0.8} двигаться.{/glitch}"
+    
+    Senator [0:Disgust] "Твоя справедливость лежит на том, какой {b}приказ сверху{/b} тебе придет. Посмотри на себя, {c=red}червяк{/c}."
+    Senator [0:Talk] "Я вижу твоего {wave=0.6}кукловода{/wave}. Ты — инструмент правительства. Твой {c=red}багровый цвет{/c} — символ слепой преданности."
+    
+    Senator [0:Grin] "Хочешь узнать, чем закончится твой путь?"
+    Senator [0:Talk] "Сходи на {b}завод{/b}. Там ты найдешь кульминацию своей {shake=1}военной диктатуры{/shake}. Можешь идти."
+}
+
+if ($current_route == "Zenith")
+{
+    Jonathan [0:serious-talking] "Я благодарен, что вы меня позвали. Я намерен остановить {c=white}бесчеловечие{/c}, которое вы допускаете."
+    
+    Senator [0:Flabber] "{pop=1.1}Бесчеловечие?{/pop} Интересный выбор слов для того, кто решал проблемы не самым человечным путем."
+    
+    Jonathan [0:serious-talking] "Я верю, что именно {b}моральные ценности{/b} влияют на жизнь."
+    
+    Senator [0:Talk] "Где гарантия? Вы цепляетесь за островок, не видя, что мораль — это {glitch=1.0}вымышленная конструкция{/glitch}."
+    
+    Jonathan [0:serious-talking] "Я был на войне. Я видел худшее в людях. Именно поэтому я осознаю {c=green}ценность эмпатии{/c}."
+    
+    Senator [0:Smile] "Ваша эмпатия — это чистый {i}эгоизм{/i}. Вы пытаетесь искупить грехи, которые уже не стереть."
+    
+    Jonathan [0:serious-talking] "Если мой эгоизм поможет {b}хотя бы одному{/b} человеку — я пойду до конца."
+    
+    playsfx(senator_laugh)
+    Senator [0:Grin] "{rainbow=1}Ха-ха-ха-ха!{/rainbow} Ты меня удивил, детектив. Глупые ценности приведут тебя к гибели."
+    Senator [0:Talk] "Хочешь протестировать убеждения на практике? Приходи на {b}заброшенный завод{/b}. Свободен."
+}
+
+if ($current_route == "Stigma")
+{
+    Senator [0:Smile] "Удивительно, что именно {b}ты{/b} пришел ко мне. Я — главный подозреваемый, не так ли?"
+    
+    Jonathan [0:scared] "В— {pause=0.5} {glitch=1.2}(Что за... я не могу говорить?!){/glitch}"
+    
+    Senator [0:Talk] "Я знаю, что ты сделал. Ты выбрал путь {c=yellow}ума{/c}. Но нет великого ума без примеси {shake=1}безумия{/shake}."
+    
+    Senator [0:Grin] "{pop=1.3}Любопытство.{/pop} Ты выбрал знания, ценой которых стали страдания другого существа. {i}Безумно, не так ли?{/i}"
+    
+    Senator [0:Talk] "Твой цвет — {c=yellow}желтый{/c}. Олицетворение интеллекта и помешательства в одной краске."
+    Senator [0:Grin] "Сходи на {b}завод{/b}. Там ты найдешь {wave=0.7}конец своего дела{/wave}. Ступай."
+}
+
+if ($current_route == "Neutral")
+{
+    Jonathan [0:serious-talking] "Вы хотели со мной поговорить?"
+    
+    Senator [0:Default] "(Сенатор сканирует меня взглядом...)"
+    Senator [0:Talk] "Скажи мне, Джонатан... {pause=0.8} что для тебя {b}самое главное{/b} в жизни?"
+    
+    Jonathan [0:serious-talking] "Самое главное?.."
+    
+    Senator [0:Disgust] "Я видел героев, прикрывающихся законом. Видел {shake=1}сектантов{/shake}, преследующих бога. Видел моралистов."
+    Senator [0:Flabber] "Каждый что-то вещает об идеалах. А ты... {pause=1.0} {glitch=0.8}ты совсем пуст внутри.{/glitch}"
+    
+    Jonathan [0:serious-talking] "Я просто выполняю работу. Заданная {b}квота{/b} на неделю должна быть выполнена. Большего мне не надо."
+    
+    playsfx(senator_laugh)
+    Senator [0:Smile] "{rainbow=1}Ха-ха-ха!{/rainbow} Я жажду увидеть, к чему приведет твой путь. Хочу быть твоим {i}первым зрителем{/i}."
+    
+    Senator [0:Talk] "Твое дело заканчивается на {b}старом заводе{/b}. Крайне рекомендую посетить."
+}
+
+// --- ФИНАЛ СЦЕНЫ ---
+stopambience()
+Jonathan.Hide()
+Senator.Hide()
 SetLayerMedia(background black -i true)
+
+// --- ПОСЛЕ ВСТРЕЧИ С СЕНАТОРОРОМ (ПРОГУЛКА) ---
+// Этот блок идет сразу после закрытия доски улик из прошлой сцены
+
+// --- ДЖИН (УЧАСТОК) ---
+SetLayerMedia(background Police_Office_Day)
+playambience(Office_Ambience -loop true)
+
+Jonathan [0:serious-silent] "{i}(После встречи с Сенатором меня не покидало это {shake=1}неприятное чувство{/shake}. Нужно с кем-то поговорить.){/i}"
+
+Jean.Show()
+Jean [0:serious-silent] "(Джин сидела так, будто ждала меня после этой судьбоносной встречи.)"
+
+Jean [0:Talk] "{pop=1.1}Джонатан?{/pop}"
+Jonathan [0:serious-talking] "Джин?"
+
+Jean [0:default] "Что «я»? Давай, рассказывай, что произошло."
+
+Jonathan [0:serious-talking] "{spd=0.9}Мы переговорили. Как я и предполагал...{pause=0.5} он {b}всё{/b} знает. Это всё многократно усложняет.{/spd}"
+
+Jean [0:Flabber] "Эх, боже мой. Я изначально думала, что он там с тобой и расправится...{pause=0.5} но, похоже, обошлось."
+
+Jonathan [0:serious-talking] "Ну, если смотреть на ситуацию так... {wave=0.5}мне повезло, полагаю.{/wave}"
+
+Jean [0:default] "Ладно, главное, что ты живым остался. Впредь будь {b}более{/b} осторожным."
+
+Jonathan [0:default] "(Чуть побеседовав с ней, я двинул дальше.)"
+Jean.Hide()
+stopambience()
+
+// --- СЕСИЛИЯ (КАФЕ) ---
+SetLayerMedia(background CoffeeShop_Day)
+playambience(CoffeeShop_Ambience -loop true)
+
+Jonathan [0:default] "{i}(Зашел в кафе проведать Сесилию. Утром она выглядела неважно.){/i}"
+
+Cecilia.Show()
+Jonathan [0:serious-talking] "Сесилия?"
+
+Cecilia [0:worried] "(Она обернулась ко мне. Видимо, всё еще огорчена.)"
+Cecilia [0:default] "Ох, мистер Джонатан. Добро пожаловать. Вы что-то хотели?"
+
+Jonathan [0:serious-talking] "Я просто хотел проверить, как ты себя чувствуешь. Утром тебе не особо здоровилось."
+
+Cecilia [0:smile] "{spd=1.2}А, не беспокойтесь за меня, пожалуйста, всё в порядке.{/spd}"
+Cecilia [0:default] "Мне просто нужно передохнуть. Я рано закрываюсь сегодня, могу предложить вам что-нибудь напоследок?"
+
+Jonathan [0:serious-talking] "Все хорошо, не стоит себя утруждать. Тебе стоит {b}поехать домой{/b}."
+
+Cecilia [0:smile] "Да... пожалуй, вы правы. До свидания."
+Jonathan [0:smile] "До встречи."
+
+Cecilia.Hide()
+stopambience()
+
+// --- ЭМИЛИ (КОРИДОР) ---
+SetLayerMedia(background Apartment_Corridor_Night)
+playambience(apartment -loop true)
+
+Jonathan [0:serious-talking] "{pop=1.2}Эмили!{/pop}"
+
+Emily.Show()
+Emily [0:smile] "Здравствуйте, Джонатан!"
+
+Jonathan [0:default] "Здравствуйте, Мисс Эмили."
+
+Emily [0:smile] "Вы меня звали? Что-то вам нужно?"
+
+Jonathan [0:serious-talking] "Я хотел просто поговорить."
+
+Emily [0:smile] "{spd=1.5}Я слышала, вы пошли к Сенатору, это правда?{/spd} {pause=0.5} {wave=0.7}А, хорошо.{/wave}"
+
+Jonathan [0:serious-silent] "{i}(Она опять ведет себя странно. Спишем на усталость.){/i}"
+Jonathan [0:serious-talking] "Да..."
+
+Emily [0:default] "Там было что-то плохое? Что-то случилось?"
+
+Jonathan [0:serious-talking] "Если коротко... {pause=0.5} {shake=1}меня отчитали.{/shake}"
+
+Emily [0:smile] "Не волнуйтесь! Надеюсь, это был единичный случай. Какая жалость, вот почему вы такой {c=blue}грустный{/c}."
+
+Jonathan [0:serious-talking] "Да, спасибо, Эмили. Но сейчас мне пора, есть еще незаконченные дела."
+
+Emily [0:smile] "{spd=1.3}Ведь у меня тоже есть дела, это хорошо.{/spd} Я тоже хотела закончить {c=yellow}{glitch=1.0}пожелтевший{/glitch}{/c} разговор. Пока!"
+
+Jonathan [0:scared] "Пока..."
+
+Jonathan [0:default] "(Не успел я попрощаться, как она быстро убежала. Это было... {shake=1}странно{/shake}. Я решил идти дальше.)"
+
+Emily.Hide()
+stopambience()
+
+// Переход к следующему этапу (например, к Заводу)
+SetLayerMedia(background black -i true)
+pause(1.5)
