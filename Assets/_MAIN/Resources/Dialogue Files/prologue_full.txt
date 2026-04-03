@@ -83,6 +83,8 @@ choice "ВЫБОР:"
         
         Jonathan "{c=#87CEEB}{wave=1}Стой Лэнс, не стреляй!{/wave}{/c}"
         
+        shake(-intensity 2 -duration 0.5)
+        playsfx(swear)
         Suspect [0:insane] "{size=150}{c=#FF0000}{shake=2}МОЙ КОРОЛЬ, ПРИМИ СЕЙ ЖЕРТВУ ЭТОЙ НЕСЧАСТНОЙ ДУШИ!{/shake}{/c}{/size}"
         
         playsfx(pistol_shot)
@@ -104,7 +106,8 @@ choice "ВЫБОР:"
         
         Jonathan "(Подойдя ближе к заложнику, я притворился сделав позу будто я собираюсь убить его. Я резким движением отшвырнул его к выходу и сказал:)"
         Jonathan "{size=140}{shake=1}УБИРАЙСЯ!{/shake}{/size}"       
-        
+        shake(-intensity 2 -duration 0.5)
+        playsfx(swear)
         Suspect [0:mad] "{c=#FF0000}{shake=1}АХ ТЫ ПРЕДАТЕЛЬ!{/shake}{/c}"
         Jonathan "(Он начал целится в меня.)"
 }
@@ -144,6 +147,7 @@ pause(3.0)
 
 Lance.Hide()
 Jonathan.Hide()
+SetLayerMedia(background Void_Land -i true)
 
 Jonathan "Вот так я и оказался здесь. Глупо вышло пытаться выйти с ним на контакт. Стоило выстрелить в него сразу при входе."
 Jonathan "Ладно, не важно. Мне бы понять как бы выбраться отсюда. Может быть я просто проснусь через какое то время?"
