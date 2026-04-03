@@ -85,7 +85,7 @@ choice "ВЫБОР:"
         
         shake(-intensity 2 -duration 0.5)
         playsfx(swear)
-        Suspect [0:insane] "{size=150}{c=#FF0000}{shake=2}МОЙ КОРОЛЬ, ПРИМИ СЕЙ ЖЕРТВУ ЭТОЙ НЕСЧАСТНОЙ ДУШИ!{/shake}{/c}{/size}"
+        Suspect [0:insane] "{size=40}{c=#FF0000}{shake=2}МОЙ КОРОЛЬ, ПРИМИ СЕЙ ЖЕРТВУ ЭТОЙ НЕСЧАСТНОЙ ДУШИ!{/shake}{/c}{/size}"
         
         playsfx(pistol_shot)
         SetLayerMedia(background black -i true)
@@ -102,10 +102,10 @@ choice "ВЫБОР:"
         Jonathan "(Я согласился. Я поцарапал свой палец об раму пистолета и кровью нарисовал тот странный {c=#FFD700}символ{/c} и сказал ему: “{c=#FFD700}Желтый.{/c}”. Он безумно выдыхая как собака промолвил мне:)"      
         
         Suspect [0:smile] "Вот теперь я верю, что ты один из нас..."
-        Suspect "{size=130}{shake=1}УБЕЙ ЕГО РАДИ НАШЕГО {c=#FFD700}КОРОЛЯ!{/c}{/shake}{/size}"       
+        Suspect "{size=40}{shake=1}УБЕЙ ЕГО РАДИ НАШЕГО {c=#FFD700}КОРОЛЯ!{/c}{/shake}{/size}"       
         
         Jonathan "(Подойдя ближе к заложнику, я притворился сделав позу будто я собираюсь убить его. Я резким движением отшвырнул его к выходу и сказал:)"
-        Jonathan "{size=140}{shake=1}УБИРАЙСЯ!{/shake}{/size}"       
+        Jonathan "{size=80}{shake=1}УБИРАЙСЯ!{/shake}{/size}"       
         shake(-intensity 2 -duration 0.5)
         playsfx(swear)
         Suspect [0:mad] "{c=#FF0000}{shake=1}АХ ТЫ ПРЕДАТЕЛЬ!{/shake}{/c}"
