@@ -1,0 +1,29 @@
+playsfx(swear) // Звук удара или резкого движения
+shake(-intensity 2 -duration 0.5)
+Lonelyman "{rainbow=1}{wave=0.8}Чувак...{pause=0.4} я похоже влюбился!{/wave}{/rainbow}"
+
+Seriousman "{spd=1.2}Ты влюбился?{/spd} В ту девицу, что всунула нам буклет этой {shake=1}{c=red}странной секты{/c}{/shake}?"
+
+Lonelyman "{rainbow=1}{wave=1.0}Да-а-а-а-а...{pause=0.3} я чувствую, что {pop=1.2}потеряю голову{/pop} от чувств!{/wave}{/rainbow}"
+
+Seriousman "{spd=1.5}Только не говори, что ты решил пойти на паству {c=red}черт знает к кому{/c} просто из-за девчонки?!{/spd}"
+
+Lonelyman "{wave=0.7}{rainbow=1}А как же иначе мне с ней встретиться снова?{/rainbow}{/wave}"
+Lonelyman "{wave=0.9}{rainbow=1}Верования — {i}не преграда{/i} для Любви...{/rainbow}{/wave}"
+
+Seriousman "{spd=0.9}Даже не знаю...{pause=0.5} я слышал страшные слухи об этой секте.{/spd}"
+Seriousman "Говорят, они ловят таких {b}наивных{/b}, как ты, для своих {glitch=1.5}шизо-ритуалов{/glitch}."
+
+Lonelyman "{wave=0.6}{rainbow=1}Да нет...{pause=0.3} я не верю в эти слухи.{/rainbow}{/wave}"
+Lonelyman "{wave=0.8}{rainbow=1}Она же такая {b}милая{/b} и добрая...{pause=0.4} я уверен, она не может быть плохой.{/rainbow}{/wave}"
+
+Seriousman "{pause=0.6}{spd=0.8}Ты говорил так о своей бывшей.{/spd}"
+
+Lonelyman "{pause=1.0}{wave=0.5}{rainbow=1}И то верно...{/rainbow}{/wave}{pause=0.5} Ну что тогда мне прикажешь делать?"
+
+Seriousman "{spd=1.3}{b}Забудь о ней.{/b}{/spd}"
+Seriousman "После смены как раз сгоняем в {c=blue}клуб{/c}. Может повезет, и ты найдешь кого-то {i}нормального{/i}."
+
+Lonelyman "{wave=1.2}{rainbow=1}Спасибо за твою доброту!{/rainbow}{/wave}"
+
+Seriousman "{spd=1.1}Я просто уже {shake=1}устал{/shake} слышать твоё нытье.{/spd}"
