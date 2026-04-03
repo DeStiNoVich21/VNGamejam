@@ -36,7 +36,8 @@ stopambience()
 // --- СЦЕНА 2: КОФЕЙНЯ (ТРЕВОГА СЕСИЛИИ) ---
 SetLayerMedia(background CoffeeShop_Day)
 playambience(CoffeeShop_Ambience -loop true)
-
+$route_dominion = true
+$current_route = "Dominion"
 CreateCharacter(Cecilia)
 Cecilia.SetPosition(1.02 2.5)
 
@@ -125,7 +126,7 @@ if ($current_route == "Dominion")
     shake(-intensity 2 -duration 1.0)
     Jonathan [0:scared] "{i}(На мгновение воздух вздрогнул. Его глаза светились {rainbow=1}ярко-желтым{/rainbow}, пронзая саму душу.){/i}"
     
-    Senator [0:Talk] "{shake=1}Ты ведь пришел меня допрашивать здесь, не так ли?{/shake}"
+    Senator [0:Talk] "{shake=1}{c=red}Ты ведь пришел меня допрашивать здесь, не так ли?{/c}{/shake}"
     
     Jonathan [0:serious-talking] "Я вижу, ты уже догадался. Я иду за тобой. Мне нужно лишь {b}доказать{/b} твою вину."
     Jonathan [0:serious-talking] "В отличие от тебя, я шел по пути {c=blue}закона{/c}. Твои действия сеют хаос для гор—"
@@ -137,7 +138,7 @@ if ($current_route == "Dominion")
     Senator [0:Talk] "Я вижу твоего {wave=0.6}кукловода{/wave}. Ты — инструмент правительства. Твой {c=red}багровый цвет{/c} — символ слепой преданности."
     
     Senator [0:Grin] "Хочешь узнать, чем закончится твой путь?"
-    Senator [0:Talk] "Сходи на {b}завод{/b}. Там ты найдешь кульминацию своей {shake=1}военной диктатуры{/shake}. Можешь идти."
+    Senator [0:Talk] "Сходи на {b}завод{/b}. Там ты найдешь кульминацию своей {shake=1}{c=blue}военной диктатуры{/c}{/shake}. Можешь идти."
 }
 
 if ($current_route == "Zenith")
@@ -207,6 +208,7 @@ SetLayerMedia(background black -i true)
 // --- ДЖИН (УЧАСТОК) ---
 SetLayerMedia(background Police_Office_Day)
 playambience(Office_Ambience -loop true)
+Jonathan.Show()
 
 Jonathan [0:serious-silent] "{i}(После встречи с Сенатором меня не покидало это {shake=1}неприятное чувство{/shake}. Нужно с кем-то поговорить.){/i}"
 
@@ -292,17 +294,9 @@ Jonathan [0:default] "(Не успел я попрощаться, как она 
 Emily.Hide()
 stopambience()
 
-// Переход к следующему этапу (например, к Заводу)
-SetLayerMedia(background black -i true)
-pause(1.5)
-
 // --- СЦЕНА: СТАРЫЙ ЗАВОД (ФИНАЛ) ---
 SetLayerMedia(background old_factory_interior)
 playambience(void -loop true) // Тонкий, неприятный гул
-
-CreateCharacter(Jonathan)
-Jonathan.SetPosition(-0.02 2.5)
-Jonathan.Show()
 
 Jonathan [0:default] "(Завод пустовал, наверное, уже лет {b}шесть{/b}...{pause=0.8} Что же имел в виду Сенатор?)"
 Jonathan [0:serious-talking] "(Я отбросил лишние мысли и пробрался внутрь.)"
@@ -347,9 +341,19 @@ Cultist_Main "{wave=0.5}{c=yellow}Мы знали о каждом твоём ш�
 
 Jonathan [0:serious-talking] "Тогда что вам мешало {shake=1}{c=red}устранить меня{/c}{/shake}, как и всех остальных?"
 
-Cultist_Main "{spd=0.7}{b}Наш Король...{/b}{pause=0.5} весьма заинтересован в тебе.{/spd}"
+Cultist_Main "{spd=0.5}{c=yellow}{glitch=2.0}Наш Король... весьма заинтересован в тебе.{/glitch}{/c}{/spd}"
 
 Jonathan [0:serious-silent] "{i}(С чего бы мне выпала эта честь?..){/i}"
+
+Cultist_Main "{spd=0.4}{c=yellow}{shake=2}Он хочет, чтобы ты {rb=1.5}1!@&#!*&@!@#!*{/rb}{/shake}{/c}{/spd}"
+
+// ЭФФЕКТ КОЛЛАПСА
+playsfx(high_pitch_tinnitus) // Высокий, режущий уши гул
+shake(-intensity 4 -duration 1.5)
+SetLayerMedia(background black -spd 0.1) // Резкое затемнение
+flash(white 0.5) // Вспышка перед полной темнотой
+
+Jonathan "{size=150}{shake=3}{b}{c=red}АААААААААААА!!!{/c}{/b}{/shake}{/size}"
 
 // =========================================================================
 // --- РАЗВЕТВЛЕНИЕ КОНЦОВОК (BASED ON CURREN_ROUTE) ---
@@ -365,7 +369,7 @@ if ($current_route == "Dominion")
     Jonathan [0:scared] "{i}(Ради чего я отдал себя в это дело? {spd=0.5}{b}Я не стану предавать свои идеалы.{/b}{/spd}){/i}"
 
     SetLayerMedia(background old_factory_interior -spd 2.0) // Резкое возвращение
-    playambience(force -loop true) // Напряженный трек
+    playambience(Blues -loop true) // Напряженный трек
 
     Jonathan [0:angry] "{c=red}{shake=2}{b}Нет.. ни за что.{/b}{/shake}{/c}{pause=1.0} К таким ублюдкам, как вы, я никогда не примкну."
     Jonathan [0:angry] "{size=120}{b}Я НЕ ПОЗВОЛЮ ВАМ ПРОБУДИТЬ ИХ!{/b}{/size}"
@@ -380,7 +384,7 @@ if ($current_route == "Dominion")
     Jonathan [0:serious-talking] "(Я достал телефон, чтобы связаться с {b}Джин{/b}...)"
 
     playsfx(gun_cocked) // Звук приставленного пистолета
-    
+    SetLayerMedia(background bkk)
     // Лэнс из тени (показать иллюстрацию, если есть)
     Lance "{spd=0.8}{c=yellow}Я бы не стал этого делать, Джонни.{/c}{/spd}"
     
@@ -429,7 +433,7 @@ else if ($current_route == "Stigma")
     Jonathan [0:scared] "{size=130}{glitch=1.5}{b}КТО ЖЕ ЗНАЛ, ЧТО Я ВСЕ ЭТО ВРЕМЯ БЫЛ ПРАВ?!{/b}{/glitch}{/size}"
     
     SetLayerMedia(background old_factory_interior -spd 3.0) // Резкий возврат
-    playambience(void -loop true)
+    playambience(Blues -loop true) // Напряженный трек
 
     Jonathan [0:serious-silent] "{spd=0.7}(Собравшись с мыслями, я промолвил:){/spd}"
     Jonathan [0:serious-silent] "{wave=0.8}{c=yellow}Я принимаю своего Короля.{/c}{/wave}"
@@ -457,6 +461,8 @@ else if ($current_route == "Stigma")
 
     // Появление Лэнса
     playsfx(footsteps)
+    SetLayerMedia(background bkk)
+
     CreateCharacter(Lance)
     Lance.SetPosition(0.7 2.5)
     Lance.Show()
@@ -491,7 +497,7 @@ else if ($current_route == "Zenith")
     
     // В кофейне
     SetLayerMedia(background CoffeeShop_Day)
-    playambience(CoffeeShop_Ambience -loop true)
+    playambience(Confe -loop true) // Напряженный трек
     
     Jonathan.SetPosition(-0.3 2.5)
     Jonathan.Show()
@@ -552,7 +558,7 @@ else if ($current_route == "Neutral")
     
     // В кофейне
     SetLayerMedia(background CoffeeShop_Day)
-    playambience(CoffeeShop_Ambience -loop true)
+    playambience(Confe -loop true) // Напряженный трек
     
     Jonathan.SetPosition(-0.3 2.5)
     Jonathan.Show()
