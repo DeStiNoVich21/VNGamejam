@@ -1,7 +1,0 @@
-SetLayerMedia(background apartment_night)
-playambience(RoomSilence)
-
-John.Show()
-John "(Я решил побыть один.)"
-
-Load(Night_Sleep)

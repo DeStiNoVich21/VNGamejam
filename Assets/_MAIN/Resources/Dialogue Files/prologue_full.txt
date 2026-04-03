@@ -373,6 +373,9 @@ choice "ВЕЧЕР: С кем провести время?"
     - "Джин"
         $route_dominion = true
         $current_route = "Dominion"
+        SetLayerMedia(background Police_Office_Day)
+        playambience(Office_Ambience -loop true)
+
         Jonathan [0:default] "(Джин всегда засиживается в своем кабинете допоздна. Мне стоит проведать её.)"
         Jonathan [0:serious-silent] "(Заметив меня, Джин выпрямляется и привычным жестом скрещивает руки на груди.)"
         
@@ -384,7 +387,7 @@ choice "ВЕЧЕР: С кем провести время?"
         Jonathan [0:serious-talking] "Пока ничего срочного. Просто... после расследования с нижнего этажа решил зайти. Этот город медленно слетает с катушек."
         Jean [0:dislike] "Эх, нижние уровни всегда были помойкой, детектив. Тут и новые стимуляторы завозят, каждый день кто то по кому то шмаляет."
         Jean [0:default-silent] "Казалось бы, изменения какие то выходят: усиливается патруль, идет строгий контроль проносимых товаров. Но уменьшения количества работы я для себя не наблюдаю."
-        Jean [0:worried] "Иногда я думаю, как долго правительственный орган контролирует этот сектор, если они этим вообще занимаются."
+        Jean [0:worried] "Иногда я думаю, как долго правителdddddddddddddddddddddddddьственный орган контролирует этот сектор, если они этим вообще занимаются."
         
         choice "ОТВЕТИТЬ:"
         {
@@ -405,6 +408,8 @@ choice "ВЕЧЕР: С кем провести время?"
     - "Сесилия"
         $route_zenith = true
         $current_route = "Zenith"
+        SetLayerMedia(background CoffeeShop_Day)
+        playambience(CoffeeShop_Ambience -loop true)
         Jonathan [0:default] "(После работы я решил снова заскочить в кофейню. Ужина дома нет, так что могу поесть здесь.)"
         Jonathan [0:serious-silent] "(У владелицы кафе есть частая привычка которую я замечаю - она любит встречать своих гостей подходя к входной двери когда посетителей мало.)"
         
@@ -442,7 +447,8 @@ choice "ВЕЧЕР: С кем провести время?"
     - "Эмили"
         $route_stigma = true
         $current_route = "Stigma"
-       
+        SetLayerMedia(background Apartment_Corridor_Night)
+        playambience(apartment -loop true)
         
         Jonathan.Show()
         Emily.Show()  
@@ -517,7 +523,7 @@ pause(2.0)
 
 playambience(void -loop true)
 
-if (current_route == "Dominion")
+if ($current_route == "Dominion")
 {
     SetLayerMedia(background Void_Land -i true)
     playambience(Winter_Wind_Loop -loop true)
@@ -529,7 +535,7 @@ if (current_route == "Dominion")
     Jonathan [0:scared] "(Внезапно, какой то {c=#FF0000}{shake=1}неприятный шум{/shake}{/c} начал звенеть мне в ухо.)"
 }
 
-if (current_route == "Stigma")
+if ($current_route == "Stigma")
 {
     SetLayerMedia(background Void_Land -i true)
     playambience(Library_Silence -loop true)
@@ -542,7 +548,7 @@ if (current_route == "Stigma")
     Jonathan [0:scared] "(Внезапно, какой то {c=#FF0000}{shake=1}неприятный шум{/shake}{/c} начал звенеть мне в ухо.)"
 }
 
-if (current_route == "Zenith")
+if ($current_route == "Zenith")
 {
     SetLayerMedia(background Void_Land -i true)
     playambience(Hospital_Hum -loop true)
@@ -555,7 +561,7 @@ if (current_route == "Zenith")
     Jonathan [0:scared] "(Внезапно, какой то {c=#FF0000}{shake=1}неприятный шум{/shake}{/c} начал звенеть мне в ухо.)"
 }
 
-if (current_route == "Neutral")
+if ($current_route == "Neutral")
 {
     Jonathan [0:default] "Я поспал."
 }
