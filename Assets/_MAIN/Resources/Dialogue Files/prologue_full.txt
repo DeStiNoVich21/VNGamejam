@@ -565,7 +565,8 @@ if ($current_route == "Neutral")
 {
     Jonathan [0:default] "Я поспал."
 }
-
+layer.SetActive(characters true)
+s
 SetLayerMedia(background black -i true)
 stopambience()
 stopsfx(high_pitch_ring)

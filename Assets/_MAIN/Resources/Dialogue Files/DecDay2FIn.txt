@@ -50,6 +50,10 @@ if ($current_route == "Dominion")
     Jean [0:default] "Спасибо, что заскочил. Ты можешь идти, я здесь еще останусь."
     Jean.Hide()
     Jonathan [0:default] "(Я кивнул и направился в свою пустую квартиру.)"
+    stopambience()
+    SetLayerMedia(background black -i true)
+    pause(2.0)
+    Load("DecDay3")
 }
 
 if ($current_route == "Zenith")
@@ -99,6 +103,10 @@ if ($current_route == "Zenith")
 
     Cecilia.Hide()
     Jonathan [0:serious-silent] "(Еда кажется безвкусной. Если мертвый дилер — ее брат, убийца ответит мне за это.)"
+    stopambience()
+    SetLayerMedia(background black -i true)
+    pause(2.0)
+    Load("DecDay3")
 }
 
 if ($current_route == "Stigma")
@@ -141,15 +149,20 @@ if ($current_route == "Stigma")
     Emily.Hide()
     
     Jonathan [0:default] "(Я проводил ее, выкурил пару сигарет и зашел в свою квартиру.)"
+    stopambience()
+    SetLayerMedia(background black -i true)
+    pause(2.0)
+    Load("DecDay3")
 }
 
 if ($current_route == "Neutral")
 {
     SetLayerMedia(background Player_Apartment_Night)
     Jonathan [0:default] "Сегодня был долгий день. Единственное, чего я хочу — это закрыть глаза."
+    stopambience()
+    SetLayerMedia(background black -i true)
+    pause(2.0)
+    Load("DecDay3")
 }
 
-stopambience()
-SetLayerMedia(background black -i true)
-pause(2.0)
-Load("DecDay3")
+
