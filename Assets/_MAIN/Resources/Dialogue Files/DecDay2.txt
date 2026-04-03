@@ -94,7 +94,7 @@ Jonathan [0:serious-talking] "Да, в чем дело?"
 Dylan "Это друг дилера. Он попросил меня {b}заранее{/b} позвонить вам на случай...{pause=0.8} если что-то произойдет."
 playsfx(swear)
 Dylan "{shake=1.5}{c=red}Его убили...{/c}{/shake}{pause=1.0} Мы нашли его мертвым в его комнате."
-Dylan "{glitch=1.2}Сюда уже приехали копы.{/glitch} Это не вы их случаем созвали?! {shake=1}У нас же был уговор!{/shake}"
+Dylan "{c=red}{glitch=1.2}Сюда уже приехали копы.{/glitch}{/c} Это не вы их случаем созвали?! {c=red}{shake=1}У нас же был уговор!{/shake}{/c}"
 
 Jonathan [0:scared] "{spd=0.5}{shake=2}Не может быть.{/shake}{/spd}{pause=0.5} Я только сейчас об этом узнаю."
 
@@ -135,8 +135,14 @@ Emily.Hide()
 
 Jonathan [0:serious-silent] "(Подумав, я пошел дальше.)"
 
+
+
 stopambience()
 SetLayerMedia(background black -i true)
+Jonathan [0:serious-silent] "(Я с трудом смог пробраться в оцепленный клуб.)"
+Jonathan [0:serious-silent] "(Кто мог решиться на его убийство? У него конечно было много врагов, но все никогда не выходило за рамки потасовок.)"
+Jonathan [0:serious-silent] "(Надо сначла собраться с мыслями, Собрать улики, исследовать окружение.)"
+Jonathan [0:serious-silent] "(Приступим.)"
 
 add_sticker(Dealer)
 add_sticker(Mark)
