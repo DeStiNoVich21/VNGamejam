@@ -173447,7 +173447,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoHideWhenDone: 1
-  sceneFile: {fileID: 4900000, guid: e4de9e76e9bd14740ae1f8ca6b41be1c, type: 3}
+  sceneFile: {fileID: 4900000, guid: df8d42f76f01d0e4da7895b711ceb712, type: 3}
   sticker_id: 
   highlightMode: 0
   hoverColor: {r: 0.9427508, g: 1, b: 0, a: 1}
