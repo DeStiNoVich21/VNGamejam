@@ -14,22 +14,22 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_MAIN/Scenes/VisualNovel.unity
     guid: 3ca94cf858a0f804593a855191dd6226
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/_MAIN/Scenes/LevelTest.unity
     guid: 42b2cb10351dc1c4aac745fe35b9f4d8
-  - enabled: 1
+  - enabled: 0
     path: Assets/_MAIN/Scenes/LevelClub.unity
     guid: 4511c0c2b9ec2ea4297cd325f44359ac
-  - enabled: 1
+  - enabled: 0
     path: Assets/_MAIN/Scenes/KilledApartment.unity
     guid: d50b057d36db5fc46993124f3f4b4839
-  - enabled: 1
+  - enabled: 0
     path: Assets/_MAIN/Scenes/CoffeeShopInteriorDAY.unity
     guid: 53da29e12bd7d5d4d8d03eef7cdcac42
-  - enabled: 1
+  - enabled: 0
     path: Assets/_MAIN/Scenes/OurApartment.unity
     guid: ddb882875d5b04d4887ea522752c0697
   m_configObjects:
