@@ -415,8 +415,8 @@ SetLayerMedia(background dark)
 choice "ВЕЧЕР: С кем провести время?"
 {
     - "Джин"
-        set(route_dominion = true)
-        set(current_route = "Dominion")
+        $route_dominion = true
+        $current_route = "Dominion"
         Jonathan [0:default] "(Джин всегда засиживается в своем кабинете допоздна. Мне стоит проведать её.)"
         Jonathan [0:serious-silent] "(Заметив меня, Джин выпрямляется и привычным жестом скрещивает руки на груди.)"
         
@@ -447,8 +447,8 @@ choice "ВЕЧЕР: С кем провести время?"
         Jonathan [0:default] "(Она снова утыкается в свои документы, давая понять, что разговор окончен. Я молча выхожу из кабинета, направляясь в свою пустую квартиру.)"
 
     - "Сесилия"
-        set(route_zenith = true)
-        set(current_route = "Zenith")
+        $route_zenith = true
+        $current_route = "Zenith"
         Jonathan [0:default] "(После работы я решил снова заскочить в кофейню. Ужина дома нет, так что могу поесть здесь.)"
         Jonathan [0:serious-silent] "(У владелицы кафе есть частая привычка которую я замечаю - она любит встречать своих гостей подходя к входной двери когда посетителей мало.)"
         
@@ -484,8 +484,9 @@ choice "ВЕЧЕР: С кем провести время?"
         Jonathan [0:default] "(Я молча доедаю свой ужин. Уютная атмосфера кафе действительно расслабляет. Оставив чаевые, я прощаюсь с Сесилией и направляюсь в свою квартиру)."
 
     - "Эмили"
-        set(route_stigma = true)
-        set(current_route = "Stigma")
+        $route_stigma = true
+        $current_route = "Stigma"
+       
         
         Jonathan.Show()
         Emily.Show()  
@@ -528,8 +529,8 @@ choice "ВЕЧЕР: С кем провести время?"
         Jonathan [0:default] "(Попрощавшись друг с другом, я пошел домой.)"
 
     - "Вернуться домой сразу"
-        set(route_neutral = true)
-        set(current_route = "Neutral")
+        $route_neutral = true
+        $current_route = "Neutral"
         Jonathan [0:default] "(Сегодня был долгий день. Единственное, чего я хочу — это закрыть глаза.)"
 }
 

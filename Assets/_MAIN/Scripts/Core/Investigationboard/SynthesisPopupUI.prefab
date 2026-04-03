@@ -528,6 +528,7 @@ GameObject:
   - component: {fileID: 6523057116931327900}
   - component: {fileID: 6948211261329999148}
   - component: {fileID: 6482649796935481697}
+  - component: {fileID: 11670647643191424}
   - component: {fileID: 5005511464053904192}
   m_Layer: 5
   m_Name: SynthesisButton
@@ -594,6 +595,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &11670647643191424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8207284382278804390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c7569b840348e64794ac11ed36c5e99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5005511464053904192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -642,6 +655,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11670647643191424}
+        m_TargetAssemblyTypeName: FIndUI, Assembly-CSharp
+        m_MethodName: CloseUI
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
