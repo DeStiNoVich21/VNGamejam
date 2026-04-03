@@ -607,7 +607,7 @@ if (current_route == "Neutral")
 SetLayerMedia(background black -i true)
 stopambience()
 stopsfx(high_pitch_ring)
-NextDay()
+Load("DecDay2")
 
  
 

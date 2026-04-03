@@ -338,48 +338,55 @@ public class InvestigationBoardUI : MonoBehaviour,
 
 
     public void Open()
-
     {
-
         if (isOpen) return;
-
         isOpen = true;
-        if (vnRoot != null) vnRoot.SetActive(false);
+
+        // Включаем визуальную часть доски
         boardRoot.SetActive(true);
 
-        // BuildSlotAnchors больше не вызываем
-
-        RefreshInventory();
-
-        RefreshAllRopes();
-
-        UpdateSynthesisButton();
-
-
-
-        if (co_fade != null) StopCoroutine(co_fade);
-
-        co_fade = StartCoroutine(Fade(1f));
-
-    }
-
-
-
-    public void Close()
-
-    {
-
-        if (!isOpen) return;
-
-        isOpen = false;
-        if (vnRoot != null) vnRoot.SetActive(true);
-
+        // Убираем старую панель деталей, если она была открыта
         detailPanel.SetActive(false);
 
         if (co_fade != null) StopCoroutine(co_fade);
+        co_fade = StartCoroutine(Fade(1f));
+    }
 
-        co_fade = StartCoroutine(Fade(0f, () => boardRoot.SetActive(false)));
+    public void Close()
+    {
+        if (!isOpen) return;
+        isOpen = false;
 
+        detailPanel.SetActive(false);
+        if (co_fade != null) StopCoroutine(co_fade);
+
+        co_fade = StartCoroutine(Fade(0f, () => {
+            boardRoot.SetActive(false);
+
+            // СРАЗУ ЗАГРУЖАЕМ НОВЫЙ СЦЕНАРИЙ
+            if (DIALOGUE.DialogueSystem.instance != null)
+            {
+                // Укажи здесь название твоего файла в папке Resources
+                string fileName = "Dialogue Files/DecDay2FIn";
+
+                TextAsset file = Resources.Load<TextAsset>(fileName);
+                if (file != null)
+                {
+                    // Разбиваем текст файла на строки
+                    List<string> lines = new List<string>(file.text.Split(new[] { "\r\n", "\r", "\n" }, System.StringSplitOptions.None));
+
+                    // Запускаем новый сценарий. 
+                    // Это автоматически очистит текущую очередь диалогов и начнет Day2_Evening
+                    DIALOGUE.DialogueSystem.instance.Say(lines);
+                }
+                else
+                {
+                    Debug.LogError($"[Board] Сценарий '{fileName}' не найден в Resources!");
+                    // Если файла нет, хотя бы "толкнем" систему дальше
+                    DIALOGUE.DialogueSystem.instance.OnSystemPromt_Next();
+                }
+            }
+        }));
     }
 
 
