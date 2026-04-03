@@ -295,3 +295,310 @@ stopambience()
 // Переход к следующему этапу (например, к Заводу)
 SetLayerMedia(background black -i true)
 pause(1.5)
+
+// --- СЦЕНА: СТАРЫЙ ЗАВОД (ФИНАЛ) ---
+SetLayerMedia(background old_factory_interior)
+playambience(void -loop true) // Тонкий, неприятный гул
+
+CreateCharacter(Jonathan)
+Jonathan.SetPosition(-0.02 2.5)
+Jonathan.Show()
+
+Jonathan [0:default] "(Завод пустовал, наверное, уже лет {b}шесть{/b}...{pause=0.8} Что же имел в виду Сенатор?)"
+Jonathan [0:serious-talking] "(Я отбросил лишние мысли и пробрался внутрь.)"
+
+stopambience()
+
+Jonathan [0:default] "(Чем дальше я уходил, тем сильнее меня одолевало {shake=1}странное ощущение{/shake}...{pause=0.5} а затем я нашел его источник.)"
+
+Jonathan [0:scared] "{pop=1.3}Что за… Who are all these people?{/pop}"
+
+// Появление культистов (можно добавить sticker или overlay, если нет спрайтов)
+Jonathan [0:scared] "(В центре пустого завода в полукруг собрались люди в {c=yellow}желтых робах{/c}. Лица их было не видно.)"
+
+Jonathan [0:angry] "{c=red}{shake=2}{b}ВСЕМ СТОЯТЬ! ПОЛИЦИЯ!{/b}{/shake}{/c}"
+playsfx(gunload) // Звук взвода затвора
+
+Jonathan [0:angry] "(Я выкрикнул, прицелившись пистолетом в того, что показался мне главным.)"
+
+// Сдвиг камеры или эффект, чтобы показать, что они окружили
+playsfx(body_thud) // Тихий, одновременный звук поворота
+Jonathan [0:scared] "(Все одновременно обернулись на меня. В их движениях не чувствовалось ни страха, ни тревоги.)"
+Jonathan [0:scared] "(Они все были... {glitch=1.0}словно одержимы.{/glitch})"
+
+Cultist_Main "{spd=0.8}{i}Опусти пистолет, Джонатан.{/i}{/spd}"
+
+Jonathan [0:scared] "Что... {pause=0.4} {pop=1.1}откуда вы?!{/pop}"
+
+Cultist_Main "{spd=1.2}Щупальца наши тянутся дальше и глубже, чем ты {shake=1}думаешь думать{/shake}.{/spd}"
+Cultist_Main "{spd=0.8}{i}А пока...{pause=0.5} опусти пистолет, Джонатан.{/i}{/spd}"
+Cultist_Main "{c=yellow}{wave=0.8}Оно тебе все равно не поможет.{/wave}{/c}"
+
+Jonathan [0:scared] "({spd=1.1}Он был прав. Я чувствовал, как взгляды {shake=1}сверлили{/shake} мой затылок и спину...{pause=0.6} Они успели меня окружить.){/spd}"
+
+Jonathan [0:default] "(Я медленно опустил пистолет.)"
+
+Cultist_Main "{spd=1.3}Правильный поступок, господин детектив. Весьма похвально.{/spd}"
+Cultist_Main "Большинство ваших более...{pause=0.4} «исполнительных» коллег отказывались это делать. {c=red}За что и поплатились.{/c}"
+
+Jonathan [0:serious-talking] "{b}Довольно лишних разговоров.{/b} Скажите, откуда вы знаете обо мне."
+
+Cultist_Main "{wave=0.5}{c=yellow}Мы знали о каждом твоём шаге. С самого начала... с того самого {b}судьбоносного момента.{/b}{/c}{/wave}"
+
+Jonathan [0:serious-talking] "Тогда что вам мешало {shake=1}{c=red}устранить меня{/c}{/shake}, как и всех остальных?"
+
+Cultist_Main "{spd=0.7}{b}Наш Король...{/b}{pause=0.5} весьма заинтересован в тебе.{/spd}"
+
+Jonathan [0:serious-silent] "{i}(С чего бы мне выпала эта честь?..){/i}"
+
+// =========================================================================
+// --- РАЗВЕТВЛЕНИЕ КОНЦОВОК (BASED ON CURREN_ROUTE) ---
+// =========================================================================
+
+if ($current_route == "Dominion")
+{
+    stopambience()
+    playsfx(bass_drop) // Резкий звук, подчеркивающий панику
+    SetLayerMedia(background black -spd 0.2) // Экран темнеет от гнева
+    
+    Jonathan [0:scared] "{i}(Меня охватила пронизывающая злоба и {shake=2}паника{/shake}... {pause=0.6} Сектанты, которых я презираю больше всего, еще и во главе этого {shake=1}{c=red}чертового Сенатора...{/c}{/shake}){/i}"
+    Jonathan [0:scared] "{i}(Ради чего я отдал себя в это дело? {spd=0.5}{b}Я не стану предавать свои идеалы.{/b}{/spd}){/i}"
+
+    SetLayerMedia(background old_factory_interior -spd 2.0) // Резкое возвращение
+    playambience(force -loop true) // Напряженный трек
+
+    Jonathan [0:angry] "{c=red}{shake=2}{b}Нет.. ни за что.{/b}{/shake}{/c}{pause=1.0} К таким ублюдкам, как вы, я никогда не примкну."
+    Jonathan [0:angry] "{size=120}{b}Я НЕ ПОЗВОЛЮ ВАМ ПРОБУДИТЬ ИХ!{/b}{/size}"
+
+    Jonathan [0:default] "(Из всех сил я побежал к ближайшему выходу. Я {b}выбежал{/b} через черный вход.)"
+    
+    // Переход в темный переулок
+    SetLayerMedia(background Apartment_Corridor_Night) // Используем как переулок
+    Jonathan [0:scared] "(Я спрятался за стеной переулка. Это было слишком... даже для меня.)"
+    Jonathan [0:scared] "({spd=1.1}Я прислонился к стене, пытаясь выровнять дыхание...{/spd}{pause=1.0} Я должен покончить с Сенатором.)"
+
+    Jonathan [0:serious-talking] "(Я достал телефон, чтобы связаться с {b}Джин{/b}...)"
+
+    playsfx(gun_cocked) // Звук приставленного пистолета
+    
+    // Лэнс из тени (показать иллюстрацию, если есть)
+    Lance "{spd=0.8}{c=yellow}Я бы не стал этого делать, Джонни.{/c}{/spd}"
+    
+    // Сдвигаем Лэнса и Джонни для диалога
+    Jonathan.SetPosition(-0.3 2.5)
+    CreateCharacter(Lance)
+    Lance.SetPosition(0.7 2.5)
+    Lance.Show()
+    Lance [0:serious-silent] "(При свете я смог увидеть его фанатичные глаза и {shake=1}татуировку{/shake} на шее.)"
+
+    Jonathan [0:scared] "{pop=1.3}Немыслимо..{pause=0.4} Лэнс?!{/pop} Что это за татуировка?!"
+
+    Lance [0:Smile] "Я обрел {wave=0.5}{c=yellow}истину{/c}{/wave}, Джонни. Я наконец-то осознал всё."
+
+    Jonathan [0:angry] "{c=red}{shake=2}{b}Ты сошел с ума!{/b}{/shake}{/c} Жесткая система — это единственное, что сдерживает этот город от гибели!"
+
+    Lance [0:Grin] "Желтый Король — не безумец. В отличие от нас, обычных цепных псов, сектанты имели {b}свободу воли.{/b}"
+    Lance [0:Grin] "Мы так привыкли к {shake=1}цепям{/shake}, что {pause=0.8} {spd=0.6}боимся свободы.{/spd}"
+
+    Jonathan [0:serious-silent] "Лэнс, прошу, убери ствол. {pause=0.6} {b}Не заставляй меня убивать напарника ради устава.{/b}"
+
+    Lance [0:serious-silent] "Вот именно. Ты готов застрелить меня ради раппорта."
+    Lance [0:Grin] "Но {spd=1.3}моей задачей будет оставить тебя {shake=1}живым{/shake} до последнего акта.{/spd}"
+
+    // Быстрый удар
+    playsfx(melee_hit)
+    shake(-intensity 3 -duration 0.5)
+    Jonathan [0:scared] "{pop=1.1}{shake=2}Не успев среагировать...{/shake}{/pop}"
+    
+    Jonathan.Hide()
+    Lance.Hide()
+    stopambience()
+    SetLayerMedia(background black -spd 0.1) // Резкая темнота
+    
+    Jonathan [0:scared] "({spd=0.8}Я падаю на землю от боли. Последним, что я вижу... {pause=1.0}офицера с {c=red}{shake=1}багровым свечением{/shake}{/c}, восседающего на черепах...){/spd}"
+}
+
+else if ($current_route == "Stigma")
+{
+    stopambience()
+    playsfx(void) // Низкий, мистический гул пустоты
+    SetLayerMedia(background black -spd 0.3) // Разум отключается
+    
+    Jonathan [0:scared] "{i}(На мгновение мой разум отключился... После всего расследования...{pause=0.8} Расследование бойни...{pause=0.6} Убийство дилера...{ pause=0.6} Странное поведение {c=yellow}Эмили{/c}...){/i}"
+    
+    Jonathan [0:scared] "{size=130}{glitch=1.5}{b}КТО ЖЕ ЗНАЛ, ЧТО Я ВСЕ ЭТО ВРЕМЯ БЫЛ ПРАВ?!{/b}{/glitch}{/size}"
+    
+    SetLayerMedia(background old_factory_interior -spd 3.0) // Резкий возврат
+    playambience(void -loop true)
+
+    Jonathan [0:serious-silent] "{spd=0.7}(Собравшись с мыслями, я промолвил:){/spd}"
+    Jonathan [0:serious-silent] "{wave=0.8}{c=yellow}Я принимаю своего Короля.{/c}{/wave}"
+
+    Cultist_Main "{wave=0.5}Да будет так, Джонатан. {c=yellow}Желтый Король{/c} принимает твою волю.{/wave}"
+
+    // Спрайт Эмили
+    CreateCharacter(Emily)
+    Emily.SetPosition(0.5 2.5)
+    Emily.Show()
+    Emily [0:Smile] "{pop=1.2}{rainbow=1}Урааа!{/rainbow}{/pop} И мистер Джонатан теперь с нами!"
+
+    // ... диалог с культистами ...
+    
+    Jonathan.Hide()
+    Cultist_Main.Hide()
+    Emily.Hide()
+    
+    // Выход в переулок
+    SetLayerMedia(background Apartment_Corridor_Night) // Как переулок
+    
+    Jonathan.SetPosition(-0.3 2.5)
+    Jonathan.Show()
+    Jonathan [0:serious-silent] "Кто бы знал, что всё так {shake=1}{c=yellow}очевидно{/c}{/shake}?"
+
+    // Появление Лэнса
+    playsfx(footsteps)
+    CreateCharacter(Lance)
+    Lance.SetPosition(0.7 2.5)
+    Lance.Show()
+    Lance [0:serious-talking] "Ты окончательно {b}поехал крышей{/b}, Джон. Весь желтый... что аж противно."
+
+    Jonathan [0:Smile] "Чего же ты ждешь, {wave=0.5}Лэнс{/wave}?"
+
+    // ... диалог с Лэнсом ...
+
+    Lance [0:serious-silent] "Я не стану тебя убивать. {spd=0.7}Но я не собираюсь тебя просто отпустить.{/spd}"
+
+    // Быстрый удар
+    playsfx(melee_hit)
+    shake(-intensity 2 -duration 0.5)
+    Jonathan [0:scared] "{pop=1.1}Лэнс делает быстрый выпад...{/pop}"
+    
+    Jonathan.Hide()
+    Lance.Hide()
+    SetLayerMedia(background black -spd 0.1) // Резкая темнота
+    
+    Jonathan [0:serious-silent] "({spd=0.8}Я отключаюсь. Последним, что я вижу... мутный {wave=0.8}{c=yellow}желтый силуэт{/c}{/wave}, взбирающийся по горе больших книг.){/spd}"
+}
+
+else if ($current_route == "Zenith")
+{
+    // ... Осознание ужаса, выход с завода ...
+    
+    SetLayerMedia(background old_factory_interior)
+    Jonathan [0: serious-talking] "(Если бы я вызвал подкрепление, завод просто превратился бы в бойню. Я не могу допускать больше {c=white}невинных жертв.{/c})"
+    
+    Jonathan.Hide()
+    
+    // В кофейне
+    SetLayerMedia(background CoffeeShop_Day)
+    playambience(CoffeeShop_Ambience -loop true)
+    
+    Jonathan.SetPosition(-0.3 2.5)
+    Jonathan.Show()
+    
+    CreateCharacter(Lance)
+    Lance.SetPosition(0.7 2.5)
+    Lance.Show()
+    Lance [0:serious-silent] "(Лэнс заговорил со мной первым.)"
+    Lance [0:serious-talking] "Выглядишь ты отчаянным. Что стряслось на заводе?"
+
+    // ... диалог в кофейне ...
+    
+    Jonathan [0:serious-talking] "Даже если так, я готов заплатить за это цену. {c=white}{wave=0.5}Мои идеалы должны чего-то стоить.{/wave}{/c}"
+
+    Lance [0:serious-talking] "Мертвые никому не помогут, Джонни. Я не хочу терять друга."
+    
+    Lance.Hide()
+    Jonathan.Hide()
+    stopambience()
+    SetLayerMedia(background black -spd 0.2) // Конец разговора
+
+    // ФИНАЛ ЗЕНИТА: FEMME FATALE
+    pause(1.5)
+    SetLayerMedia(background street_crime_night) // Прохладная ночь
+    playambience(Night_City_Ambience -loop true)
+    
+    Jonathan.SetPosition(-0.1 2.5)
+    Jonathan.Show()
+    playsfx(lighter_click) // Звук прикуривания
+    Jonathan [0:default] "(На дворе ночь. Я достаю сигарету и какое-то время смотрю на горизонт.)"
+
+    playsfx(footsteps)
+    CreateCharacter(StrangeWoman)
+    StrangeWoman.SetPosition(0.6 2.5)
+    StrangeWoman.Show()
+    StrangeWoman "Здраствуйте. Это вы — {wave=0.5}Джонатан?{/wave}"
+
+    // ... диалог с StrangeWoman ...
+    
+    StrangeWoman "{spd=1.3}Но насколько далеко вы готовы пойти за своими идеалами?{/spd}"
+
+    StrangeWoman "{spd=0.8}Я предлагаю вам {b}другой{/b} исход событий. Если интересно — прошу пойти за мной.{/spd}"
+    
+    // Уходит в тень
+    StrangeWoman.Hide()
+    Jonathan.Hide()
+    stopambience()
+    SetLayerMedia(background black -spd 0.5)
+}
+
+else if ($current_route == "Neutral")
+{
+    // ... Сбежал с завода, "Сенатор мне не по зубам" ...
+    
+    SetLayerMedia(background black -spd 0.1) // Побег
+    playsfx(door_slam)
+    Jonathan [0:scared] "(Я больше не хочу быть причастен к этой бессмысленной авантюре.)"
+    
+    // В кофейне
+    SetLayerMedia(background CoffeeShop_Day)
+    playambience(CoffeeShop_Ambience -loop true)
+    
+    Jonathan.SetPosition(-0.3 2.5)
+    Jonathan.Show()
+    
+    CreateCharacter(Lance)
+    Lance.SetPosition(0.7 2.5)
+    Lance.Show()
+    Jonathan [0: serious-talking] "Дело можно закрывать, Лэнс. {spd=0.7}В деле замешаны сектанты.{/spd}"
+
+    // ... диалог в кофейне, "мне недостаточно платят" ...
+
+    Jonathan [0:serious-talking] "Мне тут недостаточно платят за то, чтобы я тут мир еще спасал."
+    Jonathan [0: serious-silent] "{pop=1.1}Какой будет толк от мертвого детектива?{/pop}"
+
+    Lance [0:serious-talking] "Но я просто не могу оставить всё как есть."
+    
+    Lance.Hide()
+    Jonathan.Hide()
+    stopambience()
+    SetLayerMedia(background black -spd 0.2) // Конец разговора
+
+    // ФИНАЛ НЕЙТРАЛА: FEMME FATALE
+    pause(1.5)
+    SetLayerMedia(background street_crime_night) // Прохладная ночь
+    playambience(Night_City_Ambience -loop true)
+    
+    Jonathan.SetPosition(-0.1 2.5)
+    Jonathan.Show()
+    playsfx(lighter_click) // Звук прикуривания
+    Jonathan [0:serious-talking] "(Доев свои макароны по флотский...{pause=0.8} Я достаю сигарету и какое-то время смотрю на горизонт.)"
+
+    playsfx(footsteps)
+    CreateCharacter(StrangeWoman)
+    StrangeWoman.SetPosition(0.6 2.5)
+    StrangeWoman.Show()
+    StrangeWoman "Здравствуйте. Это вы — {wave=0.5}Джонатан?{/wave}"
+
+    // ... диалог с StrangeWoman ...
+
+    StrangeWoman "{glitch=1.0}На вас обращен сам Желтый Взор...{/glitch} {pause=0.6} И несмотря на старания отстраниться...{pause=0.4} вы все равно зарабатываете проблемы."
+
+    StrangeWoman "{spd=1.5}Я предлагаю вам другой исход событий.{/spd}"
+    
+    // Уходит в тень
+    StrangeWoman.Hide()
+    Jonathan.Hide()
+    stopambience()
+    SetLayerMedia(background black -spd 0.5)
+}
