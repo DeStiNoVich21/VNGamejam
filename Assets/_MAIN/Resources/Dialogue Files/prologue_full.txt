@@ -28,6 +28,7 @@ Jonathan [0:serious-silent] "Не похоже на маленькую ссор�
 Lance [0:annoyed] "Ну и с лютым психом нам сейчас возиться."
 Lance [0:annoyed] "Джонни?"
 
+playambience(force -loop true)
 
 Jonathan [0:serious-silent] "... видишь символы?"
 
@@ -42,7 +43,6 @@ Jonathan [0:serious-silent] "Пойдем, может там что-то най�
 
 playsfx(door_break)
 shake(-intensity 3 -duration 0.8)
-playambience(force -loop true)
 
 layer.SetActive(characters false)
 CreateCharacter(Jonathan)
@@ -239,6 +239,8 @@ Jonathan [0:serious-talking] "Хорошо."
 
 Jonathan [0:default] "(Отдав свою выписку, я пошёл домой.)"
 Jean.Hide()
+stopambience()
+playambience(apartment -loop true)
 
 SetLayerMedia(background Apartment_Corridor_Night)
 Jonathan [0:serious-silent] "(Прежде чем заходить в свою берлогу, я решил постучать в соседнюю квартиру — проверить свою соседку.)"
@@ -277,7 +279,7 @@ Jonathan [0:serious-silent] "Очередное убийство… Нападе
 Jonathan [0:default] "Нужно выдвигаться."
 
 SetLayerMedia(background Street_CrimeScene_Night)
-playambience(Police_Siren_Distatnt -loop true)
+playambience(Police_Siren_Distatnt)
 
 Jonathan [0:default] "(Я добрался до места преступления. У входа меня встретил дежурный полицейский.)"
 
@@ -292,8 +294,8 @@ Cop "Тело преступника позже удалось найти неп
 Jonathan [0:default] "Отлично. Никого не впускать, пока я не закончу."
 
 stopambience()
+playambience(Office_Ambience -loop true)
 SetLayerMedia(background Apartment_CrimeScene_Interior)
-playambience(Flashlight_Hum -loop true)
 
 Jonathan [0:serious-silent] "(Я приступил к осмотру улик.)"
 
@@ -314,56 +316,6 @@ Jonathan [0:serious-silent] "Похоже, мне стоит наведатьс�
 stopambience()
 SetLayerMedia(background black -spd 0.5)
 
-SetLayerMedia(background Player_Apartment_Night -i true)
-
-CreateCharacter(Jonathan)
-Jonathan.SetPosition(-0.02 2.5)
-Jonathan.Show()
-
-Jonathan [0:default] "Так, пора за работу. И что же у нас сегодня…"
-
-Jonathan [0:serious-talking] "Дело №FD-F/012: Бойня в жилом блоке. Субъект обколовшись наркотиком начал всех крошить."
-
-Jonathan [0:serious-talking] "Два офицера выехало на вызов, при попытке задержании, главный подозреваемый открывает огонь по сотрудникам. Один сотрудник получает ранение в голову, попадание по касанию, сотрудник жив, состояние стабильное."
-
-Jonathan [0:serious-silent] "Очередное убийство… Нападение на копов значит… Ничего нового."
-
-Jonathan [0:default] "Нужно выдвигаться."
-
-SetLayerMedia(background Street_CrimeScene_Night)
-playambience(Police_Siren_Distatnt -loop true)
-
-Jonathan [0:default] "(Я добрался до места преступления. У входа меня встретил дежурный полицейский.)"
-
-Jonathan [0:default] "Добрый день. Детектив Джонатан. Я был назначен главным расследователем этого дела."
-
-Cop "Ох, детектив, вы здесь."
-
-Jonathan [0:serious-talking] "Мне доложили что преступник подстрелил двоих офицеров пока пытался сбежать. Есть что нового?"
-
-Cop "Тело преступника позже удалось найти неподалеку от места происшествия. Криминалисты уже закончили первичный осмотр, так что можете смело заходить."
-
-Jonathan [0:default] "Отлично. Никого не впускать, пока я не закончу."
-
-stopambience()
-SetLayerMedia(background Apartment_CrimeScene_Interior)
-playambience(Flashlight_Hum -loop true)
-
-Jonathan [0:serious-silent] "(Я приступил к осмотру улик.)"
-
-Jonathan [0:default] "(Среди мусора на полу что-то блеснуло. Имя почти стерто, но номер еще читаем. Похоже, что преступником был бывший военный.)"
-
-Jonathan [0:serious-silent] "(Засохшая кровь на стене прикрывает какие-то {c=#FFD700}неизвестные символы{/c}. Выглядит слишком странно для граффити или простого рисунка.)"
-
-Jonathan [0:default] "(Рядом со столом лежит пустой инъектор. Внутри осталось еще пару капель {c=#87CEEB}странной жидкости{/c}.)"
-
-Jonathan [0:default] "(На столе лежит фотография семьи. Похоже, что преступник был семьянином.)"
-
-Jonathan [0:serious-silent] "(В углу комнаты лежит, предположительно, пистолет преступника. На рукоятке отпечатки крови.)"
-
-Jonathan [0:serious-talking] "(Рядом со дверью лежит чей-то персональный телефон. При проверке последних сообщений упоминается некий {c=#FFD700}дилер{/c}, продавший владельцу субстанцию. Последнее сообщение было отправлено позавчера вечером.)"
-
-Jonathan [0:serious-silent] "Похоже, мне стоит наведаться в тот клуб, о котором шла речь в переписке."
 
 stopambience()
 SetLayerMedia(background LevelClub)

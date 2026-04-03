@@ -18,7 +18,7 @@ MonoBehaviour:
   bodyText: "\u0417\u0432\u043E\u043D\u043E\u043A \u0414\u0438\u043B\u0430\u043D\u0430
     (\xAB\u041D\u0430\u0448\u043B\u0438 \u0435\u0433\u043E \u043C\u0435\u0440\u0442\u0432\u044B\u043C
     \u0432 \u0435\u0433\u043E \u043A\u043E\u043C\u043D\u0430\u0442\u0435\xBB)."
-  icon: {fileID: -5224450111193561246, guid: f1db7ff53a2ba684dbd8e2969153c4a2, type: 3}
+  icon: {fileID: 21300000, guid: 721f8242299e58b43903b0513f36af4b, type: 3}
   isPhantomFact: 0
   phantomSource: 0
   requiredSync: 25
